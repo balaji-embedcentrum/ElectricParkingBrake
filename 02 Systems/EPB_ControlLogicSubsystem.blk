@@ -1,0 +1,103 @@
+use featureset ElectricParkingBrakeFeatures
+use block EPB_InputProcessingSubsystem
+
+hdef block EPB_ControlLogicSubsystem
+  name "EPB Control Logic Subsystem"
+  description "Core control logic subsystem implementing EPB engagement/release algorithms, safety checks, and force control strategies"
+  designrationale "Centralized control logic ensures consistent and safe EPB operation with comprehensive safety interlocks and adaptive force control"
+  owner "Control Logic Team"
+  level subsystem
+  safetylevel ASIL-D
+  tags "control-logic", "safety-interlocks", "force-control", "ASIL-D", "subsystem"
+
+  enables ref feature InterfaceFeatures
+
+  // Input interfaces (from Input Processing Subsystem)
+  needs ref message ProcessedVehicleState
+  needs ref message ProcessedDriverCommand
+  needs ref message ProcessedActuatorFeedback
+  needs ref signal ProcessedVehicleSpeed
+  needs ref signal ProcessedSlopeAngle
+  needs ref signal ProcessedIgnitionState
+  needs ref signal ProcessedTransmissionState
+  needs ref signal ProcessedActuatorPosition
+  needs ref signal ProcessedActuatorCurrent
+
+  // Output interfaces (control commands and status)
+  def message EPBControlCommand
+    name "EPB Control Command"
+    description "Primary control command containing engagement/release decisions and force targets"
+    designrationale "Unified control command structure ensures consistent command interpretation across actuator subsystems"
+    owner "Control Command Team"
+    datatype EPBControlStruct
+    safetylevel ASIL-D
+    tags "control-command", "engagement-control", "force-target", "safety-critical"
+
+  def message SafetyStatus
+    name "EPB Safety Status"
+    description "Comprehensive safety status including interlock states and fault conditions"
+    designrationale "Safety status monitoring enables rapid fault detection and safe system degradation"
+    owner "Safety Monitoring Team"
+    datatype SafetyStatusStruct
+    safetylevel ASIL-D
+    tags "safety-status", "fault-detection", "interlock-monitoring", "diagnostics"
+
+  def message DiagnosticOutput
+    name "EPB Diagnostic Output"
+    description "Diagnostic information for service tools and system health monitoring"
+    designrationale "Comprehensive diagnostics support field service and predictive maintenance"
+    owner "Diagnostics Team"
+    datatype DiagnosticStruct
+    tags "diagnostics", "service-support", "health-monitoring"
+
+  def signal EPBEngagementCommand
+    name "EPB Engagement Command Signal"
+    description "Binary engagement command for actuator control"
+    designrationale "Clear engagement signal provides reliable command interface for actuator subsystems"
+    owner "Engagement Control Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "engagement-command", "binary-control", "actuator-interface"
+
+  def signal ForceTarget
+    name "EPB Force Target Signal"
+    description "Target holding force based on vehicle conditions and driver preferences"
+    designrationale "Adaptive force targeting optimizes holding performance while minimizing wear and energy consumption"
+    owner "Force Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "force-target", "adaptive-control", "performance-optimization"
+
+  def signal SafetyInterlock
+    name "Safety Interlock Signal"
+    description "Master safety interlock preventing unsafe EPB operation"
+    designrationale "Safety interlock provides ultimate protection against hazardous EPB states"
+    owner "Safety Interlock Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "safety-interlock", "hazard-prevention", "ultimate-protection"
+
+  def signal SystemHealth
+    name "System Health Signal"
+    description "Overall system health indicator for user interface and vehicle systems"
+    designrationale "System health indication provides user feedback and enables vehicle-level safety responses"
+    owner "System Health Team"
+    datatype HealthEnum
+    tags "system-health", "user-feedback", "vehicle-integration"
+
+  def signal FaultStatus
+    name "Fault Status Signal"
+    description "Active fault status for immediate safety response"
+    designrationale "Fault status enables rapid system response to detected failures"
+    owner "Fault Management Team"
+    datatype FaultEnum
+    safetylevel ASIL-D
+    tags "fault-status", "failure-response", "safety-critical"
+
+  def signal ControlMode
+    name "Control Mode Signal"
+    description "Current control mode (automatic, manual, emergency, etc.)"
+    designrationale "Control mode indication supports context-aware operation and user interface"
+    owner "Mode Control Team"
+    datatype ControlModeEnum
+    tags "control-mode", "context-awareness", "user-interface"

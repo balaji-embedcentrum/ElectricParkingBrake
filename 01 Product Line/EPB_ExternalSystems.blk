@@ -1,0 +1,89 @@
+use featureset ElectricParkingBrakeFeatures
+
+hdef block VehicleSystemsInterface
+  name "Vehicle Systems Interface Block"
+  description "External vehicle systems that provide inputs and interfaces to the Electric Parking Brake ECU"
+  designrationale "Centralized definition of external vehicle system interfaces ensures clear boundary definition and proper interface specification for EPB integration"
+  owner "Systems Integration Team"
+  level system
+  safetylevel ASIL-D
+  tags "vehicle-interface", "external-systems", "EPB-integration", "ASIL-D", "system-boundary"
+
+  enables ref feature InterfaceFeatures
+
+  // Message interfaces (outputs to EPB ECU)
+  def message VehicleStateOutput
+    name "Vehicle State Output Message"
+    description "Vehicle state information including speed, slope, ignition, transmission status from vehicle control systems"
+    designrationale "Comprehensive vehicle state data enables informed EPB decision making based on current vehicle conditions"
+    owner "Vehicle State Integration Team"
+    datatype VehicleStateStruct
+    tags "vehicle-state", "system-integration", "environmental-data"
+    
+  def message DriverCommandOutput
+    name "Driver Command Output Message"
+    description "Driver input commands from EPB switch, instrument cluster, and HMI systems"
+    designrationale "Direct driver command relay ensures immediate response to driver intentions without processing delays"
+    owner "Driver Interface Integration Team"
+    datatype DriverCommandStruct
+    tags "driver-command", "HMI-integration", "user-input"
+    
+  def message ActuatorFeedbackOutput
+    name "Actuator Feedback Output Message"
+    description "Electric actuator feedback including position, force, current, and temperature from brake actuator systems"
+    designrationale "Real-time actuator feedback enables closed-loop control and comprehensive system health monitoring"
+    owner "Actuator Systems Integration Team"
+    datatype ActuatorFeedbackStruct
+    safetylevel ASIL-D
+    tags "actuator-feedback", "sensor-data", "safety-critical"
+
+  // Signal interfaces (outputs to EPB ECU)
+  def signal VehicleSpeedOutput
+    name "Vehicle Speed Output Signal"
+    description "Vehicle speed signal from ABS/ESP system or wheel speed sensors"
+    designrationale "Accurate speed information prevents unsafe EPB engagement during vehicle motion"
+    owner "Vehicle Dynamics Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "vehicle-speed", "safety-interlock", "motion-sensing"
+    
+  def signal SlopeAngleOutput
+    name "Slope Angle Output Signal"
+    description "Vehicle slope angle from inclinometer sensor or calculated from accelerometers"
+    designrationale "Slope detection enables adaptive brake force control for effective holding on inclined surfaces"
+    owner "Environmental Sensing Team"
+    datatype float32
+    tags "slope-detection", "inclinometer", "environmental-sensing"
+    
+  def signal IgnitionStateOutput
+    name "Ignition State Output Signal"
+    description "Vehicle ignition state signal from body control module or ignition switch"
+    designrationale "Ignition state enables appropriate EPB behavior during vehicle startup and shutdown procedures"
+    owner "Body Control Integration Team"
+    datatype IgnitionEnum
+    tags "ignition-state", "power-management", "vehicle-lifecycle"
+    
+  def signal TransmissionStateOutput
+    name "Transmission State Output Signal"
+    description "Vehicle transmission state and gear position from transmission control module"
+    designrationale "Transmission state supports intelligent EPB engagement strategies and drivetrain safety interlocks"
+    owner "Drivetrain Integration Team"
+    datatype TransmissionEnum
+    tags "transmission-state", "gear-position", "drivetrain-status"
+    
+  def signal ActuatorPositionOutput
+    name "Actuator Position Output Signal"
+    description "Electric actuator position feedback in millimeters from position sensors"
+    designrationale "Precise position feedback enables accurate engagement verification and position-based control algorithms"
+    owner "Position Sensing Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "position-feedback", "precision-sensing", "control-verification"
+    
+  def signal ActuatorCurrentOutput
+    name "Actuator Current Output Signal"
+    description "Electric actuator motor current in Amperes from current sensing circuits"
+    designrationale "Current monitoring enables motor load detection, fault diagnosis, and thermal protection"
+    owner "Motor Control Integration Team"
+    datatype float32
+    tags "current-monitoring", "motor-diagnostics", "thermal-protection"

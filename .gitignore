@@ -1,0 +1,60 @@
+# Electric Parking Brake Project - Git Ignore File
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+*.cache
+
+# Build artifacts (if any)
+build/
+dist/
+*.o
+*.obj
+*.exe
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# System files
+.fuse_hidden*
+
+# Auto-generated documentation
+docs/generated/
+
+# Configuration files with sensitive data
+config/secrets.*
+*.key
+*.pem
+
+# Test results and coverage
+test-results/
+coverage/
+*.junit
+*.cobertura
+
+# Sylang-specific temporary files
+*.sylang-temp
+*.sylang-cache
+
+# Lock files
+package-lock.json
+yarn.lock

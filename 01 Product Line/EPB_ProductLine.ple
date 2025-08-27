@@ -1,0 +1,10 @@
+hdef productline ElectricParkingBrakeProductLine
+  name "Electric Parking Brake Product Line"
+  description "Comprehensive Electric Parking Brake system product line covering ASIL-D safety-critical brake control functionality for automotive applications"
+  owner "Systems Engineering Team"
+  domain "automotive-safety-systems", "brake-controls", "ASIL-D-systems", "electric-actuators"
+  compliance "ISO 26262", "ISO 21448", "UN ECE R13", "UN ECE R13-H", "FMVSS 135", "EU 661/2009"
+  firstrelease "2026-01-15"
+  tags "electric-parking-brake", "ASIL-D", "safety-critical", "brake-system", "application-layer"
+  safetylevel ASIL-D
+  region "Global", "North America", "Europe", "Asia-Pacific", "China"

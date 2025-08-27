@@ -1,0 +1,62 @@
+use featureset ElectricParkingBrakeFeatures
+
+hdef block DriverInterfaceSystem
+  name "Driver Interface System"
+  description "Driver controls and feedback systems for Electric Parking Brake operation"
+  designrationale "Dedicated driver interface block ensures proper human-machine interface design and safety-critical driver feedback"
+  owner "HMI Engineering Team"
+  level system
+  safetylevel ASIL-D
+  tags "driver-interface", "HMI", "EPB-controls", "ASIL-D", "human-machine-interface"
+
+  enables ref feature DriverInterface
+
+  // Message interfaces (bidirectional with EPB ECU)
+  def message DriverEPBCommandOutput
+    name "Driver EPB Command Output Message"
+    description "Driver EPB commands from control switch including engage, disengage, and emergency requests"
+    designrationale "Direct driver command interface ensures immediate response to driver intentions without processing delays"
+    owner "Driver Control Interface Team"
+    datatype DriverCommandStruct
+    tags "driver-command", "switch-interface", "manual-control"
+    
+  def message EPB_StatusInput
+    name "EPB Status Input Message"
+    description "EPB status information for driver display and indicator control"
+    designrationale "Real-time status feedback enables driver awareness of EPB system state and operation"
+    owner "Driver Feedback Team"
+    datatype EPB_StatusStruct
+    tags "status-display", "driver-feedback", "system-awareness"
+    
+  def message EPB_DiagnosticInput
+    name "EPB Diagnostic Input Message"
+    description "EPB diagnostic information for driver warning and maintenance alerts"
+    designrationale "Diagnostic information enables driver awareness of system health and maintenance requirements"
+    owner "Driver Alert Team"
+    datatype EPB_DiagnosticStruct
+    tags "diagnostic-display", "maintenance-alerts", "system-health"
+
+  // Signal interfaces (bidirectional with EPB ECU)
+  def signal EPBSwitchPosition
+    name "EPB Switch Position Signal"
+    description "Physical EPB switch position signal (engage/disengage/auto)"
+    designrationale "Direct switch position monitoring ensures reliable detection of driver commands"
+    owner "Switch Interface Team"
+    datatype EPB_SwitchEnum
+    tags "switch-position", "physical-interface", "driver-input"
+    
+  def signal EPBIndicatorControl
+    name "EPB Indicator Control Signal"
+    description "EPB indicator control signal for dashboard warning lights"
+    designrationale "Visual indicators provide immediate driver feedback on EPB system status and alerts"
+    owner "Visual Feedback Team"
+    datatype EPB_IndicatorEnum
+    tags "visual-indicators", "dashboard-lights", "driver-alerts"
+    
+  def signal EPBWarningBuzzer
+    name "EPB Warning Buzzer Signal"
+    description "EPB warning buzzer control for audible alerts"
+    designrationale "Audible alerts ensure driver attention during critical EPB system events and failures"
+    owner "Audio Feedback Team"
+    datatype boolean
+    tags "audible-alerts", "warning-buzzer", "critical-notifications"

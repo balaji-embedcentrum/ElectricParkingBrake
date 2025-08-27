@@ -1,0 +1,179 @@
+use featureset ElectricParkingBrakeFeatures
+use block VehicleSystemsInterface
+use block DriverInterfaceSystem
+use block VehicleNetworkInterface
+use block EPB_InputProcessingSubsystem
+use block EPB_ControlLogicSubsystem
+use block EPB_ActuatorOutputSubsystem
+
+hdef block ElectricParkingBrakeECU
+  name "Electric Parking Brake Electronic Control Unit"
+  description "Main ECU for Electric Parking Brake system control, monitoring, and communication with ASIL-D safety compliance"
+  designrationale "Centralized EPB control ensures coordinated operation, comprehensive safety monitoring, and efficient diagnostic coverage"
+  owner "Hardware Engineering Team"
+  level system
+  safetylevel ASIL-D
+  tags "EPB-ECU", "brake-control", "ASIL-D", "safety-critical", "real-time", "automotive"
+
+  // Block relationships and dependencies  
+  enables ref feature CoreEPBFeatures
+  
+  // Subsystem composition - EPB ECU is composed of three main subsystems
+  composedof ref block EPB_InputProcessingSubsystem, EPB_ControlLogicSubsystem, EPB_ActuatorOutputSubsystem
+  
+  // Input interfaces (required by this block from external systems)
+  needs ref message VehicleStateOutput
+  needs ref message DriverEPBCommandOutput
+  needs ref message ActuatorFeedbackOutput
+  needs ref message VehicleCANInput
+  needs ref signal VehicleSpeedOutput
+  needs ref signal SlopeAngleOutput
+  needs ref signal IgnitionStateOutput
+  needs ref signal TransmissionStateOutput
+  needs ref signal ActuatorPositionOutput
+  needs ref signal ActuatorCurrentOutput
+  needs ref signal EPBSwitchPosition
+  needs ref signal DiagnosticRequest
+  
+  // NOTE: This block depends on interfaces from external system blocks:
+  // - VehicleSystemsInterface: VehicleStateOutput, ActuatorFeedbackOutput, VehicleSpeedOutput, SlopeAngleOutput, IgnitionStateOutput, TransmissionStateOutput, ActuatorPositionOutput, ActuatorCurrentOutput
+  // - DriverInterfaceSystem: DriverEPBCommandOutput, EPBSwitchPosition  
+  // - VehicleNetworkInterface: VehicleCANInput, DiagnosticRequest
+
+  // Message interfaces (outputs from this block)
+  def message EPB_ControlCommand
+    name "EPB Control Command Message"
+    description "Main control commands for brake engagement, disengagement, and force control"
+    designrationale "Standardized command interface enables consistent EPB operation across all vehicle control systems"
+    owner "Control Systems Team"
+    datatype EPB_ControlStruct
+    tags "control-command", "brake-engagement", "force-control"
+    
+  def message EPB_StatusReport
+    name "EPB Status Report Message"
+    description "Current EPB status including engagement state, force level, and operational mode"
+    designrationale "Comprehensive status reporting enables real-time monitoring and diagnostic capabilities"
+    owner "Diagnostic Systems Team"
+    datatype EPB_StatusStruct
+    tags "status-report", "system-health", "diagnostics"
+    
+  def message EPB_DiagnosticData
+    name "EPB Diagnostic Data Message"
+    description "Comprehensive diagnostic information for system health monitoring and fault detection"
+    designrationale "Detailed diagnostic data supports predictive maintenance and fault isolation"
+    owner "Diagnostic Systems Team"
+    datatype EPB_DiagnosticStruct
+    safetylevel ASIL-D
+    tags "diagnostics", "fault-detection", "maintenance"
+    
+  // Input message interfaces (received by this block)
+  def message VehicleStateInput
+    name "Vehicle State Input Message"
+    description "Vehicle state information including speed, slope, ignition, transmission status from VehicleSystemsInterface block"
+    designrationale "Centralized vehicle state input ensures consistent environmental awareness for EPB decision making"
+    owner "Vehicle Integration Team"
+    datatype VehicleStateStruct
+    tags "vehicle-state", "environmental-input", "system-integration"
+    
+  def message DriverCommandInput
+    name "Driver Command Input Message"
+    description "Driver input commands from EPB switch and related controls from DriverInterfaceSystem block"
+    designrationale "Direct driver command interface ensures immediate response to driver intentions and manual override capabilities"
+    owner "HMI Integration Team"
+    datatype DriverCommandStruct
+    tags "driver-command", "manual-control", "user-interface"
+    
+  def message ActuatorFeedback
+    name "Actuator Feedback Message"
+    description "Electric actuator feedback including position, force, current, and temperature from VehicleSystemsInterface block"
+    designrationale "Real-time actuator feedback enables closed-loop control and safety monitoring of brake engagement"
+    owner "Actuator Integration Team"
+    datatype ActuatorFeedbackStruct
+    safetylevel ASIL-D
+    tags "actuator-feedback", "closed-loop-control", "safety-monitoring"
+
+  // Signal interfaces (outputs from this block)
+  def signal EPB_SystemHeartbeat
+    name "EPB System Heartbeat Signal"
+    description "System heartbeat signal for ECU health monitoring"
+    designrationale "Regular heartbeat enables real-time detection of system failures and supports safety monitoring"
+    owner "System Health Team"
+    datatype uint32
+    tags "heartbeat", "system-health", "monitoring"
+    
+  def signal EPB_EngagementStatus
+    name "EPB Engagement Status Signal"
+    description "Real-time EPB engagement status signal"
+    designrationale "Immediate engagement status feedback enables rapid response to system state changes"
+    owner "Control Systems Team"
+    datatype EPB_StatusEnum
+    safetylevel ASIL-D
+    tags "engagement-status", "real-time", "safety-critical"
+    
+  def signal EPB_FaultAlert
+    name "EPB Fault Alert Signal"
+    description "Immediate fault alert signal for critical system failures"
+    designrationale "Critical fault alerts enable immediate safety response and system protection"
+    owner "Safety Systems Team"
+    datatype EPB_FaultEnum
+    safetylevel ASIL-D
+    tags "fault-alert", "safety-critical", "emergency-response"
+    
+  def signal EPB_ForceLevel
+    name "EPB Force Level Signal"
+    description "Current brake holding force level in Newtons"
+    designrationale "Real-time force feedback enables precise control and validation of brake engagement"
+    owner "Force Control Team"
+    datatype float32
+    tags "force-level", "precision-control", "feedback"
+    
+  // Input signal interfaces (received by this block)
+  def signal ActuatorPosition
+    name "Actuator Position Signal"
+    description "Electric actuator position feedback in millimeters from VehicleSystemsInterface block"
+    designrationale "Precise position feedback enables accurate engagement control and position verification"
+    owner "Position Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "position-feedback", "precision-control", "safety-critical"
+    
+  def signal ActuatorCurrent
+    name "Actuator Current Signal"
+    description "Electric actuator motor current in Amperes from VehicleSystemsInterface block"
+    designrationale "Current monitoring enables load detection, fault diagnosis, and motor protection"
+    owner "Motor Control Team"
+    datatype float32
+    tags "current-monitoring", "fault-diagnosis", "motor-protection"
+    
+  def signal VehicleSpeed
+    name "Vehicle Speed Signal"
+    description "Vehicle speed signal from vehicle network via VehicleSystemsInterface block"
+    designrationale "Speed information ensures safe EPB operation and prevents engagement during vehicle motion"
+    owner "Vehicle Integration Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "vehicle-speed", "safety-interlock", "motion-detection"
+    
+  def signal SlopeAngle
+    name "Vehicle Slope Angle Signal"
+    description "Vehicle slope angle from inclinometer sensor via VehicleSystemsInterface block"
+    designrationale "Slope information enables adaptive force control for effective brake holding on inclines"
+    owner "Environmental Sensing Team"
+    datatype float32
+    tags "slope-detection", "adaptive-control", "environmental-awareness"
+    
+  def signal IgnitionState
+    name "Ignition State Signal"
+    description "Vehicle ignition state signal from VehicleSystemsInterface block"
+    designrationale "Ignition state enables appropriate EPB behavior during vehicle startup and shutdown sequences"
+    owner "Power Management Team"
+    datatype IgnitionEnum
+    tags "ignition-state", "power-management", "startup-sequence"
+    
+  def signal TransmissionState
+    name "Transmission State Signal"
+    description "Vehicle transmission state and gear position from VehicleSystemsInterface block"
+    designrationale "Transmission state information supports intelligent EPB engagement strategies and safety interlocks"
+    owner "Drivetrain Integration Team"
+    datatype TransmissionEnum
+    tags "transmission-state", "gear-position", "drivetrain-integration"

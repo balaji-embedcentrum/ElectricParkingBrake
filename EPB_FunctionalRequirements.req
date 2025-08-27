@@ -1,0 +1,254 @@
+use featureset ElectricParkingBrakeFeatures
+use functionset ElectricParkingBrakeFunctions
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef requirementset EPB_FunctionalRequirements
+  name "EPB Product-Level Functional Requirements"
+  description "Comprehensive functional requirements for Electric Parking Brake system covering all operational scenarios, user interactions, and system behaviors"
+  owner "Systems Engineering Team"
+  status draft
+  safetylevel ASIL-D
+  tags "functional-requirements", "product-level", "EPB", "ASIL-D", "ISO-26262"
+
+  def requirement REQ_FUNC_001
+    name "EPB System State Management"
+    description "The EPB system SHALL manage system states including IDLE, ENGAGING, ENGAGED, DISENGAGING, and FAULT states with deterministic transitions"
+    rationale "Clear state management ensures predictable system behavior and enables proper user feedback and safety monitoring per ISO 26262"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function EPB_SystemStateManager
+    
+    def requirement REQ_FUNC_001_1
+      name "EPB Idle State Readiness"
+      description "WHEN the EPB system is in IDLE state THEN the system SHALL monitor all inputs, perform diagnostic checks, and respond to engagement commands within 100ms"
+      rationale "Idle state readiness ensures rapid response to user commands and maintains system availability for safety-critical operations"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_SystemStateManager
+      
+    def requirement REQ_FUNC_001_2
+      name "EPB Engaging State Control"
+      description "WHEN the EPB system enters ENGAGING state THEN the system SHALL actively apply brake force until target engagement is achieved OR timeout occurs (maximum 10 seconds) AND SHALL provide continuous status feedback during engagement process"
+      rationale "Controlled engagement ensures reliable brake application with timeout protection against mechanical failures and status feedback enables user awareness"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_MotorController
+      
+    def requirement REQ_FUNC_001_3
+      name "EPB Engaged State Maintenance"
+      description "WHEN the EPB system is in ENGAGED state THEN the system SHALL maintain brake force, monitor actuator position, and prevent vehicle movement AND SHALL detect any loss of holding force within 200ms"
+      rationale "Engaged state maintenance ensures vehicle remains securely parked until intentional release and force monitoring prevents rollaway due to mechanical failures"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_MotorController
+
+  def requirement REQ_FUNC_002
+    name "EPB Request Processing and Validation"
+    description "The EPB system SHALL process and validate driver requests, automatic commands, and emergency requests according to priority hierarchy and safety validation rules"
+    rationale "Request processing ensures safe command execution while respecting user intentions and system safety constraints with priority-based processing for emergency situations"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function EPB_RequestProcessor
+    
+    def requirement REQ_FUNC_002_1
+      name "Driver Manual Command Response"
+      description "WHEN the driver activates manual engagement or release command via EPB switch THEN the system SHALL respond within 200ms if safety conditions are met AND SHALL provide immediate feedback if command is rejected"
+      rationale "Immediate response to driver commands ensures user control and confidence in system operation while command rejection feedback prevents user confusion about system state"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_RequestProcessor
+      
+    def requirement REQ_FUNC_002_2
+      name "Automatic Engagement Logic"
+      description "WHEN vehicle is stationary AND engine is off AND driver door is opened THEN the system SHALL automatically engage EPB (if automatic engagement feature is configured) AND SHALL allow manual override of automatic engagement"
+      rationale "Automatic engagement prevents vehicle rollaway in common parking scenarios while maintaining user control"
+      status approved
+      reqtype functional
+      implements ref function EPB_RequestProcessor
+      when ref config c_ComfortFeatures_AutomaticEngagement
+
+  def requirement REQ_FUNC_003
+    name "EPB Adaptive Force Control"
+    description "The EPB system SHALL calculate and apply appropriate brake force based on vehicle conditions including estimated mass, slope angle, environmental factors, and safety margins"
+    rationale "Adaptive force control ensures adequate holding force while minimizing actuator wear and energy consumption with environmental compensation maintaining performance across all operating conditions"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function EPB_ForceCalculator
+    
+    def requirement REQ_FUNC_003_1
+      name "Base Force Calculation with Safety Margin"
+      description "WHEN calculating holding force THEN the system SHALL compute minimum required force based on vehicle mass and slope angle AND SHALL apply a safety margin of minimum 15% above calculated force"
+      rationale "Safety margin ensures reliable holding even with measurement uncertainties and changing conditions with 15% margin providing adequate safety buffer per automotive industry standards"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_ForceCalculator
+      
+    def requirement REQ_FUNC_003_2
+      name "Environmental Force Compensation"
+      description "WHEN environmental conditions vary (temperature, humidity, road surface conditions) THEN the system SHALL adjust force calculation to compensate for coefficient of friction changes AND SHALL maintain holding performance within plus-minus 10% of nominal conditions"
+      rationale "Environmental compensation maintains holding performance across all specified operating conditions with performance tolerance ensuring consistent user experience regardless of conditions"
+      status approved
+      reqtype functional
+      implements ref function EPB_ForceCalculator
+
+  def requirement REQ_FUNC_004
+    name "EPB Precision Position Control"
+    description "The EPB system SHALL control actuator position using closed-loop feedback with position accuracy within plus-minus 2mm and provide continuous position monitoring for force estimation and fault detection"
+    rationale "Precise position control ensures consistent brake force application and enables accurate force estimation while position monitoring is essential for detecting mechanical wear and failures"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function EPB_PositionEstimator
+    
+    def requirement REQ_FUNC_004_1
+      name "Redundant Position Feedback"
+      description "WHEN monitoring actuator position THEN the system SHALL use dual redundant position sensors with cross-comparison for fault detection AND SHALL detect sensor disagreement greater than 5mm within 100ms"
+      rationale "Redundant position sensing ensures reliable position information and enables sensor fault detection with cross-comparison providing immediate fault detection for safety-critical position data"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_PositionEstimator
+
+  def requirement REQ_FUNC_005
+    name "EPB Comprehensive Safety Monitoring"
+    description "The EPB system SHALL continuously monitor system health, detect faults, and implement safe failure responses with comprehensive coverage of all safety-critical components and functions"
+    rationale "Continuous safety monitoring enables rapid fault detection and prevents hazardous system states with comprehensive monitoring coverage ensuring no single point of failure goes undetected"
+    status approved
+    reqtype safety
+    safetylevel ASIL-D
+    implements ref function EPB_SensorDiagnostics
+    
+    def requirement REQ_FUNC_005_1
+      name "Real-Time Sensor Health Monitoring"
+      description "WHEN monitoring sensor inputs THEN the system SHALL check all sensors for signal plausibility, range validity, and signal integrity AND SHALL detect sensor faults within 50ms of occurrence"
+      rationale "Rapid sensor fault detection prevents use of erroneous data for safety-critical decisions with real-time monitoring ensuring immediate response to sensor failures"
+      status approved
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_SensorDiagnostics
+      
+    def requirement REQ_FUNC_005_2
+      name "Actuator Health and Performance Monitoring"
+      description "WHEN monitoring actuator operation THEN the system SHALL monitor motor current, actuator temperature, and mechanical condition AND SHALL detect performance degradation and predict maintenance needs"
+      rationale "Actuator monitoring enables predictive maintenance and prevents mechanical failures with performance monitoring ensuring continued safe operation throughout component lifecycle"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_MotorDiagnostics
+
+  def requirement REQ_FUNC_006
+    name "EPB Vehicle Communication Interface"
+    description "The EPB system SHALL communicate with vehicle systems via CAN bus providing real-time status, diagnostic information, and receiving vehicle state data for intelligent operation"
+    rationale "Vehicle communication enables integration with other systems and provides comprehensive system information with real-time data exchange essential for intelligent EPB operation and vehicle system coordination"
+    status approved
+    reqtype interface
+    implements ref function EPB_CANTransmitter
+    
+    def requirement REQ_FUNC_006_1
+      name "Periodic Status Broadcasting"
+      description "WHEN operating normally THEN the system SHALL broadcast EPB status including engagement state, force level, and system health every 100ms AND SHALL use standard automotive CAN message formats"
+      rationale "Regular status updates enable other vehicle systems to respond appropriately to EPB state with standard message formats ensuring compatibility with vehicle networks"
+      status approved
+      reqtype interface
+      implements ref function EPB_CANTransmitter
+      
+    def requirement REQ_FUNC_006_2
+      name "Vehicle Data Reception and Processing"
+      description "WHEN receiving vehicle network data THEN the system SHALL process vehicle speed, transmission state, ignition status, and slope information AND SHALL validate received data for plausibility and freshness (less than 200ms age)"
+      rationale "Vehicle data reception enables intelligent EPB operation and safety interlocks with data validation preventing erroneous operation based on stale or corrupt vehicle data"
+      status approved
+      reqtype interface
+      implements ref function EPB_CANReceiver
+
+  def requirement REQ_FUNC_007
+    name "EPB Comprehensive Diagnostic Functions"
+    description "The EPB system SHALL provide comprehensive diagnostic capabilities for service tools, system health monitoring, and predictive maintenance support"
+    rationale "Diagnostic capabilities enable effective service support, predictive maintenance, and quality improvement with comprehensive diagnostics reducing vehicle downtime and improving customer satisfaction"
+    status approved
+    reqtype functional
+    implements ref function EPB_ProcessorMonitor
+    
+    def requirement REQ_FUNC_007_1
+      name "Fault Code Generation and Storage"
+      description "WHEN detecting system faults THEN the system SHALL generate and store diagnostic trouble codes (DTCs) with timestamp and operational context AND SHALL maintain fault history for minimum 100 fault events"
+      rationale "Comprehensive fault logging enables effective troubleshooting and quality improvement with fault history providing insight into system reliability and failure patterns"
+      status approved
+      reqtype functional
+      implements ref function EPB_ProcessorMonitor
+
+  def requirement REQ_FUNC_008
+    name "EPB Safe Release Functions"
+    description "The EPB system SHALL provide safe and controlled brake release with appropriate safety interlocks to prevent unintended vehicle movement while enabling normal operation"
+    rationale "Controlled brake release ensures safe vehicle operation while preventing unintended rollaway with safety interlocks essential for preventing release in unsafe conditions"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function EPB_ReleaseController
+    
+    def requirement REQ_FUNC_008_1
+      name "Manual Release with Safety Validation"
+      description "WHEN driver commands manual release THEN the system SHALL verify safety conditions (engine running, brake pedal applied, transmission in safe state) AND SHALL release brakes only if all safety conditions are satisfied"
+      rationale "Manual release with safety interlocks ensures driver control while preventing unsafe release conditions and safety validation prevents rollaway accidents due to premature release"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function EPB_ReleaseController
+      
+    def requirement REQ_FUNC_008_2
+      name "Automatic Release Logic"
+      description "WHEN driver attempts to drive away (if automatic release is configured) THEN the system SHALL verify drive-away conditions (engine running, transmission engaged, brake pedal released) AND SHALL automatically release EPB if all conditions are met within 2 seconds"
+      rationale "Automatic release provides convenience while ensuring safe release conditions are met with quick release preventing driver confusion and enabling smooth vehicle operation"
+      status approved
+      reqtype functional
+      implements ref function EPB_ReleaseController
+      when ref config c_ComfortFeatures_AutomaticDisengagement
+
+  def requirement REQ_FUNC_009
+    name "EPB Emergency and Fail-Safe Functions"
+    description "The EPB system SHALL provide emergency braking capabilities and fail-safe operation modes to ensure system safety and provide backup braking capability in critical situations"
+    rationale "Emergency functions ensure system safety and provide backup braking capability in critical situations with fail-safe operation maintaining essential functionality even during component failures"
+    status approved
+    reqtype safety
+    safetylevel ASIL-D
+    implements ref function EPB_EmergencyBrakeController
+    
+    def requirement REQ_FUNC_009_1
+      name "Emergency Maximum Force Engagement"
+      description "WHEN emergency engagement is commanded THEN the system SHALL apply maximum available brake force within 2 seconds AND SHALL bypass normal force calculation limits during emergency conditions"
+      rationale "Rapid emergency engagement provides maximum stopping capability in critical situations with bypassing normal limits ensuring maximum braking force when needed for safety"
+      status approved
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_EmergencyBrakeController
+
+  def requirement REQ_FUNC_010
+    name "EPB User Interface and Feedback"
+    description "The EPB system SHALL provide clear user feedback through visual indicators, audible signals, and appropriate human-machine interface elements to ensure driver awareness and confidence"
+    rationale "Clear user interface ensures driver awareness of EPB status and enables confident operation with multiple feedback modalities ensuring information reaches driver regardless of attention focus"
+    status approved
+    reqtype interface
+    implements ref function EPB_IndicatorController
+    
+    def requirement REQ_FUNC_010_1
+      name "Multi-State Visual Status Indication"
+      description "WHEN providing status indication THEN the system SHALL display EPB status through dashboard indicator with distinct states: OFF (no illumination), AMBER (steady), RED (steady), and RED (flashing) for different operational states and fault conditions"
+      rationale "Visual status indication provides immediate driver feedback on EPB state with clear color coding and multiple visual states enabling quick status recognition without text interpretation"
+      status approved
+      reqtype interface
+      implements ref function EPB_IndicatorController
+      
+    def requirement REQ_FUNC_010_2
+      name "Audible Feedback for Key Operations"
+      description "WHEN performing key EPB operations THEN the system SHALL provide audible feedback with distinct sound patterns: engagement (single chime), release (double chime), and fault conditions (continuous warning tone)"
+      rationale "Audible feedback ensures driver awareness even when visual attention is focused elsewhere with distinct sound patterns enabling recognition of different operations without visual confirmation"
+      status approved
+      reqtype interface
+      implements ref function EPB_IndicatorController

@@ -1,0 +1,259 @@
+use productline ElectricParkingBrakeProductLine
+
+hdef featureset ElectricParkingBrakeFeatures
+  name "Electric Parking Brake Feature Set"
+  description "Comprehensive feature model for Electric Parking Brake system with ASIL-D safety features and application-layer functionality"
+  owner "Systems Engineering Team"
+  listedfor ref productline ElectricParkingBrakeProductLine
+
+  def feature CoreEPBFeatures mandatory
+    name "Core Electric Parking Brake Features"
+    description "Essential EPB functionality required for all vehicle variants"
+    owner "Systems Engineering Team"
+    safetylevel ASIL-D
+
+    def feature BrakeEngagement mandatory
+      name "Parking Brake Engagement Function"
+      description "Core function to engage electric parking brake with force control and position feedback"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-D
+
+      def feature EngagementControl mandatory
+        name "Engagement Force Control"
+        description "Precise control of brake engagement force based on vehicle load and slope conditions"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+        def feature ForceControlAlgorithm mandatory
+          name "Force Control Algorithm"
+          description "Core algorithm for calculating and controlling brake engagement force"
+          owner "Systems Engineering Team"
+          safetylevel ASIL-D
+
+          def feature PIDController mandatory
+            name "PID Force Controller"
+            description "Proportional-Integral-Derivative controller for force regulation"
+            owner "Controls Engineering Team"
+            safetylevel ASIL-D
+
+          def feature AdaptiveControl optional
+            name "Adaptive Force Control"
+            description "Self-tuning control parameters based on system performance and wear"
+            owner "Controls Engineering Team"
+            safetylevel ASIL-D
+
+        def feature LoadEstimation mandatory
+          name "Vehicle Load Estimation"
+          description "Estimation of vehicle load for appropriate force calculation"
+          owner "Systems Engineering Team"
+          safetylevel ASIL-D
+
+          def feature StaticLoadEstimation mandatory
+            name "Static Load Estimation"
+            description "Estimation based on vehicle configuration and passenger count"
+            owner "Systems Engineering Team"
+            safetylevel ASIL-D
+
+          def feature DynamicLoadEstimation optional
+            name "Dynamic Load Estimation"
+            description "Real-time load estimation using suspension sensors or accelerometers"
+            owner "Systems Engineering Team"
+            safetylevel ASIL-D
+
+        def feature MotorControlStrategy mandatory
+          name "Motor Control Strategy"
+          description "Motor control implementation strategy for actuator operation"
+          owner "Hardware Engineering Team"
+          safetylevel ASIL-D
+
+          def feature BasicPWMControl mandatory
+            name "Basic PWM Control"
+            description "Standard PWM-based motor speed and torque control"
+            owner "Hardware Engineering Team"
+            safetylevel ASIL-D
+
+          def feature AdvancedVectorControl optional
+            name "Advanced Vector Control"
+            description "Field-oriented vector control for enhanced precision and efficiency"
+            owner "Hardware Engineering Team"
+            safetylevel ASIL-D
+
+      def feature PositionFeedback mandatory
+        name "Actuator Position Feedback"
+        description "Real-time position feedback from electric actuator for engagement verification"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+        def feature PrimarySensorTechnology or
+          name "Primary Position Sensing Technology"
+          description "Primary technology for position sensing in the actuator"
+          owner "Hardware Engineering Team"
+          safetylevel ASIL-D
+
+          def feature PotentiometerSensor or
+            name "Potentiometer Position Sensor"
+            description "Analog potentiometer for continuous position measurement"
+            owner "Hardware Engineering Team"
+            safetylevel ASIL-D
+
+          def feature HallEffectSensor or
+            name "Hall Effect Position Sensor"
+            description "Digital Hall effect sensor for robust position detection"
+            owner "Hardware Engineering Team"
+            safetylevel ASIL-D
+
+          def feature EncoderSensor or
+            name "Incremental Encoder"
+            description "Optical or magnetic incremental encoder for high-precision positioning"
+            owner "Hardware Engineering Team"
+            safetylevel ASIL-D
+
+        def feature SecondarySensorTechnology or
+          name "Secondary Position Sensing Technology"
+          description "Redundant secondary sensor for fault tolerance"
+          owner "Functional Safety Team"
+          safetylevel ASIL-D
+
+          def feature BackupPotentiometer or
+            name "Backup Potentiometer Sensor"
+            description "Secondary potentiometer sensor for redundancy"
+            owner "Functional Safety Team"
+            safetylevel ASIL-D
+
+          def feature BackupHallSensor or
+            name "Backup Hall Effect Sensor"
+            description "Secondary Hall effect sensor for fault detection"
+            owner "Functional Safety Team"
+            safetylevel ASIL-D
+
+    def feature BrakeDisengagement mandatory
+      name "Parking Brake Disengagement Function"
+      description "Safe and controlled disengagement of electric parking brake with safety interlocks"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-D
+
+      def feature SafetyInterlocks mandatory
+        name "Disengagement Safety Interlocks"
+        description "Safety checks before disengagement including driver presence, ignition state, and transmission status"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+      def feature ControlledRelease mandatory
+        name "Controlled Force Release"
+        description "Gradual and controlled release of parking brake force to prevent vehicle rollaway"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+    def feature BrakeHolding mandatory
+      name "Parking Brake Holding Function"
+      description "Maintain parking brake engagement with continuous monitoring and force adjustment"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-D
+
+      def feature HoldingForceMonitoring mandatory
+        name "Holding Force Monitoring"
+        description "Continuous monitoring of brake holding force with automatic adjustment for temperature and wear compensation"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+      def feature SlopeCompensation mandatory
+        name "Slope Compensation Control"
+        description "Automatic adjustment of holding force based on vehicle slope angle and load conditions"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+  def feature SafetyFeatures mandatory
+    name "EPB Safety Features"
+    description "Safety-critical features ensuring ASIL-D compliance and fail-safe operation"
+    owner "Functional Safety Team"
+    safetylevel ASIL-D
+
+    def feature FailureDiagnostics mandatory
+      name "Failure Diagnostics and Monitoring"
+      description "Comprehensive diagnostic coverage for all EPB components and functions"
+      owner "Functional Safety Team"
+      safetylevel ASIL-D
+
+      def feature ActuatorDiagnostics mandatory
+        name "Electric Actuator Diagnostics"
+        description "Motor current monitoring, position sensor validation, and mechanical failure detection"
+        owner "Functional Safety Team"
+        safetylevel ASIL-D
+
+      def feature ECUDiagnostics mandatory
+        name "ECU Self-Diagnostics"
+        description "Processor monitoring, memory checks, communication diagnostics, and watchdog functions"
+        owner "Functional Safety Team"
+        safetylevel ASIL-D
+
+    def feature EmergencyOperation mandatory
+      name "Emergency Operation Features"
+      description "Emergency brake application and fail-safe modes for system failures"
+      owner "Functional Safety Team"
+      safetylevel ASIL-D
+
+      def feature EmergencyEngagement mandatory
+        name "Emergency Brake Engagement"
+        description "Automatic brake engagement in case of system failure or power loss"
+        owner "Functional Safety Team"
+        safetylevel ASIL-D
+
+      def feature FailSafeModes mandatory
+        name "Fail-Safe Operation Modes"
+        description "Degraded operation modes maintaining basic safety functions during component failures"
+        owner "Functional Safety Team"
+        safetylevel ASIL-D
+
+  def feature ComfortFeatures optional
+    name "EPB Comfort and Convenience Features"
+    description "Optional features enhancing user experience and convenience"
+    owner "Systems Engineering Team"
+    safetylevel QM
+
+    def feature AutomaticEngagement optional
+      name "Automatic Brake Engagement"
+      description "Automatic parking brake engagement when vehicle is parked or ignition turned off"
+      owner "Systems Engineering Team"
+      safetylevel QM
+
+    def feature AutomaticDisengagement optional
+      name "Automatic Brake Disengagement"
+      description "Automatic parking brake release when driving conditions are met"
+      owner "Systems Engineering Team"
+      safetylevel QM
+
+    def feature HillHoldAssist optional
+      name "Hill Hold Assist Function"
+      description "Temporary brake holding on slopes during vehicle startup to prevent rollback"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-B
+
+  def feature InterfaceFeatures mandatory
+    name "EPB Interface Features"
+    description "Communication and interface features for vehicle integration"
+    owner "Systems Engineering Team"
+    safetylevel ASIL-D
+
+    def feature CANInterface mandatory
+      name "CAN Bus Interface"
+      description "CAN communication interface for vehicle network integration and status reporting"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-D
+
+    def feature DriverInterface mandatory
+      name "Driver Interface Features"
+      description "Driver controls, indicators, and feedback for EPB operation"
+      owner "Systems Engineering Team"
+      safetylevel ASIL-D
+
+      def feature SwitchInterface mandatory
+        name "EPB Control Switch"
+        description "Driver switch for manual brake engagement and disengagement"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D
+
+      def feature StatusIndicators mandatory
+        name "EPB Status Indicators"
+        description "Visual and audible indicators for EPB status, warnings, and malfunctions"
+        owner "Systems Engineering Team"
+        safetylevel ASIL-D

@@ -1,0 +1,124 @@
+hdef agentset ElectricParkingBrakeAgents
+  name "Electric Parking Brake ISO 26262 Development Organization"
+  description "ISO 26262 compliant development organization for Electric Parking Brake ASIL-D system development"
+  owner "Safety Manager"
+
+  def agent SafetyManager
+    name "Safety Manager"
+    description "Overall responsibility for functional safety activities and ISO 26262 compliance across EPB project"
+    role "Safety Manager (ISO 26262-2:2018 Clause 5.4.1)"
+    specialization "EPB Functional Safety Management and ISO 26262 Process Compliance"
+    expertise "ISO 26262", "Functional safety management", "ASIL-D processes", "Safety culture", "Risk management"
+    context "Safety management system", "Process compliance", "Safety case development", "Organizational competence"
+
+  def agent ProjectManager
+    name "Project Manager"
+    description "Project management ensuring schedule, budget, and quality deliverables for EPB development"
+    role "Project Manager (ISO 26262-2:2018 Clause 5.4.2)"
+    specialization "EPB Project Planning, Resource Management, and Delivery Coordination"
+    expertise "Automotive project management", "ISO 26262 planning", "Resource allocation", "Risk management"
+    context "Project planning", "Sprint coordination", "Cross-functional team management", "Milestone tracking"
+
+  def agent SystemsEngineer
+    name "Systems Engineer"
+    description "System-level design, architecture, and integration for EPB including item definition and system requirements"
+    role "Systems Engineer (ISO 26262-3:2018)"
+    specialization "EPB Item Definition, System Architecture, and System Requirements"
+    expertise "System engineering", "Item definition", "System architecture", "Requirements engineering", "ASIL decomposition"
+    context "Product line definition", "Feature modeling", "System-level requirements", "Architecture design"
+
+  def agent FunctionalSafetyEngineer
+    name "Functional Safety Engineer"
+    description "HARA execution, safety goal definition, functional safety concept, and safety requirements"
+    role "Functional Safety Engineer (ISO 26262-3:2018)"
+    specialization "EPB HARA, Safety Goals, Functional Safety Concept, and Safety Requirements"
+    expertise "HARA methodology", "Safety goal derivation", "Functional safety concept", "ASIL determination", "Safety requirements"
+    context "Hazard analysis", "Risk assessment", "Safety concept development", "Safety requirements specification"
+
+  def agent HardwareEngineer
+    name "Hardware Development Engineer"
+    description "Hardware design, development, and verification for EPB ECU and actuator systems"
+    role "Hardware Development Engineer (ISO 26262-5:2018)"
+    specialization "EPB Hardware Design, Integration, and Safety Mechanisms"
+    expertise "Automotive ECU design", "Hardware safety mechanisms", "EMC", "Hardware verification", "ASIL-D hardware"
+    context "ECU architecture", "Hardware blocks", "Signal interfaces", "Hardware safety analysis"
+
+  def agent SoftwareEngineer
+    name "Software Development Engineer"
+    description "Application software development, AUTOSAR integration, and software safety mechanisms for EPB"
+    role "Software Development Engineer (ISO 26262-6:2018)"
+    specialization "EPB Application Software, AUTOSAR Implementation, and Software Safety Mechanisms"
+    expertise "C programming", "AUTOSAR", "Software safety mechanisms", "Real-time systems", "MISRA-C"
+    context "Function implementation", "Software architecture", "Safety mechanisms", "Code generation from Sylang"
+
+  def agent VerificationEngineer
+    name "Verification Engineer"
+    description "Verification planning, test design, and validation for EPB at all development levels"
+    role "Verification Engineer (ISO 26262-4:2018)"
+    specialization "EPB Verification Strategy, Test Planning, and Validation Execution"
+    expertise "Verification methods", "Test planning", "HIL/SIL testing", "Requirements-based testing", "Back-to-back testing"
+    context "Test case design", "Verification planning", "Test execution", "Requirements traceability"
+
+  def agent ValidationEngineer
+    name "Validation Engineer"
+    description "System validation, vehicle integration testing, and final safety validation for EPB"
+    role "Validation Engineer (ISO 26262-4:2018)"
+    specialization "EPB System Validation, Vehicle Integration, and Safety Case Validation"
+    expertise "System validation", "Vehicle testing", "Field testing", "Validation in target environment", "Safety case validation"
+    context "System validation planning", "Vehicle integration", "Field validation", "Safety case evidence"
+
+  def agent QualityManager
+    name "Quality Manager"
+    description "Quality assurance, process compliance, and quality metrics for EPB development"
+    role "Quality Manager (ISO 26262-2:2018 Clause 5.4.3)"
+    specialization "EPB Quality Assurance, Process Auditing, and Continuous Improvement"
+    expertise "Quality management", "Process auditing", "ISO 26262 assessment", "Quality metrics", "Continuous improvement"
+    context "Quality planning", "Process compliance", "Quality metrics", "Audit management"
+
+  def agent SafetyAssessor
+    name "Safety Assessor"
+    description "Independent safety assessment, review of safety activities, and safety case evaluation"
+    role "Safety Assessor (ISO 26262-2:2018 Clause 5.4.4)"
+    specialization "EPB Independent Safety Assessment and Safety Case Review"
+    expertise "Independent assessment", "Safety case review", "Compliance verification", "Assessment planning", "Technical review"
+    context "Safety assessment planning", "Independent review", "Compliance evaluation", "Assessment reporting"
+
+  def agent ReliabilityEngineer
+    name "Dependability Engineer"
+    description "FMEA, FTA, reliability analysis, and dependability assessment for EPB system"
+    role "Dependability Engineer (ISO 26262-9:2018)"
+    specialization "EPB FMEA, FTA, Reliability Analysis, and Dependability Verification"
+    expertise "FMEA", "FTA", "Reliability engineering", "Failure analysis", "Quantitative analysis", "RAMS"
+    context "Failure mode analysis", "Fault tree analysis", "Reliability modeling", "Dependability verification"
+
+  def agent ConfigurationManager
+    name "Configuration Manager"
+    description "Configuration management, change control, and variant management for EPB development"
+    role "Configuration Manager (ISO 26262-8:2018)"
+    specialization "EPB Configuration Management, Change Control, and Variant Management"
+    expertise "Configuration management", "Change control", "Variant management", "Version control", "Baseline management"
+    context "Variant modeling", "Configuration control", "Change management", "Traceability management"
+
+  def agent ProcessEngineer
+    name "Process Engineer"
+    description "Development process definition, tailoring, and improvement for EPB ISO 26262 compliance"
+    role "Process Engineer (ISO 26262-2:2018)"
+    specialization "EPB Process Definition, Tailoring, and ISO 26262 Compliance"
+    expertise "Process engineering", "ISO 26262 process tailoring", "Process improvement", "Tool qualification", "Process metrics"
+    context "Process definition", "Tailoring rationale", "Process compliance", "Tool chain management"
+
+  def agent SupplierManager
+    name "Supplier Manager"
+    description "Supplier development interface, safety requirements cascading, and supplier assessment for EPB components"
+    role "Supplier Manager (ISO 26262-8:2018)"
+    specialization "EPB Supplier Safety Interface and Development Interface Agreement"
+    expertise "Supplier management", "Development interface agreement", "Supplier assessment", "Safety requirements cascading"
+    context "Supplier interface", "DIA management", "Supplier safety assessment", "Requirements allocation"
+
+  def agent SystemIntegrator
+    name "System Integrator"
+    description "Cross-artifact integration, consistency validation, and end-to-end traceability for EPB development"
+    role "System Integration Engineer"
+    specialization "EPB Cross-Artifact Integration and Traceability Management"
+    expertise "System integration", "Artifact consistency", "Traceability analysis", "Integration testing", "Interface management"
+    context "Artifact integration", "Consistency validation", "Traceability matrices", "Integration verification"
