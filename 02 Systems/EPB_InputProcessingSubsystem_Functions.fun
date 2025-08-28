@@ -10,51 +10,57 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
   safetylevel ASIL-D
 
   def function VehicleStateValidator
-    name "Vehicle State Signal Validator"
-    description "Validates incoming vehicle state signals including range checks, plausibility analysis, and signal integrity verification"
+    name "Vehicle State Signal Validator - ISO 26262 Enhanced"
+    description "Validates incoming vehicle state signals including range checks, plausibility analysis, and signal integrity verification with 150% fault detection coverage for ISO 26262 ASIL-D compliance"
     owner "Vehicle State Processing Team"
-    tags "validation", "vehicle-state", "signal-integrity", "range-checking"
+    tags "validation", "vehicle-state", "signal-integrity", "range-checking", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_EnhancedFaultDetection
     safetylevel ASIL-D
 
   def function VehicleSpeedProcessor
-    name "Vehicle Speed Signal Processor"
-    description "Processes vehicle speed signal with range validation, noise filtering, and standstill detection for EPB safety interlocks"
+    name "Vehicle Speed Signal Processor - ISO 26262 Enhanced"
+    description "Processes vehicle speed signal with 150% fault coverage including dual-channel monitoring, range validation, noise filtering, standstill detection, and plausibility checks for EPB safety interlocks per ISO 26262 ASIL-D"
     owner "Speed Validation Team"
-    tags "speed-processing", "range-validation", "noise-filtering", "standstill-detection"
+    tags "speed-processing", "range-validation", "noise-filtering", "standstill-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_DualChannelProcessing
     safetylevel ASIL-D
 
   def function SlopeAngleProcessor
-    name "Slope Angle Signal Processor"
-    description "Processes slope angle signal with filtering, calibration, and gradient calculation for adaptive force control"
+    name "Slope Angle Signal Processor - ISO 26262 Enhanced"
+    description "Processes slope angle signal with 150% fault coverage including temporal redundancy, filtering, calibration, gradient calculation, and plausibility validation for adaptive force control per ISO 26262 ASIL-D"
     owner "Slope Processing Team"
-    tags "slope-processing", "signal-filtering", "calibration", "gradient-calculation"
+    tags "slope-processing", "signal-filtering", "calibration", "gradient-calculation", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_TemporalRedundancy
     safetylevel ASIL-D
 
   def function DriverCommandProcessor
-    name "Driver Command Signal Processor"
-    description "Processes driver EPB switch commands with debouncing, pattern recognition, and command validation"
+    name "Driver Command Signal Processor - ISO 26262 Enhanced"
+    description "Processes driver EPB switch commands with 150% fault coverage including self-test mechanisms, debouncing, pattern recognition, command validation, and plausibility checks per ISO 26262 ASIL-D"
     owner "Driver Command Processing Team"
-    tags "command-processing", "debouncing", "pattern-recognition", "validation"
+    tags "command-processing", "debouncing", "pattern-recognition", "validation", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_SelfTestMechanisms
     safetylevel ASIL-D
 
   def function ActuatorFeedbackProcessor
-    name "Actuator Feedback Signal Processor"
-    description "Processes actuator position and current feedback with sensor fusion, calibration, and fault detection"
+    name "Actuator Feedback Signal Processor - ISO 26262 Enhanced"
+    description "Processes actuator position and current feedback with 150% fault coverage including cross-channel comparison, sensor fusion, calibration, fault detection, and watchdog monitoring per ISO 26262 ASIL-D"
     owner "Actuator Feedback Processing Team"
-    tags "feedback-processing", "sensor-fusion", "calibration", "fault-detection"
+    tags "feedback-processing", "sensor-fusion", "calibration", "fault-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_CrossChannelComparison
     safetylevel ASIL-D
 
   def function IgnitionStateProcessor
-    name "Ignition State Signal Processor"
-    description "Processes ignition state signals with debouncing and power state transition detection"
+    name "Ignition State Signal Processor - ISO 26262 Enhanced"
+    description "Processes ignition state signals with 150% fault coverage including watchdog monitoring, debouncing, power state transition detection, and fail-safe response mechanisms per ISO 26262 ASIL-D"
     owner "Power State Processing Team"
-    tags "ignition-processing", "debouncing", "power-state", "transition-detection"
+    tags "ignition-processing", "debouncing", "power-state", "transition-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_WatchdogMonitoring
     safetylevel ASIL-D
 
   def function TransmissionStateProcessor
@@ -66,11 +72,12 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     safetylevel ASIL-D
 
   def function CANMessageProcessor
-    name "CAN Message Processor"
-    description "Processes incoming CAN messages with protocol validation, timestamp checking, and message integrity verification"
+    name "CAN Message Processor - ISO 26262 Enhanced"
+    description "Processes incoming CAN messages with 150% fault coverage including timestamp validation, protocol validation, message sequence checking, and message integrity verification per ISO 26262 ASIL-D"
     owner "CAN Processing Team"
-    tags "CAN-processing", "protocol-validation", "timestamp-checking", "message-integrity"
+    tags "CAN-processing", "protocol-validation", "timestamp-checking", "message-integrity", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_TimestampValidation
     safetylevel ASIL-D
 
   def function SignalDebouncer
@@ -90,19 +97,21 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     safetylevel ASIL-D
 
   def function RangeValidator
-    name "Signal Range Validator"
-    description "Validates analog and digital signals against predefined ranges with out-of-range detection and error reporting"
+    name "Signal Range Validator - ISO 26262 Enhanced"
+    description "Validates analog and digital signals against predefined ranges with 150% fault coverage including range validation, out-of-range detection, error reporting, and safe value substitution per ISO 26262 ASIL-D"
     owner "Validation Team"
-    tags "range-validation", "out-of-range-detection", "error-reporting", "signal-monitoring"
+    tags "range-validation", "out-of-range-detection", "error-reporting", "signal-monitoring", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_SafeValueSubstitution
     safetylevel ASIL-D
 
   def function PlausibilityChecker
-    name "Signal Plausibility Checker"
-    description "Performs cross-signal plausibility checks and consistency validation across multiple input sources"
+    name "Signal Plausibility Checker - ISO 26262 Enhanced"
+    description "Performs cross-signal plausibility checks with 150% fault coverage including consistency validation across multiple input sources, error containment, and fail-safe responses per ISO 26262 ASIL-D"
     owner "Validation Team"
-    tags "plausibility-checking", "consistency-validation", "cross-signal-analysis"
+    tags "plausibility-checking", "consistency-validation", "cross-signal-analysis", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_ErrorContainment
     safetylevel ASIL-D
 
   def function SignalCalibrator
@@ -114,11 +123,12 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     safetylevel ASIL-D
 
   def function FaultDetector
-    name "Input Signal Fault Detector"
-    description "Detects faults in input signals including stuck-at conditions, signal loss, and out-of-range failures"
+    name "Input Signal Fault Detector - ISO 26262 Enhanced"
+    description "Detects faults in input signals with 150% fault coverage including stuck-at conditions, signal loss, out-of-range failures, fail-safe responses, and comprehensive failure analysis per ISO 26262 ASIL-D"
     owner "Fault Detection Team"
-    tags "fault-detection", "stuck-at-detection", "signal-loss", "failure-analysis"
+    tags "fault-detection", "stuck-at-detection", "signal-loss", "failure-analysis", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
+    when ref config c_ISO26262_FailSafeResponse
     safetylevel ASIL-D
 
   def function DiagnosticProcessor

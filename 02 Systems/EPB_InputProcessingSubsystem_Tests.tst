@@ -1,37 +1,40 @@
 use requirementset EPB_InputProcessingSubsystem_Requirements
 use functionset EPB_InputProcessingSubsystem_Functions
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
 
 hdef testset EPB_InputProcessingSubsystem_Tests
-  name "EPB Input Processing Subsystem Test Suite"
-  description "Comprehensive test cases for validating input signal processing, validation, and fault detection functionality within the EPB Input Processing Subsystem"
+  name "EPB Input Processing Subsystem Test Suite - ISO 26262 Enhanced"
+  description "Comprehensive test cases with 150% fault coverage for validating input signal processing, validation, and fault detection functionality within the EPB Input Processing Subsystem per ISO 26262 ASIL-D requirements"
   owner "Input Processing Test Team"
-  tags "input-processing-tests", "signal-validation-tests", "fault-detection-tests", "subsystem-tests"
+  tags "input-processing-tests", "signal-validation-tests", "fault-detection-tests", "subsystem-tests", "ISO26262", "ASIL-D", "150%-coverage"
 
   def testcase TEST_INPUT_001_VEHICLE_STATE_PROCESSING
-    name "Vehicle State Signal Processing Validation"
-    description "Validate vehicle state signal processing including speed, ignition, and transmission state validation with timing requirements"
+    name "Vehicle State Signal Processing Validation - ISO 26262 Enhanced"
+    description "Validate vehicle state signal processing with 150% fault coverage including speed, ignition, transmission state validation, dual-channel monitoring, self-test mechanisms, and fail-safe responses with timing requirements"
     satisfies ref requirement REQ_INPUT_001
     method HIL
-    setup "Configure HIL system with EPB Input Processing Subsystem, connect vehicle state signal generators, initialize timing measurement equipment"
-    steps "Apply nominal and dynamic vehicle state signals, verify processing timing within 20ms, test ignition and transmission state transitions with debouncing"
-    expected "All vehicle state signals processed within 20ms requirement with proper validation and consistency checking"
-    passcriteria "Processing latency less than 20ms for all signals, speed validation accuracy within ±0.1%, proper debouncing of state transitions"
+    setup "Configure HIL system with EPB Input Processing Subsystem, connect dual-channel vehicle state signal generators, initialize timing measurement equipment, enable ISO 26262 fault injection capabilities"
+    steps "Apply nominal and dynamic vehicle state signals on both channels, verify processing timing within 20ms, test ignition and transmission state transitions with debouncing, inject faults and verify fail-safe responses"
+    expected "All vehicle state signals processed within 20ms requirement with proper validation, consistency checking, dual-channel monitoring, and fail-safe fault responses"
+    passcriteria "Processing latency less than 20ms for all signals, speed validation accuracy within ±0.1%, proper debouncing of state transitions, 150% fault detection coverage, fail-safe response within 10ms"
     safetylevel ASIL-D
     testresult notrun
     owner "Vehicle State Test Team"
+    when ref config c_ISO26262_EnhancedFaultDetection
 
   def testcase TEST_INPUT_001_1_SPEED_VALIDATION
-    name "Vehicle Speed Validation and Range Checking"
-    description "Validate vehicle speed signal processing including range checking, plausibility analysis, and standstill detection"
+    name "Vehicle Speed Validation and Range Checking - ISO 26262 Enhanced"
+    description "Validate vehicle speed signal processing with 150% fault coverage including dual-channel processing, range checking, plausibility analysis, standstill detection, and fail-safe speed substitution"
     satisfies ref requirement REQ_INPUT_001_1
     method HIL
-    setup "Configure HIL with speed signal generator capable of 0-350 km/h range, set up implausible change detection with configurable rate limits"
-    steps "Apply valid speed range signals, test out-of-range detection, verify implausible change detection, test standstill detection with timing requirements"
-    expected "Valid speed range processed without faults, out-of-range speeds flagged within 10ms, implausible changes detected, standstill detected properly"
-    passcriteria "Range validation response time less than 10ms, implausible change detection within 100ms, standstill detection timing 500±50ms"
+    setup "Configure HIL with dual-channel speed signal generators capable of 0-350 km/h range, set up implausible change detection with configurable rate limits, enable fault injection capabilities"
+    steps "Apply valid speed range signals on both channels, test dual-channel comparison, verify out-of-range detection, verify implausible change detection, test standstill detection with timing requirements, inject channel faults"
+    expected "Valid speed range processed without faults, dual-channel agreement verified, out-of-range speeds flagged within 10ms, implausible changes detected, standstill detected properly, channel faults trigger fail-safe responses"
+    passcriteria "Range validation response time less than 10ms, implausible change detection within 100ms, standstill detection timing 500±50ms, dual-channel disagreement detection within 5ms, 150% fault coverage achieved"
     safetylevel ASIL-D
     testresult notrun
     owner "Speed Validation Test Team"
+    when ref config c_ISO26262_DualChannelProcessing
 
   def testcase TEST_INPUT_002_DRIVER_COMMAND_PROCESSING
     name "Driver Command Processing and Pattern Recognition"

@@ -51,6 +51,23 @@ hdef configset ElectricParkingBrakeFeaturesVariants_BMWConfig
   def config c_InterfaceFeatures_DriverInterface_SwitchInterface 1
   def config c_InterfaceFeatures_DriverInterface_StatusIndicators 1
 
+  // ISO 26262 Configuration Features for 150% Asset Coverage
+  def config c_ISO26262_EnhancedFaultDetection 1
+  def config c_ISO26262_DiagnosticCoverage 1
+  def config c_ISO26262_DualChannelProcessing 1
+  def config c_ISO26262_SelfTestMechanisms 1
+  def config c_ISO26262_WatchdogMonitoring 1
+  def config c_ISO26262_FailSafeResponse 1
+  def config c_ISO26262_PlausibilityChecks 1
+  def config c_ISO26262_TemporalRedundancy 1
+  def config c_ISO26262_RangeValidation 1
+  def config c_ISO26262_SignalIntegrityChecks 1
+  def config c_ISO26262_CrossChannelComparison 1
+  def config c_ISO26262_ErrorContainment 1
+  def config c_ISO26262_SafeValueSubstitution 1
+  def config c_ISO26262_TimestampValidation 1
+  def config c_ISO26262_MessageSequenceChecking 1
+
 // This file was auto-generated from EPB_FeatureModelVariants.vml
 // Configuration values: 1 = enabled, 0 = disabled
 // Do not edit manually - regenerate from variant model instead

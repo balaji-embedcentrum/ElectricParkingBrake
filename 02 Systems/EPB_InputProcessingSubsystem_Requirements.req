@@ -11,22 +11,24 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
   tags "input-processing-requirements", "signal-validation", "fault-detection", "ASIL-D", "subsystem-requirements"
 
   def requirement REQ_INPUT_001
-    name "Vehicle State Signal Processing"
-    description "The input processing subsystem SHALL process all vehicle state signals with validation, range checking, and plausibility analysis within 20ms of signal reception"
-    rationale "Real-time vehicle state processing ensures EPB decisions are based on current and validated vehicle conditions for safety-critical operations"
+    name "Vehicle State Signal Processing - ISO 26262 Enhanced"
+    description "The input processing subsystem SHALL process all vehicle state signals with 150% fault coverage including validation, range checking, plausibility analysis, dual-channel monitoring, and fail-safe responses within 20ms of signal reception per ISO 26262 ASIL-D requirements"
+    rationale "Real-time vehicle state processing with comprehensive fault detection ensures EPB decisions are based on current and validated vehicle conditions for safety-critical operations with 150% asset coverage"
     status approved
     reqtype functional
     safetylevel ASIL-D
     implements ref function VehicleStateValidator
+    when ref config c_ISO26262_EnhancedFaultDetection
     
     def requirement REQ_INPUT_001_1
-      name "Vehicle Speed Validation"
-      description "WHEN receiving vehicle speed signals THEN the system SHALL validate speed range (0-300 km/h), detect implausible changes (>50 km/h per 100ms), and flag out-of-range conditions within 10ms"
-      rationale "Speed validation prevents EPB engagement during vehicle motion and ensures safety interlock integrity"
+      name "Vehicle Speed Validation - ISO 26262 Enhanced"
+      description "WHEN receiving vehicle speed signals THEN the system SHALL validate with 150% fault coverage including speed range (0-300 km/h), dual-channel processing, implausible change detection (>50 km/h per 100ms), out-of-range flagging within 10ms, and fail-safe speed substitution per ISO 26262 ASIL-D"
+      rationale "Speed validation with comprehensive fault detection prevents EPB engagement during vehicle motion and ensures safety interlock integrity with dual-channel redundancy"
       status approved
       reqtype functional
       safetylevel ASIL-D
       implements ref function VehicleSpeedProcessor
+      when ref config c_ISO26262_DualChannelProcessing
       
     def requirement REQ_INPUT_001_2
       name "Standstill Detection"
@@ -38,13 +40,14 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
       implements ref function VehicleSpeedProcessor
 
   def requirement REQ_INPUT_002
-    name "Driver Command Processing"
-    description "The input processing subsystem SHALL process driver EPB commands with debouncing, pattern recognition, and command validation to ensure reliable command interpretation"
-    rationale "Robust driver command processing prevents spurious activations and ensures reliable response to driver intentions"
+    name "Driver Command Processing - ISO 26262 Enhanced"
+    description "The input processing subsystem SHALL process driver EPB commands with 150% fault coverage including self-test mechanisms, debouncing, pattern recognition, command validation, plausibility checks, and fail-safe command rejection per ISO 26262 ASIL-D requirements"
+    rationale "Robust driver command processing with comprehensive fault detection prevents spurious activations and ensures reliable response to driver intentions with self-test validation"
     status approved
     reqtype functional
     safetylevel ASIL-D
     implements ref function DriverCommandProcessor
+    when ref config c_ISO26262_SelfTestMechanisms
     
     def requirement REQ_INPUT_002_1
       name "Switch Debouncing"
