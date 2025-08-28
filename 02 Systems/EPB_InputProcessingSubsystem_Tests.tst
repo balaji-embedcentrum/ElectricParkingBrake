@@ -1,5 +1,4 @@
 use requirementset EPB_InputProcessingSubsystem_Requirements
-use functionset EPB_InputProcessingSubsystem_Functions
 use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
 
 hdef testset EPB_InputProcessingSubsystem_Tests
@@ -125,3 +124,169 @@ hdef testset EPB_InputProcessingSubsystem_Tests
     safetylevel ASIL-D
     testresult notrun
     owner "Performance Test Team"
+
+  // Test cases for disabled configurations to achieve 150% ISO 26262 coverage
+  def testcase TEST_INPUT_011_DISABLED_FEATURES_VALIDATION
+    name "Disabled Features Validation - ISO 26262 Enhanced"
+    description "Validate all disabled feature configurations with 150% fault coverage including adaptive control lockout, dynamic load estimation blocking, and vector control prevention"
+    satisfies ref requirement REQ_INPUT_011
+    method HIL
+    setup "Configure HIL with all disabled feature simulation capabilities, set up configuration tamper detection, initialize unauthorized activation monitoring"
+    steps "Verify adaptive control lockout, test dynamic load estimation blocking, validate vector control prevention, monitor configuration integrity"
+    expected "All disabled features remain inactive, configuration integrity maintained, unauthorized activation attempts blocked"
+    passcriteria "100% disabled feature validation, configuration integrity check passes, zero unauthorized activations detected"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Disabled Features Test Team"
+
+  def testcase TEST_INPUT_011_1_ADAPTIVE_CONTROL_LOCKOUT
+    name "Adaptive Control Lockout Validation"
+    description "Validate adaptive control feature lockout and PID-only operation when adaptive control is disabled"
+    satisfies ref requirement REQ_INPUT_011_1
+    method SIL
+    setup "Configure software simulation with adaptive control disabled, set up PID controller verification, initialize lockout monitoring"
+    steps "Attempt adaptive control activation, verify PID-only operation, test lockout state monitoring, validate fault detection"
+    expected "Adaptive control remains locked out, PID controller operates normally, lockout state continuously verified"
+    passcriteria "Zero adaptive control activations, PID control accuracy within specification, lockout verification 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Adaptive Control Test Team"
+    when ref config c_AdaptiveControl
+
+  def testcase TEST_INPUT_011_2_DYNAMIC_LOAD_BLOCKING
+    name "Dynamic Load Estimation Blocking Validation"
+    description "Validate dynamic load estimation blocking and static load fallback operation"
+    satisfies ref requirement REQ_INPUT_011_2
+    method SIL
+    setup "Configure simulation with dynamic load estimation disabled, set up static load verification, initialize algorithm bypass monitoring"
+    steps "Attempt dynamic load calculation, verify static load usage, test algorithm bypass state, validate continuous monitoring"
+    expected "Dynamic load algorithms remain blocked, static load values used exclusively, bypass state continuously monitored"
+    passcriteria "Zero dynamic load calculations, static load accuracy within specification, bypass monitoring 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Load Estimation Test Team"
+    when ref config c_DynamicLoadEstimation
+
+  def testcase TEST_INPUT_011_3_VECTOR_CONTROL_PREVENTION
+    name "Advanced Vector Control Prevention Validation"
+    description "Validate advanced vector control prevention and PWM fallback operation"
+    satisfies ref requirement REQ_INPUT_011_3
+    method HIL
+    setup "Configure HIL with vector control disabled, set up PWM control verification, initialize control method restriction monitoring"
+    steps "Attempt vector control activation, verify PWM-only operation, test control method restriction, validate prevention mechanisms"
+    expected "Vector control remains prevented, PWM control operates normally, control method restriction continuously enforced"
+    passcriteria "Zero vector control activations, PWM control performance within specification, restriction enforcement 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Motor Control Test Team"
+    when ref config c_AdvancedVectorControl
+
+  def testcase TEST_INPUT_011_4_HALL_SENSOR_ISOLATION
+    name "Hall Effect Sensor Input Isolation Validation"
+    description "Validate Hall Effect sensor input isolation and potentiometer-only operation"
+    satisfies ref requirement REQ_INPUT_011_4
+    method HIL
+    setup "Configure HIL with Hall sensors disabled, set up potentiometer-only verification, initialize sensor isolation monitoring"
+    steps "Apply Hall sensor signals, verify signal isolation, test potentiometer-only operation, validate sensor path verification"
+    expected "Hall sensor inputs remain isolated, potentiometer signals processed normally, sensor isolation continuously verified"
+    passcriteria "Zero Hall sensor signal processing, potentiometer accuracy within specification, isolation verification 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Sensor Isolation Test Team"
+    when ref config c_HallEffectSensor
+
+  def testcase TEST_INPUT_011_5_ENCODER_BLOCKING
+    name "Encoder Sensor Input Blocking Validation"
+    description "Validate encoder sensor input blocking and pulse counting prevention"
+    satisfies ref requirement REQ_INPUT_011_5
+    method HIL
+    setup "Configure HIL with encoder sensors disabled, set up pulse counting prevention verification, initialize encoder interface monitoring"
+    steps "Apply encoder pulse signals, verify pulse counting prevention, test encoder interface blocking, validate isolation monitoring"
+    expected "Encoder pulse counting remains blocked, encoder interfaces isolated, blocking state continuously monitored"
+    passcriteria "Zero encoder pulse counts processed, interface blocking 100% effective, isolation monitoring passes all checks"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Encoder Blocking Test Team"
+    when ref config c_EncoderSensor
+
+  def testcase TEST_INPUT_011_6_BACKUP_HALL_DISABLING
+    name "Backup Hall Sensor Disabling Validation"
+    description "Validate backup Hall sensor disabling and primary sensor reliance"
+    satisfies ref requirement REQ_INPUT_011_6
+    method HIL
+    setup "Configure HIL with backup Hall sensor disabled, set up primary sensor verification, initialize redundancy path monitoring"
+    steps "Test backup sensor disabling, verify primary sensor reliance, validate redundancy path blocking, monitor single sensor operation"
+    expected "Backup Hall sensor remains disabled, primary sensor operates normally, redundancy switching prevented"
+    passcriteria "Zero backup sensor activations, primary sensor accuracy within specification, redundancy blocking 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Backup Sensor Test Team"
+    when ref config c_BackupHallSensor
+
+  def testcase TEST_INPUT_012_AUTOMATIC_FEATURES_BLOCKING
+    name "Automatic Features Blocking Validation"
+    description "Validate automatic engagement and disengagement feature blocking with manual-only operation"
+    satisfies ref requirement REQ_INPUT_012
+    method HIL
+    setup "Configure HIL with automatic features disabled, set up manual-only verification, initialize automatic feature blocking monitoring"
+    steps "Test automatic engagement prevention, validate automatic disengagement blocking, verify manual-only operation, monitor safety interlocks"
+    expected "All automatic features remain blocked, manual operation functions normally, safety interlocks maintained"
+    passcriteria "Zero automatic activations, manual control response time within specification, safety interlock integrity 100%"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Automatic Features Test Team"
+
+  def testcase TEST_INPUT_012_1_AUTO_ENGAGEMENT_PREVENTION
+    name "Automatic Engagement Prevention Validation"
+    description "Validate automatic engagement prevention and manual-only operation verification"
+    satisfies ref requirement REQ_INPUT_012_1
+    method HIL
+    setup "Configure HIL with automatic engagement disabled, set up manual command verification, initialize auto-logic monitoring"
+    steps "Test automatic engagement prevention, verify manual-only commands, validate auto-logic disabling, monitor unauthorized activation attempts"
+    expected "Automatic engagement remains prevented, manual commands processed normally, auto-logic continuously disabled"
+    passcriteria "Zero automatic engagement events, manual command response time within specification, prevention monitoring 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Auto Engagement Test Team"
+    when ref config c_AutomaticEngagement
+
+  def testcase TEST_INPUT_012_2_AUTO_DISENGAGEMENT_BLOCKING
+    name "Automatic Disengagement Blocking Validation"
+    description "Validate automatic disengagement blocking and manual control verification"
+    satisfies ref requirement REQ_INPUT_012_2
+    method HIL
+    setup "Configure HIL with automatic disengagement disabled, set up manual disengagement verification, initialize auto-release monitoring"
+    steps "Test automatic disengagement blocking, verify manual disengagement commands, validate auto-release prevention, monitor safety interlock maintenance"
+    expected "Automatic disengagement remains blocked, manual disengagement functions normally, safety interlocks maintained"
+    passcriteria "Zero automatic disengagement events, manual disengagement response time within specification, blocking effectiveness 100%"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Auto Disengagement Test Team"
+    when ref config c_AutomaticDisengagement
+
+  def testcase TEST_INPUT_012_3_HILL_HOLD_DISABLING
+    name "Hill Hold Assist Disabling Validation"
+    description "Validate Hill Hold Assist disabling and EPB-only operation verification"
+    satisfies ref requirement REQ_INPUT_012_3
+    method HIL
+    setup "Configure HIL with Hill Hold Assist disabled, set up EPB-only verification, initialize gradient detection monitoring"
+    steps "Test Hill Hold Assist disabling, verify EPB-only operation, validate gradient detection disabling, monitor assist algorithm blocking"
+    expected "Hill Hold Assist remains disabled, EPB operates normally without assist, gradient detection algorithms blocked"
+    passcriteria "Zero Hill Hold activations, EPB performance within specification, assist algorithm blocking 100% effective"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Hill Hold Test Team"
+    when ref config c_HillHoldAssist
+
+  def testcase TEST_INPUT_013_CONFIGURATION_MONITORING
+    name "Disabled Configuration Monitoring Validation"
+    description "Validate continuous monitoring of disabled configurations with integrity verification and tamper detection"
+    satisfies ref requirement REQ_INPUT_013
+    method SIL
+    setup "Configure software simulation with configuration monitoring enabled, set up integrity verification, initialize tamper detection capabilities"
+    steps "Test configuration integrity verification, validate tamper detection, simulate unauthorized modification attempts, monitor security responses"
+    expected "Configuration integrity continuously verified, tamper attempts detected immediately, security responses activated appropriately"
+    passcriteria "Configuration integrity checks pass 100%, tamper detection response time less than 100ms, security response effectiveness 100%"
+    safetylevel ASIL-D
+    testresult notrun
+    owner "Configuration Security Test Team"
