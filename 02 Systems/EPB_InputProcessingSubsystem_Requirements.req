@@ -18,7 +18,7 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
     reqtype functional
     safetylevel ASIL-D
     implements ref function VehicleStateValidator
-    when ref config c_SafetyFeatures_FailureDiagnostics
+    when ref config c_FailureDiagnostics
     
     def requirement REQ_INPUT_001_1
       name "Vehicle Speed Validation - ISO 26262 Enhanced"
@@ -28,7 +28,7 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
       reqtype functional
       safetylevel ASIL-D
       implements ref function VehicleSpeedProcessor
-      when ref config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology
+      when ref config c_SecondarySensorTechnology
       
     def requirement REQ_INPUT_001_2
       name "Standstill Detection"
@@ -47,7 +47,7 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
     reqtype functional
     safetylevel ASIL-D
     implements ref function DriverCommandProcessor
-    when ref config c_SafetyFeatures_FailureDiagnostics_ECUDiagnostics
+    when ref config c_ECUDiagnostics
     
     def requirement REQ_INPUT_002_1
       name "Switch Debouncing"

@@ -5,51 +5,93 @@ hdef configset ElectricParkingBrakeFeaturesVariants_BMWConfig
   description "Auto-generated configuration from ElectricParkingBrakeFeaturesVariants_BMW.vml variant model selections"
   owner "Product Engineering"
   generatedfrom ref variantset ElectricParkingBrakeFeaturesVariants_BMW
-  generatedat "2025-08-24T20:07:45.554Z"
+  generatedat "2025-08-28T03:06:52.168Z"
   tags "variant", "config", "auto-generated"
 
   def config c_CoreEPBFeatures 1
-  def config c_CoreEPBFeatures_BrakeEngagement 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_ForceControlAlgorithm 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_ForceControlAlgorithm_PIDController 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_ForceControlAlgorithm_AdaptiveControl 0
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_LoadEstimation 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_LoadEstimation_StaticLoadEstimation 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_LoadEstimation_DynamicLoadEstimation 0
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_MotorControlStrategy 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_MotorControlStrategy_BasicPWMControl 1
-  def config c_CoreEPBFeatures_BrakeEngagement_EngagementControl_MotorControlStrategy_AdvancedVectorControl 0
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback 1
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_PrimarySensorTechnology 1
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_PrimarySensorTechnology_PotentiometerSensor 1
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_PrimarySensorTechnology_HallEffectSensor 0
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_PrimarySensorTechnology_EncoderSensor 0
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology 1
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology_BackupPotentiometer 1
-  def config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology_BackupHallSensor 0
-  def config c_CoreEPBFeatures_BrakeDisengagement 1
-  def config c_CoreEPBFeatures_BrakeDisengagement_SafetyInterlocks 1
-  def config c_CoreEPBFeatures_BrakeDisengagement_ControlledRelease 1
-  def config c_CoreEPBFeatures_BrakeHolding 1
-  def config c_CoreEPBFeatures_BrakeHolding_HoldingForceMonitoring 1
-  def config c_CoreEPBFeatures_BrakeHolding_SlopeCompensation 1
+    basedon ref feature CoreEPBFeatures
+  def config c_BrakeEngagement 1
+    basedon ref feature BrakeEngagement
+  def config c_EngagementControl 1
+    basedon ref feature EngagementControl
+  def config c_ForceControlAlgorithm 1
+    basedon ref feature ForceControlAlgorithm
+  def config c_PIDController 1
+    basedon ref feature PIDController
+  def config c_AdaptiveControl 0
+    basedon ref feature AdaptiveControl
+  def config c_LoadEstimation 1
+    basedon ref feature LoadEstimation
+  def config c_StaticLoadEstimation 1
+    basedon ref feature StaticLoadEstimation
+  def config c_DynamicLoadEstimation 0
+    basedon ref feature DynamicLoadEstimation
+  def config c_MotorControlStrategy 1
+    basedon ref feature MotorControlStrategy
+  def config c_BasicPWMControl 1
+    basedon ref feature BasicPWMControl
+  def config c_AdvancedVectorControl 0
+    basedon ref feature AdvancedVectorControl
+  def config c_PositionFeedback 1
+    basedon ref feature PositionFeedback
+  def config c_PrimarySensorTechnology 1
+    basedon ref feature PrimarySensorTechnology
+  def config c_PotentiometerSensor 1
+    basedon ref feature PotentiometerSensor
+  def config c_HallEffectSensor 0
+    basedon ref feature HallEffectSensor
+  def config c_EncoderSensor 0
+    basedon ref feature EncoderSensor
+  def config c_SecondarySensorTechnology 1
+    basedon ref feature SecondarySensorTechnology
+  def config c_BackupPotentiometer 1
+    basedon ref feature BackupPotentiometer
+  def config c_BackupHallSensor 0
+    basedon ref feature BackupHallSensor
+  def config c_BrakeDisengagement 1
+    basedon ref feature BrakeDisengagement
+  def config c_SafetyInterlocks 1
+    basedon ref feature SafetyInterlocks
+  def config c_ControlledRelease 1
+    basedon ref feature ControlledRelease
+  def config c_BrakeHolding 1
+    basedon ref feature BrakeHolding
+  def config c_HoldingForceMonitoring 1
+    basedon ref feature HoldingForceMonitoring
+  def config c_SlopeCompensation 1
+    basedon ref feature SlopeCompensation
   def config c_SafetyFeatures 1
-  def config c_SafetyFeatures_FailureDiagnostics 1
-  def config c_SafetyFeatures_FailureDiagnostics_ActuatorDiagnostics 1
-  def config c_SafetyFeatures_FailureDiagnostics_ECUDiagnostics 1
-  def config c_SafetyFeatures_EmergencyOperation 1
-  def config c_SafetyFeatures_EmergencyOperation_EmergencyEngagement 1
-  def config c_SafetyFeatures_EmergencyOperation_FailSafeModes 1
+    basedon ref feature SafetyFeatures
+  def config c_FailureDiagnostics 1
+    basedon ref feature FailureDiagnostics
+  def config c_ActuatorDiagnostics 1
+    basedon ref feature ActuatorDiagnostics
+  def config c_ECUDiagnostics 1
+    basedon ref feature ECUDiagnostics
+  def config c_EmergencyOperation 1
+    basedon ref feature EmergencyOperation
+  def config c_EmergencyEngagement 1
+    basedon ref feature EmergencyEngagement
+  def config c_FailSafeModes 1
+    basedon ref feature FailSafeModes
   def config c_ComfortFeatures 1
-  def config c_ComfortFeatures_AutomaticEngagement 0
-  def config c_ComfortFeatures_AutomaticDisengagement 0
-  def config c_ComfortFeatures_HillHoldAssist 0
+    basedon ref feature ComfortFeatures
+  def config c_AutomaticEngagement 0
+    basedon ref feature AutomaticEngagement
+  def config c_AutomaticDisengagement 0
+    basedon ref feature AutomaticDisengagement
+  def config c_HillHoldAssist 0
+    basedon ref feature HillHoldAssist
   def config c_InterfaceFeatures 1
-  def config c_InterfaceFeatures_CANInterface 1
-  def config c_InterfaceFeatures_DriverInterface 1
-  def config c_InterfaceFeatures_DriverInterface_SwitchInterface 1
-  def config c_InterfaceFeatures_DriverInterface_StatusIndicators 1
+    basedon ref feature InterfaceFeatures
+  def config c_CANInterface 1
+    basedon ref feature CANInterface
+  def config c_DriverInterface 1
+    basedon ref feature DriverInterface
+  def config c_SwitchInterface 1
+    basedon ref feature SwitchInterface
+  def config c_StatusIndicators 1
+    basedon ref feature StatusIndicators
 
 // This file was auto-generated from EPB_FeatureModelVariants.vml
 // Configuration values: 1 = enabled, 0 = disabled
