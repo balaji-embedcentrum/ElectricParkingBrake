@@ -1,0 +1,235 @@
+use featureset ElectricParkingBrakeFeatures
+use functionset EPB_InputProcessingSubsystem_Functions
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef requirementset EPB_InputProcessingSubsystem_Requirements
+  name "EPB Input Processing Subsystem Requirements"
+  description "Comprehensive requirements for input signal processing, validation, and fault detection within the EPB Input Processing Subsystem"
+  owner "Input Processing Team"
+  status draft
+  safetylevel ASIL-D
+  tags "input-processing-requirements", "signal-validation", "fault-detection", "ASIL-D", "subsystem-requirements"
+
+  def requirement REQ_INPUT_001
+    name "Vehicle State Signal Processing"
+    description "The input processing subsystem SHALL process all vehicle state signals with validation, range checking, and plausibility analysis within 20ms of signal reception"
+    rationale "Real-time vehicle state processing ensures EPB decisions are based on current and validated vehicle conditions for safety-critical operations"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function VehicleStateValidator
+    
+    def requirement REQ_INPUT_001_1
+      name "Vehicle Speed Validation"
+      description "WHEN receiving vehicle speed signals THEN the system SHALL validate speed range (0-300 km/h), detect implausible changes (>50 km/h per 100ms), and flag out-of-range conditions within 10ms"
+      rationale "Speed validation prevents EPB engagement during vehicle motion and ensures safety interlock integrity"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function VehicleSpeedProcessor
+      
+    def requirement REQ_INPUT_001_2
+      name "Standstill Detection"
+      description "WHEN vehicle speed is below 3 km/h for minimum 500ms THEN the system SHALL confirm vehicle standstill state and enable EPB engagement functions"
+      rationale "Reliable standstill detection ensures EPB engagement only occurs when vehicle is safely stationary"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function VehicleSpeedProcessor
+
+  def requirement REQ_INPUT_002
+    name "Driver Command Processing"
+    description "The input processing subsystem SHALL process driver EPB commands with debouncing, pattern recognition, and command validation to ensure reliable command interpretation"
+    rationale "Robust driver command processing prevents spurious activations and ensures reliable response to driver intentions"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function DriverCommandProcessor
+    
+    def requirement REQ_INPUT_002_1
+      name "Switch Debouncing"
+      description "WHEN processing EPB switch inputs THEN the system SHALL apply debouncing with 50ms time constant and require stable signal for minimum 100ms before command recognition"
+      rationale "Switch debouncing eliminates mechanical contact bounce and electrical noise for reliable command detection"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function SignalDebouncer
+      
+    def requirement REQ_INPUT_002_2
+      name "Command Pattern Recognition"
+      description "WHEN detecting EPB switch patterns THEN the system SHALL recognize short press (100-500ms), long press (>2s), and multiple press patterns with appropriate command mapping"
+      rationale "Pattern recognition enables multiple EPB functions from single switch interface while preventing accidental activation"
+      status approved
+      reqtype functional
+      implements ref function DriverCommandProcessor
+
+  def requirement REQ_INPUT_003
+    name "Actuator Feedback Processing"
+    description "The input processing subsystem SHALL process actuator position and current feedback with sensor fusion, calibration, and fault detection for accurate control feedback"
+    rationale "Accurate actuator feedback processing is essential for closed-loop control and safety monitoring of EPB actuator performance"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function ActuatorFeedbackProcessor
+    
+    def requirement REQ_INPUT_003_1
+      name "Position Sensor Fusion"
+      description "WHEN processing dual position sensors THEN the system SHALL apply sensor fusion algorithm, detect sensor disagreement >5mm, and provide fused position estimate within 5ms"
+      rationale "Sensor fusion improves position accuracy and enables fault detection for safety-critical position feedback"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function InputDataFusion
+      
+    def requirement REQ_INPUT_003_2
+      name "Current Signal Filtering"
+      description "WHEN processing motor current signals THEN the system SHALL apply low-pass filtering (100Hz cutoff), remove DC offset, and provide filtered current within 2ms"
+      rationale "Current filtering removes electrical noise while preserving load information for diagnostics and control"
+      status approved
+      reqtype functional
+      implements ref function SignalFilter
+
+  def requirement REQ_INPUT_004
+    name "Signal Range Validation"
+    description "The input processing subsystem SHALL validate all analog input signals against predefined ranges and detect out-of-range conditions within 10ms"
+    rationale "Range validation prevents use of invalid sensor data and enables early fault detection for system protection"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function RangeValidator
+    
+    def requirement REQ_INPUT_004_1
+      name "Analog Signal Range Checking"
+      description "WHEN receiving analog signals THEN the system SHALL check against configured min/max limits, detect out-of-range conditions, and generate appropriate fault codes"
+      rationale "Range checking protects against sensor failures and provides diagnostic information for maintenance"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function RangeValidator
+
+  def requirement REQ_INPUT_005
+    name "Signal Plausibility Analysis"
+    description "The input processing subsystem SHALL perform cross-signal plausibility checks and consistency validation across multiple input sources"
+    rationale "Plausibility analysis detects inconsistent sensor data and improves overall system reliability through multi-source validation"
+    status approved
+    reqtype functional
+    safetylevel ASIL-D
+    implements ref function PlausibilityChecker
+    
+    def requirement REQ_INPUT_005_1
+      name "Cross-Signal Consistency"
+      description "WHEN analyzing multiple related signals THEN the system SHALL detect inconsistencies (e.g., speed vs transmission state), validate signal relationships, and flag implausible combinations"
+      rationale "Cross-signal validation improves fault detection capability and prevents decisions based on inconsistent data"
+      status approved
+      reqtype functional
+      safetylevel ASIL-D
+      implements ref function PlausibilityChecker
+
+  def requirement REQ_INPUT_006
+    name "CAN Message Processing"
+    description "The input processing subsystem SHALL process incoming CAN messages with protocol validation, timestamp checking, and message integrity verification"
+    rationale "Robust CAN message processing ensures reliable vehicle network communication and prevents corruption-induced faults"
+    status approved
+    reqtype interface
+    implements ref function CANMessageProcessor
+    
+    def requirement REQ_INPUT_006_1
+      name "Message Timestamp Validation"
+      description "WHEN receiving CAN messages THEN the system SHALL validate message timestamps, detect stale messages (>200ms age), and flag communication timeouts"
+      rationale "Timestamp validation ensures EPB decisions are based on current vehicle data and detects communication failures"
+      status approved
+      reqtype interface
+      implements ref function TimestampValidator
+      
+    def requirement REQ_INPUT_006_2
+      name "CAN Protocol Compliance"
+      description "WHEN processing CAN messages THEN the system SHALL verify message format, validate checksums, and ensure protocol compliance according to vehicle network specifications"
+      rationale "Protocol compliance ensures reliable communication and prevents message corruption from affecting EPB operation"
+      status approved
+      reqtype interface
+      implements ref function CANMessageProcessor
+
+  def requirement REQ_INPUT_007
+    name "Input Signal Calibration"
+    description "The input processing subsystem SHALL apply calibration parameters to raw sensor signals including offset correction and scaling factors"
+    rationale "Signal calibration compensates for sensor variations and manufacturing tolerances to ensure accurate measurements"
+    status approved
+    reqtype functional
+    implements ref function SignalCalibrator
+    
+    def requirement REQ_INPUT_007_1
+      name "Automatic Calibration Application"
+      description "WHEN processing raw sensor signals THEN the system SHALL automatically apply stored calibration parameters including offset, gain, and linearity corrections"
+      rationale "Automatic calibration ensures consistent sensor accuracy across different actuator units and environmental conditions"
+      status approved
+      reqtype functional
+      implements ref function SignalCalibrator
+
+  def requirement REQ_INPUT_008
+    name "Fault Detection and Isolation"
+    description "The input processing subsystem SHALL detect input signal faults including stuck-at conditions, signal loss, and sensor failures within 50ms"
+    rationale "Rapid fault detection enables appropriate system responses and prevents unsafe operations based on faulty input data"
+    status approved
+    reqtype safety
+    safetylevel ASIL-D
+    implements ref function FaultDetector
+    
+    def requirement REQ_INPUT_008_1
+      name "Stuck-At Fault Detection"
+      description "WHEN monitoring dynamic signals THEN the system SHALL detect stuck-at conditions (unchanged value >5 seconds for expected dynamic signals) and generate fault indication"
+      rationale "Stuck-at detection identifies sensor failures and prevents EPB operation based on static incorrect data"
+      status approved
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function FaultDetector
+      
+    def requirement REQ_INPUT_008_2
+      name "Signal Loss Detection"
+      description "WHEN expected signals are not received THEN the system SHALL detect signal loss conditions within 100ms and initiate appropriate safe responses"
+      rationale "Signal loss detection ensures EPB system responds safely to communication failures and sensor disconnections"
+      status approved
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function FaultDetector
+
+  def requirement REQ_INPUT_009
+    name "Diagnostic Support"
+    description "The input processing subsystem SHALL provide comprehensive diagnostic capabilities for service tools and system health monitoring"
+    rationale "Diagnostic support enables effective troubleshooting, predictive maintenance, and system health assessment for service operations"
+    status approved
+    reqtype functional
+    implements ref function DiagnosticProcessor
+    
+    def requirement REQ_INPUT_009_1
+      name "Signal Quality Metrics"
+      description "WHEN requested by diagnostic tools THEN the system SHALL provide signal quality metrics including noise levels, signal-to-noise ratio, and validity status for all processed signals"
+      rationale "Signal quality metrics enable assessment of sensor health and identification of degrading components"
+      status approved
+      reqtype functional
+      implements ref function DiagnosticProcessor
+
+  def requirement REQ_INPUT_010
+    name "Performance Requirements"
+    description "The input processing subsystem SHALL meet specified performance requirements for processing latency, accuracy, and resource utilization"
+    rationale "Performance requirements ensure input processing meets real-time constraints and accuracy specifications for safety-critical EPB operation"
+    status approved
+    reqtype non-functional
+    safetylevel ASIL-D
+    implements ref function InputDataFusion
+    
+    def requirement REQ_INPUT_010_1
+      name "Processing Latency"
+      description "WHEN processing input signals THEN the system SHALL complete signal conditioning and validation within maximum 20ms from signal reception to output availability"
+      rationale "Low processing latency ensures timely EPB responses and maintains real-time system performance requirements"
+      status approved
+      reqtype non-functional
+      safetylevel ASIL-D
+      implements ref function VehicleStateValidator
+      
+    def requirement REQ_INPUT_010_2
+      name "Signal Accuracy"
+      description "WHEN processing analog signals THEN the system SHALL maintain signal accuracy within ±1% of full scale after calibration and filtering"
+      rationale "High signal accuracy ensures precise EPB control and reliable force/position feedback for optimal system performance"
+      status approved
+      reqtype non-functional
+      implements ref function SignalCalibrator
