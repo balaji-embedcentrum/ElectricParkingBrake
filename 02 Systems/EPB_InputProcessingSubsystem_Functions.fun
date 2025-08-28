@@ -15,7 +15,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Vehicle State Processing Team"
     tags "validation", "vehicle-state", "signal-integrity", "range-checking", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_EnhancedFaultDetection
+    when ref config c_SafetyFeatures_FailureDiagnostics
     safetylevel ASIL-D
 
   def function VehicleSpeedProcessor
@@ -24,7 +24,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Speed Validation Team"
     tags "speed-processing", "range-validation", "noise-filtering", "standstill-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_DualChannelProcessing
+    when ref config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology
     safetylevel ASIL-D
 
   def function SlopeAngleProcessor
@@ -33,7 +33,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Slope Processing Team"
     tags "slope-processing", "signal-filtering", "calibration", "gradient-calculation", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_TemporalRedundancy
+    when ref config c_CoreEPBFeatures_BrakeHolding_SlopeCompensation
     safetylevel ASIL-D
 
   def function DriverCommandProcessor
@@ -42,7 +42,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Driver Command Processing Team"
     tags "command-processing", "debouncing", "pattern-recognition", "validation", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_SelfTestMechanisms
+    when ref config c_SafetyFeatures_FailureDiagnostics_ECUDiagnostics
     safetylevel ASIL-D
 
   def function ActuatorFeedbackProcessor
@@ -51,7 +51,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Actuator Feedback Processing Team"
     tags "feedback-processing", "sensor-fusion", "calibration", "fault-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_CrossChannelComparison
+    when ref config c_SafetyFeatures_FailureDiagnostics_ActuatorDiagnostics
     safetylevel ASIL-D
 
   def function IgnitionStateProcessor
@@ -60,7 +60,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Power State Processing Team"
     tags "ignition-processing", "debouncing", "power-state", "transition-detection", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_WatchdogMonitoring
+    when ref config c_CoreEPBFeatures_BrakeDisengagement_SafetyInterlocks
     safetylevel ASIL-D
 
   def function TransmissionStateProcessor
@@ -77,7 +77,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "CAN Processing Team"
     tags "CAN-processing", "protocol-validation", "timestamp-checking", "message-integrity", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_TimestampValidation
+    when ref config c_InterfaceFeatures_CANInterface
     safetylevel ASIL-D
 
   def function SignalDebouncer
@@ -102,7 +102,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Validation Team"
     tags "range-validation", "out-of-range-detection", "error-reporting", "signal-monitoring", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_SafeValueSubstitution
+    when ref config c_CoreEPBFeatures_BrakeHolding_HoldingForceMonitoring
     safetylevel ASIL-D
 
   def function PlausibilityChecker
@@ -111,7 +111,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Validation Team"
     tags "plausibility-checking", "consistency-validation", "cross-signal-analysis", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_ErrorContainment
+    when ref config c_SafetyFeatures_EmergencyOperation_FailSafeModes
     safetylevel ASIL-D
 
   def function SignalCalibrator
@@ -128,7 +128,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     owner "Fault Detection Team"
     tags "fault-detection", "stuck-at-detection", "signal-loss", "failure-analysis", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
-    when ref config c_ISO26262_FailSafeResponse
+    when ref config c_SafetyFeatures_EmergencyOperation_EmergencyEngagement
     safetylevel ASIL-D
 
   def function DiagnosticProcessor

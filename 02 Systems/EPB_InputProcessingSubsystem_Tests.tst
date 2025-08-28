@@ -20,7 +20,7 @@ hdef testset EPB_InputProcessingSubsystem_Tests
     safetylevel ASIL-D
     testresult notrun
     owner "Vehicle State Test Team"
-    when ref config c_ISO26262_EnhancedFaultDetection
+    when ref config c_SafetyFeatures_FailureDiagnostics
 
   def testcase TEST_INPUT_001_1_SPEED_VALIDATION
     name "Vehicle Speed Validation and Range Checking - ISO 26262 Enhanced"
@@ -34,7 +34,7 @@ hdef testset EPB_InputProcessingSubsystem_Tests
     safetylevel ASIL-D
     testresult notrun
     owner "Speed Validation Test Team"
-    when ref config c_ISO26262_DualChannelProcessing
+    when ref config c_CoreEPBFeatures_BrakeEngagement_PositionFeedback_SecondarySensorTechnology
 
   def testcase TEST_INPUT_002_DRIVER_COMMAND_PROCESSING
     name "Driver Command Processing and Pattern Recognition"
