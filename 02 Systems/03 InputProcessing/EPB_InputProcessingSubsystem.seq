@@ -1,0 +1,189 @@
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+use block EPB_InputProcessingSubsystem
+use block EPB_ControlLogicSubsystem
+use block EPB_ActuatorOutputSubsystem
+use block VehicleNetworkInterface
+use block ElectricParkingBrakeECU
+
+hdef sequenceset EPB_InputProcessingSubsystem_Sequences
+  name "EPB Input Processing Subsystem Sequence Diagrams"
+  description "Message flow sequences between blocks in the EPB system covering signal processing workflows, fault detection, and diagnostic interactions"
+  owner "Input Processing Systems Team"
+  tags "sequence-diagrams", "block-interactions", "message-flows", "ASIL-D"
+
+  // Sequence 1: Vehicle State Input Processing
+  def sequence VehicleStateProcessingFlow
+    name "Vehicle State Signal Processing Flow"
+    description "Message flow for processing vehicle state signals from external systems to control logic"
+    owner "Signal Processing Team"
+    tags "vehicle-state", "signal-processing", "validation"
+    from ref block VehicleNetworkInterface
+    to ref block EPB_InputProcessingSubsystem
+    flow ref message VehicleCANInput
+    when ref config c_FailureDiagnostics
+
+  def sequence ProcessedVehicleStateFlow
+    name "Processed Vehicle State Flow"
+    description "Message flow for validated vehicle state from input processing to control logic"
+    owner "Control Integration Team"
+    tags "processed-state", "control-input"
+    from ref block EPB_InputProcessingSubsystem
+    to ref block EPB_ControlLogicSubsystem
+    flow ref message ProcessedVehicleState
+    when ref config c_SecondarySensorTechnology
+
+  def sequence VehicleSpeedMonitoring
+    name "Vehicle Speed Monitoring Flow"
+    description "Signal flow for continuous vehicle speed monitoring for safety interlocks"
+    owner "Speed Monitoring Team"
+    tags "speed-monitoring", "safety-interlock"
+    from ref block EPB_InputProcessingSubsystem
+    to ref block EPB_ControlLogicSubsystem
+    flow ref signal ProcessedVehicleSpeed
+    when ref config c_FailSafeModes
+
+  // Sequence 2: Driver Command Processing
+  def sequence DriverCommandInputFlow
+    name "Driver Command Input Processing Flow"
+    description "Message flow for processing driver EPB commands from interface to input processing"
+    owner "Command Processing Team"
+    tags "driver-commands", "input-processing"
+    from ref block ElectricParkingBrakeECU
+    to ref block EPB_InputProcessingSubsystem
+    flow ref message DriverCommandInput
+    when ref config c_ECUDiagnostics
+
+  def sequence ProcessedDriverCommandFlow
+    name "Processed Driver Command Flow"
+    description "Message flow for validated driver commands from input processing to control logic"
+    owner "Command Validation Team"
+    tags "processed-commands", "control-input"
+    from ref block EPB_InputProcessingSubsystem
+    to ref block EPB_ControlLogicSubsystem
+    flow ref message ProcessedDriverCommand
+
+  def sequence EPBControlCommandFlow
+    name "EPB Control Command Flow"
+    description "Message flow for EPB control commands from control logic to actuator output"
+    owner "Control Command Team"
+    tags "control-commands", "actuator-control"
+    from ref block EPB_ControlLogicSubsystem
+    to ref block EPB_ActuatorOutputSubsystem
+    flow ref message EPBControlCommand
+    when ref config c_FailSafeModes
+
+  // Sequence 3: Actuator Feedback Processing
+  def sequence ActuatorFeedbackInputFlow
+    name "Actuator Feedback Input Processing Flow"
+    description "Message flow for processing actuator feedback from external systems"
+    owner "Actuator Processing Team"
+    tags "actuator-feedback", "sensor-fusion"
+    from ref block ElectricParkingBrakeECU
+    to ref block EPB_InputProcessingSubsystem
+    flow ref message ActuatorFeedback
+    when ref config c_ActuatorDiagnostics
+
+  def sequence ProcessedActuatorFeedbackFlow
+    name "Processed Actuator Feedback Flow"
+    description "Message flow for validated actuator feedback to control logic"
+    owner "Feedback Processing Team"
+    tags "processed-feedback", "control-input"
+    from ref block EPB_InputProcessingSubsystem
+    to ref block EPB_ControlLogicSubsystem
+    flow ref message ProcessedActuatorFeedback
+
+  def sequence ActuatorControlOutputFlow
+    name "Actuator Control Output Flow"
+    description "Message flow for actuator control commands to external actuators"
+    owner "Actuator Control Team"
+    tags "actuator-control", "motor-commands"
+    from ref block EPB_ActuatorOutputSubsystem
+    to ref block ElectricParkingBrakeECU
+    flow ref message ActuatorControlOutput
+    when ref config c_EmergencyEngagement
+
+  // Sequence 4: Safety and Diagnostic Flows
+  def sequence SafetyStatusFlow
+    name "Safety Status Monitoring Flow"
+    description "Message flow for safety status from control logic to actuator output"
+    owner "Safety Systems Team"
+    tags "safety-status", "fault-monitoring"
+    from ref block EPB_ControlLogicSubsystem
+    to ref block EPB_ActuatorOutputSubsystem
+    flow ref message SafetyStatus
+
+  def sequence DiagnosticDataFlow
+    name "Diagnostic Data Flow"
+    description "Message flow for diagnostic information from control logic to network interface"
+    owner "Diagnostic Team"
+    tags "diagnostics", "health-monitoring"
+    from ref block EPB_ControlLogicSubsystem
+    to ref block VehicleNetworkInterface
+    flow ref message DiagnosticOutput
+
+  def sequence ActuatorDiagnosticFlow
+    name "Actuator Diagnostic Flow"
+    description "Message flow for actuator-specific diagnostic information"
+    owner "Actuator Diagnostics Team"
+    tags "actuator-diagnostics", "fault-detection"
+    from ref block EPB_ActuatorOutputSubsystem
+    to ref block VehicleNetworkInterface
+    flow ref message ActuatorDiagnosticOutput
+
+  // Sequence 5: Critical Safety Signal Flows
+  def sequence SafetyInterlockFlow
+    name "Safety Interlock Flow"
+    description "Critical safety interlock signal flow for immediate protection"
+    owner "Safety Interlock Team"
+    tags "safety-interlock", "emergency-protection"
+    from ref block EPB_ControlLogicSubsystem
+    to ref block EPB_ActuatorOutputSubsystem
+    flow ref signal SafetyInterlock
+    when ref config c_EmergencyEngagement
+
+  def sequence ForceTargetFlow
+    name "Force Target Flow"
+    description "Force target signal flow for adaptive force control"
+    owner "Force Control Team"
+    tags "force-control", "adaptive-target"
+    from ref block EPB_ControlLogicSubsystem
+    to ref block EPB_ActuatorOutputSubsystem
+    flow ref signal ForceTarget
+
+  def sequence MotorPWMCommandFlow
+    name "Motor PWM Command Flow"
+    description "PWM command signal flow for precise motor control"
+    owner "Motor Control Team"
+    tags "pwm-control", "motor-drive"
+    from ref block EPB_ActuatorOutputSubsystem
+    to ref block ElectricParkingBrakeECU
+    flow ref signal MotorPWMCommand
+
+  // Sequence 6: Network Communication Flows
+  def sequence DiagnosticRequestFlow
+    name "Diagnostic Request Flow"
+    description "Diagnostic request signal flow from network to input processing"
+    owner "Network Interface Team"
+    tags "diagnostic-request", "service-tools"
+    from ref block VehicleNetworkInterface
+    to ref block EPB_InputProcessingSubsystem
+    flow ref signal DiagnosticRequest
+
+  def sequence NetworkFaultStatusFlow
+    name "Network Fault Status Flow"
+    description "Network fault status signal flow for communication monitoring"
+    owner "Network Monitoring Team"
+    tags "network-fault", "communication-health"
+    from ref block VehicleNetworkInterface
+    to ref block EPB_InputProcessingSubsystem
+    flow ref signal NetworkFaultStatus
+
+  def sequence CANBusActivityFlow
+    name "CAN Bus Activity Flow"
+    description "CAN bus activity monitoring signal flow"
+    owner "CAN Monitoring Team"
+    tags "can-activity", "bus-health"
+    from ref block VehicleNetworkInterface
+    to ref block EPB_InputProcessingSubsystem
+    flow ref signal CANBusActivity
+    when ref config c_CANInterface

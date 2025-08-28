@@ -740,63 +740,216 @@ hdef sequenceset AutonomousEmergencyBraking
 ## .ucd FILES (Use Case Diagram)
 # Rule: ONE hdef usecaseset, MULTIPLE def actor/usecase with associated/includes
 ucd_example: |
-use featureset AutonomousVehicleFeatures
+use functionset ChairSystemFunctions
 
-hdef usecaseset AutonomousVehicleUseCases
-  name "Autonomous Vehicle Use Case Diagram"
-  description "Complete use case model for autonomous vehicle system interactions with drivers and external systems"
+hdef usecase ChairSystemUseCases
+  name "Height Adjustable Chair Use Cases"
+  description "Use case model describing interactions between users and the height adjustable chair system covering all major functionalities from adjustment to maintenance with proper actor relationships"
   owner "Systems Engineering Team"
-  tags "use-cases", "autonomous-vehicle", "actor-interactions"
+  tags "use-cases", "chair-system", "user-interactions", "pneumatic-electric"
 
-  def actor Driver
-    name "Vehicle Driver"
-    description "Human driver who can take control and monitor autonomous system"
+  def actor ChairUser
+    name "Chair User"
+    description "Primary user of the chair who interacts with adjustment and comfort features for daily use"
+    owner "User Experience Team"
+    tags "primary-user", "chair-operation", "comfort-adjustment"
     actortype primary
-    
-  def actor TrafficManagementSystem
-    name "Traffic Management Center"
-    description "External traffic control and coordination system"
-    actortype secondary
-    
-  def actor EmergencyServices
-    name "Emergency Response Services"
-    description "Police, fire, and medical emergency services"
+
+  def actor MaintenanceTechnician
+    name "Maintenance Technician"
+    description "Technical specialist responsible for chair maintenance, diagnostics, and system resets"
+    owner "Maintenance Team"
+    tags "maintenance", "diagnostics", "system-reset", "technical-support"
+    actortype primary
+
+  def actor SafetyInspector
+    name "Safety Inspector"
+    description "Safety professional who validates chair safety systems and compliance"
+    owner "Safety Team"
+    tags "safety-validation", "compliance", "inspection", "quality-assurance"
+    actortype primary
+
+  def actor SystemAdministrator
+    name "System Administrator"
+    description "Administrator responsible for chair system configuration and management"
+    owner "Systems Administration Team"
+    tags "system-config", "administration", "management"
     actortype secondary
 
-  def usecase ActivateAutonomousMode
-    name "Activate Autonomous Driving Mode"
-    description "Driver initiates autonomous driving with system verification"
-    associated ref actor Driver
-    includes ref function SystemReadinessCheck
-    includes ref function EngageAutonomousControl
-    
-  def usecase MonitorSystemStatus
-    name "Monitor Autonomous System Status"
-    description "Continuous monitoring of autonomous system health and performance"
-    associated ref actor Driver
-    includes ref function DisplaySystemStatus
-    includes ref function AlertDriverOfIssues
-    
-  def usecase HandleTakeoverRequest
-    name "Handle Driver Takeover Request"
-    description "Process driver takeover and transition to manual control"
-    associated ref actor Driver
-    includes ref function DisengageAutonomousControl
-    includes ref function TransferVehicleControl
-    
-  def usecase CoordinateWithTraffic
-    name "Coordinate with Traffic Management"
-    description "Communicate with traffic systems for route optimization"
-    associated ref actor TrafficManagementSystem
-    includes ref function ReceiveTrafficUpdates
-    includes ref function TransmitVehicleStatus
-    
-  def usecase EmergencyResponseProtocol
-    name "Emergency Response Coordination"
-    description "Coordinate with emergency services during incidents"
-    associated ref actor EmergencyServices
-    includes ref function DetectEmergencyVehicles
-    includes ref function ProvideLaneForEmergency
+  def actor ChairControlSystem
+    name "Chair Control System"
+    description "Electronic control system that manages chair functions and safety monitoring"
+    owner "Control Systems Team"
+    tags "control-system", "automation", "safety-monitoring"
+    actortype secondary
+
+  def usecase UC_001
+    name "Initiate Chair System"
+    description "User initiates chair system operation and initialization"
+    from ref actor ChairUser
+    to ref function InitializeChairSystem
+    connection associated
+
+  def usecase UC_002
+    name "Execute Pneumatic Height Adjustment"
+    description "User performs height adjustment using pneumatic system"
+    from ref actor ChairUser
+    to ref function ExecutePneumaticHeightAdjustment
+    connection associated
+
+  def usecase UC_003
+    name "Monitor Pneumatic Pressure"
+    description "System monitors gas cylinder pressure during adjustment"
+    from ref function ExecutePneumaticHeightAdjustment
+    to ref function MonitorGasCylinderPressure
+    connection includes
+
+  def usecase UC_004
+    name "Process Pneumatic Control Input"
+    description "System processes user input for pneumatic control"
+    from ref function ExecutePneumaticHeightAdjustment
+    to ref function ProcessPneumaticControlInput
+    connection includes
+
+  def usecase UC_005
+    name "Execute Electric Height Adjustment"
+    description "User performs height adjustment using electric system"
+    from ref actor ChairUser
+    to ref function ExecuteElectricHeightAdjustment
+    connection associated
+
+  def usecase UC_006
+    name "Control Electric Motor Speed"
+    description "System controls motor speed during electric adjustment"
+    from ref function ExecuteElectricHeightAdjustment
+    to ref function ControlElectricMotorSpeed
+    connection includes
+
+  def usecase UC_007
+    name "Manage Memory Positions"
+    description "User manages saved position presets for electric system"
+    from ref actor ChairUser
+    to ref function ManageMemoryPositions
+    connection associated
+
+  def usecase UC_008
+    name "Adjust Lumbar Support"
+    description "User adjusts lumbar support for ergonomic comfort"
+    from ref actor ChairUser
+    to ref function AdjustLumbarSupport
+    connection associated
+
+  def usecase UC_009
+    name "Process Lumbar Input"
+    description "System processes lumbar adjustment input"
+    from ref function AdjustLumbarSupport
+    to ref function ProcessLumbarInput
+    connection includes
+
+  def usecase UC_010
+    name "Control Armrest Height"
+    description "User adjusts armrest height for optimal positioning"
+    from ref actor ChairUser
+    to ref function ControlArmrestHeight
+    connection associated
+
+  def usecase UC_011
+    name "Control Armrest Width"
+    description "User adjusts armrest width for comfort"
+    from ref actor ChairUser
+    to ref function ControlArmrestWidth
+    connection associated
+
+  def usecase UC_012
+    name "Manage Tilt Mechanism"
+    description "User controls seat tilt functionality"
+    from ref actor ChairUser
+    to ref function ManageTiltMechanism
+    connection associated
+
+  def usecase UC_013
+    name "Adjust Tilt Tension"
+    description "User adjusts tilt tension for preferred resistance"
+    from ref function ManageTiltMechanism
+    to ref function AdjustTiltTension
+    connection includes
+
+  def usecase UC_014
+    name "Engage Tilt Lock"
+    description "User locks tilt position at desired angle"
+    from ref function ManageTiltMechanism
+    to ref function EngageTiltLock
+    connection includes
+
+  def usecase UC_015
+    name "Monitor Stability System"
+    description "System continuously monitors chair stability"
+    from ref function MonitorStabilitySystem
+    to ref actor ChairControlSystem
+    connection associated
+
+  def usecase UC_016
+    name "Detect Pressure Faults"
+    description "System detects pneumatic pressure anomalies"
+    from ref function DetectPressureFaults
+    to ref actor ChairControlSystem
+    connection associated
+
+  def usecase UC_017
+    name "Perform Safety Diagnostics"
+    description "Technician executes comprehensive safety system diagnostics"
+    from ref actor MaintenanceTechnician
+    to ref function PerformSafetyDiagnostics
+    connection associated
+
+  def usecase UC_018
+    name "Execute Factory Reset"
+    description "Technician resets chair to factory default settings"
+    from ref actor MaintenanceTechnician
+    to ref function ExecuteFactoryReset
+    connection associated
+
+  def usecase UC_019
+    name "Manage Maintenance Schedule"
+    description "Technician manages preventive maintenance scheduling"
+    from ref actor MaintenanceTechnician
+    to ref function ManageMaintenanceSchedule
+    connection associated
+
+  def usecase UC_020
+    name "Select Material Options"
+    description "User or administrator configures material preferences"
+    from ref function SelectMaterialOptions
+    to ref actor SystemAdministrator
+    connection associated
+
+  def usecase UC_021
+    name "Customize Color Scheme"
+    description "User personalizes chair color and aesthetic options"
+    from ref actor ChairUser
+    to ref function CustomizeColorScheme
+    connection associated
+
+  def usecase UC_022
+    name "Validate Safety Systems"
+    description "Safety inspector validates chair safety compliance"
+    from ref actor SafetyInspector
+    to ref function PerformSafetyDiagnostics
+    connection associated
+
+  def usecase UC_023
+    name "Monitor Weight Capacity"
+    description "System monitors user weight within safe operating limits"
+    from ref function MonitorWeightCapacity
+    to ref actor ChairControlSystem
+    connection associated
+
+  def usecase UC_024
+    name "Synchronize System Components"
+    description "System coordinates all chair subsystems"
+    from ref function SynchronizeSystemComponents
+    to ref actor ChairControlSystem
+    connection associated
 
 ## .flr FILES (Failure Analysis for FMEA)
 # Rule: ONE hdef failureset, MULTIPLE def failuremode/cause/effect

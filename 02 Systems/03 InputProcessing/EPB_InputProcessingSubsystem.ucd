@@ -1,0 +1,122 @@
+use functionset EPB_InputProcessingSubsystem_Functions
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef usecase EPB_InputProcessingSubsystem_UseCases
+  name "EPB Input Processing Subsystem Use Cases"
+  description "Key use cases for EPB Input Processing Subsystem covering critical signal processing, validation, and fault detection functions"
+  owner "Input Processing Systems Team"
+  tags "use-cases", "input-processing", "signal-validation", "fault-detection", "ASIL-D"
+
+  def actor Driver
+    name "Vehicle Driver"
+    description "Primary vehicle operator who interacts with EPB system"
+    owner "User Experience Team"
+    tags "primary-user", "driver-interaction", "epb-commands"
+    actortype primary
+
+  def actor ServiceTechnician
+    name "Service Technician"
+    description "Automotive service professional for EPB diagnostics and maintenance"
+    owner "Service Team"
+    tags "service", "diagnostics", "maintenance"
+    actortype primary
+
+  def actor VehicleNetworkSystem
+    name "Vehicle Network System"
+    description "Vehicle CAN bus providing input signals to EPB"
+    owner "Network Integration Team"
+    tags "can-bus", "vehicle-network", "signal-provider"
+    actortype secondary
+
+  def actor ControlLogicSubsystem
+    name "Control Logic Subsystem"
+    description "EPB control logic receiving processed signals"
+    owner "Control Systems Team"
+    tags "control-logic", "decision-making"
+    actortype secondary
+
+  def actor DiagnosticSystem
+    name "Diagnostic System"
+    description "Vehicle diagnostic system for health monitoring"
+    owner "Diagnostic Team"
+    tags "diagnostics", "health-monitoring"
+    actortype secondary
+
+  // Top 10 Most Important Use Cases
+  def usecase UC_001
+    name "Process Vehicle State Signals"
+    description "Validate incoming vehicle state signals including speed, ignition, transmission state"
+    from ref function VehicleStateValidator
+    to ref actor ControlLogicSubsystem
+    connection associated
+    when ref config c_FailureDiagnostics
+
+  def usecase UC_002
+    name "Process Driver EPB Commands"
+    description "Process EPB switch commands with debouncing and validation"
+    from ref actor Driver
+    to ref function DriverCommandProcessor
+    connection associated
+    when ref config c_ECUDiagnostics
+
+  def usecase UC_003
+    name "Process Actuator Feedback"
+    description "Process actuator position and current feedback with sensor fusion"
+    from ref function ActuatorFeedbackProcessor
+    to ref actor ControlLogicSubsystem
+    connection associated
+    when ref config c_ActuatorDiagnostics
+
+  def usecase UC_004
+    name "Validate Vehicle Speed"
+    description "Process vehicle speed signals with dual-channel monitoring"
+    from ref function VehicleStateValidator
+    to ref function VehicleSpeedProcessor
+    connection includes
+    when ref config c_SecondarySensorTechnology
+
+  def usecase UC_005
+    name "Process CAN Messages"
+    description "Validate CAN message protocol compliance and integrity"
+    from ref function CANMessageProcessor
+    to ref actor ControlLogicSubsystem
+    connection associated
+    when ref config c_CANInterface
+
+  def usecase UC_006
+    name "Detect Input Signal Faults"
+    description "Monitor signals and detect faults including stuck-at conditions"
+    from ref function FaultDetector
+    to ref actor DiagnosticSystem
+    connection associated
+    when ref config c_EmergencyEngagement
+
+  def usecase UC_007
+    name "Validate Signal Ranges"
+    description "Validate analog signals against predefined ranges"
+    from ref function RangeValidator
+    to ref actor ControlLogicSubsystem
+    connection associated
+    when ref config c_HoldingForceMonitoring
+
+  def usecase UC_008
+    name "Check Signal Plausibility"
+    description "Perform cross-signal plausibility checks"
+    from ref function PlausibilityChecker
+    to ref actor ControlLogicSubsystem
+    connection associated
+    when ref config c_FailSafeModes
+
+  def usecase UC_009
+    name "Process Diagnostic Requests"
+    description "Process diagnostic requests and generate responses"
+    from ref actor ServiceTechnician
+    to ref function DiagnosticProcessor
+    connection associated
+
+  def usecase UC_010
+    name "Monitor Disabled Features"
+    description "Monitor disabled features for configuration integrity"
+    from ref function DisabledFeatureMonitor
+    to ref actor DiagnosticSystem
+    connection associated
