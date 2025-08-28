@@ -1,4 +1,5 @@
 use variantset ElectricParkingBrakeFeaturesVariants_BMW
+use featureset ElectricParkingBrakeFeatures
 
 hdef configset ElectricParkingBrakeFeaturesVariants_BMWConfig
   name "ElectricParkingBrakeFeaturesVariants_BMW Configuration Set"

@@ -11,7 +11,7 @@ hdef sprint EPB_Sprint01_ProductLevel
     name "EPB Product Line Foundation"
     description "Establish Electric Parking Brake product line definition with compliance scope and market requirements"
     assignedto ref agent SystemsEngineer
-    issuestatus done
+    issuestatus inprogress
     priority critical
     points "13"
 

@@ -1,0 +1,408 @@
+use agentset ElectricParkingBrakeAgents
+
+hdef sprint EPB_Sprint02_Requirements_TestCases
+  name "EPB Sprint 02 - Requirements and Test Cases"
+  description "Develop, review, and approve comprehensive product-level requirements and test cases for Electric Parking Brake system with ISO 26262 ASIL-D compliance"
+  owner "Project Manager"
+  startdate "2025-08-24"
+  enddate "2025-10-05"
+
+  def epic RequirementsEngineering
+    name "EPB Requirements Engineering"
+    description "Create comprehensive product-level requirements covering functional, safety, performance, interface, and environmental aspects"
+    assignedto ref agent SystemsEngineer
+    issuestatus open
+    priority critical
+    points "55"
+
+    def story FunctionalRequirements
+      name "EPB Functional Requirements"
+      description "Develop comprehensive functional requirements for EPB system covering engagement, release, force control, and user interface functions"
+      assignedto ref agent SystemsEngineer
+      issuestatus open
+      priority critical
+      
+      def task CreateFunctionalRequirements
+        name "Create Product-Level Functional Requirements"
+        description "Develop comprehensive functional requirements for EPB system covering all operational scenarios and user interactions"
+        assignedto ref agent SystemsEngineer
+        issuestatus done
+        priority critical
+        points "8"
+        outputfile "EPB_FunctionalRequirements.req"
+        
+      def task ReviewFunctionalRequirements
+        name "Review Functional Requirements"
+        description "Technical review of functional requirements for completeness, consistency, testability, and traceability"
+        assignedto ref agent FunctionalSafetyEngineer
+        issuestatus done
+        priority high
+        points "3"
+        
+      def task ApproveFunctionalRequirements
+        name "Approve Functional Requirements"
+        description "Final approval of functional requirements baseline"
+        assignedto ref agent SafetyManager
+        issuestatus done
+        priority high
+        points "2"
+
+    def story SafetyRequirements
+      name "EPB Safety Requirements"
+      description "Develop ASIL-D safety requirements including hazard analysis, safety goals, and functional safety requirements"
+      assignedto ref agent FunctionalSafetyEngineer
+      issuestatus open
+      priority critical
+      
+      def task CreateSafetyRequirements
+        name "Create Product-Level Safety Requirements"
+        description "Develop ASIL-D safety requirements including hazard analysis, safety goals, and functional safety requirements per ISO 26262"
+        assignedto ref agent FunctionalSafetyEngineer
+        issuestatus open
+        priority critical
+        points "8"
+        outputfile "EPB_SafetyRequirements.req"
+        
+      def task ReviewSafetyRequirements
+        name "Review Safety Requirements"
+        description "ISO 26262 compliant review of safety requirements including ASIL decomposition and safety goal verification"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority critical
+        points "3"
+        
+      def task ApproveSafetyRequirements
+        name "Approve Safety Requirements"
+        description "Final approval of safety requirements baseline"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority critical
+        points "2"
+
+    def story PerformanceRequirements
+      name "EPB Performance Requirements"
+      description "Develop performance requirements for engagement time, force accuracy, power consumption, and response times"
+      assignedto ref agent SystemsEngineer
+      issuestatus open
+      priority high
+      
+      def task CreatePerformanceRequirements
+        name "Create Product-Level Performance Requirements"
+        description "Develop performance requirements for timing, accuracy, efficiency, and load specifications"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority high
+        points "5"
+        outputfile "EPB_PerformanceRequirements.req"
+        
+      def task ReviewPerformanceRequirements
+        name "Review Performance Requirements"
+        description "Review performance requirements for achievability, measurement methods, and acceptance criteria"
+        assignedto ref agent VerificationEngineer
+        issuestatus open
+        priority high
+        points "2"
+        
+      def task ApprovePerformanceRequirements
+        name "Approve Performance Requirements"
+        description "Final approval of performance requirements baseline"
+        assignedto ref agent ProjectManager
+        issuestatus open
+        priority high
+        points "2"
+
+    def story InterfaceRequirements
+      name "EPB Interface Requirements"
+      description "Develop interface requirements for vehicle integration, CAN communication, and external system interactions"
+      assignedto ref agent SystemIntegrator
+      issuestatus open
+      priority high
+      
+      def task CreateInterfaceRequirements
+        name "Create Product-Level Interface Requirements"
+        description "Develop interface requirements for vehicle integration, CAN communication protocols, and external system interactions"
+        assignedto ref agent SystemIntegrator
+        issuestatus open
+        priority high
+        points "5"
+        outputfile "EPB_InterfaceRequirements.req"
+        
+      def task ReviewInterfaceRequirements
+        name "Review Interface Requirements"
+        description "Review interface requirements for compatibility, protocol compliance, and integration feasibility"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority high
+        points "2"
+        
+      def task ApproveInterfaceRequirements
+        name "Approve Interface Requirements"
+        description "Final approval of interface requirements baseline"
+        assignedto ref agent ProjectManager
+        issuestatus open
+        priority high
+        points "2"
+
+    def story EnvironmentalRequirements
+      name "EPB Environmental Requirements"
+      description "Develop environmental requirements for temperature, humidity, vibration, EMC, and automotive environmental conditions"
+      assignedto ref agent ReliabilityEngineer
+      issuestatus open
+      priority medium
+      
+      def task CreateEnvironmentalRequirements
+        name "Create Product-Level Environmental Requirements"
+        description "Develop environmental requirements for automotive operating conditions, EMC compliance, and reliability specifications"
+        assignedto ref agent ReliabilityEngineer
+        issuestatus open
+        priority medium
+        points "5"
+        outputfile "EPB_EnvironmentalRequirements.req"
+        
+      def task ReviewEnvironmentalRequirements
+        name "Review Environmental Requirements"
+        description "Review environmental requirements for automotive compliance and test specification adequacy"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority medium
+        points "2"
+        
+      def task ApproveEnvironmentalRequirements
+        name "Approve Environmental Requirements"
+        description "Final approval of environmental requirements baseline"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority medium
+        points "2"
+
+    def story RequirementsBaseline
+      name "EPB Requirements Baseline"
+      description "Establish approved requirements baseline including all functional, safety, performance, interface, and environmental requirements"
+      assignedto ref agent SystemsEngineer
+      issuestatus open
+      priority critical
+      
+      def task ConsolidateRequirements
+        name "Consolidate Requirements Baseline"
+        description "Consolidate all approved requirements into unified baseline with traceability matrix"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority critical
+        points "3"
+        outputfile "EPB_RequirementsBaseline.req"
+        
+      def task ReviewRequirementsBaseline
+        name "Review Requirements Baseline"
+        description "Final review of consolidated requirements baseline for completeness and consistency"
+        assignedto ref agent ProjectManager
+        issuestatus open
+        priority critical
+        points "2"
+        
+      def task ApproveRequirementsBaseline
+        name "Approve Requirements Baseline"
+        description "Final approval of complete requirements baseline for design and test development"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority critical
+        points "2"
+
+  def epic TestCasesEngineering
+    name "EPB Test Cases Engineering"
+    description "Create comprehensive test cases covering functional verification, safety validation, performance testing, and interface testing"
+    assignedto ref agent VerificationEngineer
+    issuestatus open
+    priority critical
+    points "50"
+
+    def story FunctionalTestCases
+      name "EPB Functional Test Cases"
+      description "Develop comprehensive functional test cases covering all EPB functions including normal operation, edge cases, and error conditions"
+      assignedto ref agent VerificationEngineer
+      issuestatus open
+      priority critical
+      
+      def task CreateFunctionalTestCases
+        name "Create Functional Test Cases"
+        description "Develop comprehensive functional test cases covering normal operation, edge cases, and error conditions"
+        assignedto ref agent VerificationEngineer
+        issuestatus open
+        priority critical
+        points "8"
+        outputfile "EPB_FunctionalTestCases.tst"
+        
+      def task ReviewFunctionalTestCases
+        name "Review Functional Test Cases"
+        description "Review functional test cases for requirements coverage, test adequacy, and execution feasibility"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority high
+        points "3"
+        
+      def task ApproveFunctionalTestCases
+        name "Approve Functional Test Cases"
+        description "Final approval of functional test cases baseline"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority high
+        points "2"
+
+    def story SafetyTestCases
+      name "EPB Safety Test Cases"
+      description "Develop ASIL-D compliant safety test cases including fault injection, failure mode testing, and safety mechanism validation"
+      assignedto ref agent FunctionalSafetyEngineer
+      issuestatus open
+      priority critical
+      
+      def task CreateSafetyTestCases
+        name "Create Safety Test Cases"
+        description "Develop ASIL-D compliant safety test cases including fault injection, failure mode testing, and safety mechanism validation"
+        assignedto ref agent FunctionalSafetyEngineer
+        issuestatus open
+        priority critical
+        points "8"
+        outputfile "EPB_SafetyTestCases.tst"
+        
+      def task ReviewSafetyTestCases
+        name "Review Safety Test Cases"
+        description "Review safety test cases for ISO 26262 compliance, fault coverage, and safety validation adequacy"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority critical
+        points "3"
+        
+      def task ApproveSafetyTestCases
+        name "Approve Safety Test Cases"
+        description "Final approval of safety test cases baseline"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority critical
+        points "2"
+
+    def story PerformanceTestCases
+      name "EPB Performance Test Cases"
+      description "Develop performance test cases for timing, accuracy, efficiency, and load testing scenarios"
+      assignedto ref agent VerificationEngineer
+      issuestatus open
+      priority high
+      
+      def task CreatePerformanceTestCases
+        name "Create Performance Test Cases"
+        description "Develop performance test cases for timing, accuracy, efficiency, and load testing scenarios"
+        assignedto ref agent VerificationEngineer
+        issuestatus open
+        priority high
+        points "5"
+        outputfile "EPB_PerformanceTestCases.tst"
+        
+      def task ReviewPerformanceTestCases
+        name "Review Performance Test Cases"
+        description "Review performance test cases for measurement accuracy, test conditions, and acceptance criteria"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority high
+        points "2"
+        
+      def task ApprovePerformanceTestCases
+        name "Approve Performance Test Cases"
+        description "Final approval of performance test cases baseline"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority high
+        points "2"
+
+    def story InterfaceTestCases
+      name "EPB Interface Test Cases"
+      description "Develop interface test cases for CAN communication, vehicle integration, and external system interaction testing"
+      assignedto ref agent SystemIntegrator
+      issuestatus open
+      priority high
+      
+      def task CreateInterfaceTestCases
+        name "Create Interface Test Cases"
+        description "Develop interface test cases for CAN communication, vehicle integration, and external system interaction testing"
+        assignedto ref agent SystemIntegrator
+        issuestatus open
+        priority high
+        points "5"
+        outputfile "EPB_InterfaceTestCases.tst"
+        
+      def task ReviewInterfaceTestCases
+        name "Review Interface Test Cases"
+        description "Review interface test cases for protocol compliance, integration scenarios, and communication validation"
+        assignedto ref agent SystemsEngineer
+        issuestatus open
+        priority high
+        points "2"
+        
+      def task ApproveInterfaceTestCases
+        name "Approve Interface Test Cases"
+        description "Final approval of interface test cases baseline"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority high
+        points "2"
+
+    def story EnvironmentalTestCases
+      name "EPB Environmental Test Cases"
+      description "Develop environmental test cases for temperature, vibration, EMC, and automotive environmental condition testing"
+      assignedto ref agent ValidationEngineer
+      issuestatus open
+      priority medium
+      
+      def task CreateEnvironmentalTestCases
+        name "Create Environmental Test Cases"
+        description "Develop environmental test cases for temperature, vibration, EMC, and automotive environmental condition testing"
+        assignedto ref agent ValidationEngineer
+        issuestatus open
+        priority medium
+        points "5"
+        outputfile "EPB_EnvironmentalTestCases.tst"
+        
+      def task ReviewEnvironmentalTestCases
+        name "Review Environmental Test Cases"
+        description "Review environmental test cases for automotive standard compliance and test procedure adequacy"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority medium
+        points "2"
+        
+      def task ApproveEnvironmentalTestCases
+        name "Approve Environmental Test Cases"
+        description "Final approval of environmental test cases baseline"
+        assignedto ref agent QualityManager
+        issuestatus open
+        priority medium
+        points "2"
+
+    def story TestCasesBaseline
+      name "EPB Test Cases Baseline"
+      description "Establish approved test cases baseline including all functional, safety, performance, interface, and environmental test cases"
+      assignedto ref agent QualityManager
+      issuestatus open
+      priority critical
+      
+      def task ConsolidateTestCases
+        name "Consolidate Test Cases Baseline"
+        description "Consolidate all approved test cases into unified baseline with requirements traceability"
+        assignedto ref agent VerificationEngineer
+        issuestatus open
+        priority critical
+        points "3"
+        outputfile "EPB_TestCasesBaseline.tst"
+        
+      def task ReviewTestCasesBaseline
+        name "Review Test Cases Baseline"
+        description "Final review of consolidated test cases baseline for completeness and requirements coverage"
+        assignedto ref agent SafetyManager
+        issuestatus open
+        priority critical
+        points "2"
+        
+      def task ApproveTestCasesBaseline
+        name "Approve Test Cases Baseline"
+        description "Final approval of complete test cases baseline for verification and validation activities"
+        assignedto ref agent ProjectManager
+        issuestatus open
+        priority critical
+        points "2"

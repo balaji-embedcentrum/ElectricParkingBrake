@@ -34,6 +34,9 @@ hdef block ElectricParkingBrakeECU
   needs ref signal ActuatorCurrentOutput
   needs ref signal EPBSwitchPosition
   needs ref signal DiagnosticRequest
+  exposesout ref signal MotorPWMCommand, ForceTarget
+  exposesout ref message DiagnosticOutput
+
   
   // NOTE: This block depends on interfaces from external system blocks:
   // - VehicleSystemsInterface: VehicleStateOutput, ActuatorFeedbackOutput, VehicleSpeedOutput, SlopeAngleOutput, IgnitionStateOutput, TransmissionStateOutput, ActuatorPositionOutput, ActuatorCurrentOutput
