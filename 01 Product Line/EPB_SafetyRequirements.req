@@ -1,0 +1,248 @@
+use featureset ElectricParkingBrakeFeatures
+use functionset ElectricParkingBrakeFunctions
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef requirementset EPB_SafetyRequirements
+  name "EPB Product-Level Safety Requirements"
+  description "ASIL-D safety requirements for Electric Parking Brake system per ISO 26262 including hazard analysis, safety goals, and functional safety requirements"
+  owner "Functional Safety Engineering Team"
+  status draft
+  safetylevel ASIL-D
+  tags "safety-requirements", "product-level", "EPB", "ASIL-D", "ISO-26262", "hazard-analysis"
+
+  def requirement REQ_SAF_001
+    name "EPB Unintended Activation Prevention"
+    description "The EPB system SHALL NOT activate unintentionally during vehicle operation at speeds above 7 km/h with probability < 1E-8 per hour (H001 - Unintended EPB Activation During Driving, SG001 - Prevent unintended EPB activation during vehicle operation)"
+    rationale "Unintended brake activation during driving could cause loss of vehicle control, rear-end collisions, or vehicle instability leading to severe injury or fatality (S3)"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    implements ref function EPB_RequestProcessor
+    
+    def requirement REQ_SAF_001_1
+      name "EPB Velocity Interlocking"
+      description "The EPB system SHALL implement diverse velocity monitoring using independent CAN signals and internal plausibility checks to prevent activation above 7 km/h threshold"
+      rationale "Diverse velocity monitoring provides redundant protection against single point failures in vehicle speed detection"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_VelocityMonitor
+      
+    def requirement REQ_SAF_001_2
+      name "EPB Command Validation"
+      description "The EPB system SHALL validate engagement commands through independent dual-channel processing with comparison and voting logic"
+      rationale "Dual-channel validation prevents spurious command execution due to hardware failures or electromagnetic interference"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_CommandValidator
+
+  def requirement REQ_SAF_002
+    name "EPB Insufficient Brake Force Prevention"
+    description "The EPB system SHALL provide adequate holding force to prevent vehicle rollaway on 20% gradient with probability of insufficient force < 1E-8 per hour"
+    rationale "Insufficient brake force leading to vehicle rollaway could result in property damage, injury, or fatality especially on gradients (S3)"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    hazardid "H002 - Insufficient EPB Holding Force"
+    safetygoal "SG002 - Ensure adequate EPB holding force under all conditions"
+    failurerate "< 1E-8 per hour"
+    implements ref function EPB_ForceController
+    
+    def requirement REQ_SAF_002_1
+      name "EPB Force Monitoring"
+      description "The EPB system SHALL continuously monitor actuator force through diverse measurement methods and detect force degradation within 500ms"
+      rationale "Continuous force monitoring enables early detection of mechanical wear, cable stretch, or actuator degradation"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_ForceMonitor
+      
+    def requirement REQ_SAF_002_2
+      name "EPB Force Compensation"
+      description "The EPB system SHALL automatically compensate for force loss by re-applying additional motor torque up to maximum design limits"
+      rationale "Automatic force compensation maintains holding capability despite normal wear and environmental effects"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_ForceController
+
+  def requirement REQ_SAF_003
+    name "EPB Unavailable When Required Prevention"
+    description "The EPB system SHALL maintain availability for engagement when required with unavailability probability < 1E-7 per hour"
+    rationale "EPB unavailability when parking could result in vehicle rollaway if driver relies on EPB for parking security (S2)"
+    status draft
+    reqtype safety
+    safetylevel ASIL-C
+    hazardid "H003 - EPB Unavailable When Required"
+    safetygoal "SG003 - Ensure EPB availability for engagement when required"
+    failurerate "< 1E-7 per hour"
+    implements ref function EPB_AvailabilityMonitor
+    
+    def requirement REQ_SAF_003_1
+      name "EPB Fault Detection and Isolation"
+      description "The EPB system SHALL implement comprehensive fault detection covering electrical, mechanical, and communication failures with detection time < 200ms"
+      rationale "Rapid fault detection enables graceful degradation and driver notification before complete system failure"
+      status draft
+      reqtype safety
+      safetylevel ASIL-C
+      implements ref function EPB_DiagnosticMonitor
+      
+    def requirement REQ_SAF_003_2
+      name "EPB Degraded Mode Operation"
+      description "The EPB system SHALL provide degraded mode operation with manual override capability when non-safety-critical functions fail"
+      rationale "Degraded mode maintains basic safety functions even when comfort or convenience features are compromised"
+      status draft
+      reqtype safety
+      safetylevel ASIL-C
+      implements ref function EPB_FaultManager
+
+  def requirement REQ_SAF_004
+    name "EPB False Release Prevention"
+    description "The EPB system SHALL NOT release unintentionally when engaged with false release probability < 1E-8 per hour"
+    rationale "False release of engaged EPB could cause immediate vehicle rollaway leading to injury or fatality (S3)"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    hazardid "H004 - False EPB Release"
+    safetygoal "SG004 - Prevent false EPB release when engaged"
+    failurerate "< 1E-8 per hour"
+    implements ref function EPB_ReleaseValidator
+    
+    def requirement REQ_SAF_004_1
+      name "EPB Release Command Authentication"
+      description "The EPB system SHALL authenticate release commands through cryptographic validation and sequence verification"
+      rationale "Command authentication prevents spurious release due to communication errors or malicious interference"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_SecurityManager
+      
+    def requirement REQ_SAF_004_2
+      name "EPB Release Conditions Verification"
+      description "The EPB system SHALL verify all release preconditions including driver presence, gear position, and brake pedal status before allowing release"
+      rationale "Precondition verification ensures release only occurs when driver intends and is prepared to control vehicle"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_ReleaseValidator
+
+  def requirement REQ_SAF_005
+    name "EPB Emergency Release Capability"
+    description "The EPB system SHALL provide emergency release capability independent of primary control systems with manual override accessible to driver"
+    rationale "Emergency release ensures vehicle can be moved in case of system failure, emergency situations, or service requirements"
+    status draft
+    reqtype safety
+    safetylevel ASIL-B
+    hazardid "H005 - EPB Cannot Be Released in Emergency"
+    safetygoal "SG005 - Provide emergency EPB release capability"
+    failurerate "< 1E-6 per hour"
+    implements ref function EPB_EmergencyRelease
+    
+    def requirement REQ_SAF_005_1
+      name "EPB Manual Override Mechanism"
+      description "The EPB system SHALL include mechanical manual override accessible to driver that directly releases brake without electrical power"
+      rationale "Mechanical override provides last resort release capability independent of electrical system failures"
+      status draft
+      reqtype safety
+      safetylevel ASIL-B
+      implements ref function EPB_ManualOverride
+      
+    def requirement REQ_SAF_005_2
+      name "EPB Emergency Release Controls"
+      description "The EPB system SHALL provide alternative electrical release controls accessible during emergency situations with clear labeling and instructions"
+      rationale "Alternative controls enable release when primary interface is inaccessible or non-functional"
+      status draft
+      reqtype safety
+      safetylevel ASIL-B
+      implements ref function EPB_EmergencyControls
+
+  def requirement REQ_SAF_006
+    name "EPB Diagnostic Coverage Requirements"
+    description "The EPB system SHALL achieve minimum 99% diagnostic coverage for ASIL-D functions and 95% coverage for ASIL-C functions per ISO 26262-5"
+    rationale "High diagnostic coverage enables detection of latent failures before they compromise safety functions"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    hazardid "Multiple - Latent Fault Accumulation"
+    safetygoal "SG006 - Maintain diagnostic coverage for safety functions"
+    coverage "99% ASIL-D, 95% ASIL-C"
+    implements ref function EPB_DiagnosticMonitor
+    
+    def requirement REQ_SAF_006_1
+      name "EPB Self-Test Execution"
+      description "The EPB system SHALL execute comprehensive self-tests at startup and periodic runtime tests covering all safety-critical components"
+      rationale "Regular self-testing detects dormant failures and component degradation before they affect safety performance"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_SelfTest
+      
+    def requirement REQ_SAF_006_2
+      name "EPB Fault Reaction Strategy"
+      description "The EPB system SHALL implement graded fault reactions including warning, degradation, and safe state transitions based on fault criticality"
+      rationale "Graded reactions maintain maximum available functionality while ensuring safety is never compromised"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_FaultReaction
+
+  def requirement REQ_SAF_007
+    name "EPB Communication Safety Requirements"
+    description "The EPB system SHALL implement safety communication protocols with error detection, timeout monitoring, and message authentication for all safety-critical data"
+    rationale "Safe communication prevents corruption of safety-critical information that could lead to incorrect system behavior"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    hazardid "H006 - Communication Failure/Corruption"
+    safetygoal "SG007 - Ensure integrity of safety-critical communication"
+    failurerate "< 1E-9 per message"
+    implements ref function EPB_SafeCommunication
+    
+    def requirement REQ_SAF_007_1
+      name "EPB Message Authentication"
+      description "The EPB system SHALL authenticate all safety-critical CAN messages using cryptographic checksums with key management"
+      rationale "Message authentication prevents injection of false commands or status information"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_MessageAuth
+      
+    def requirement REQ_SAF_007_2
+      name "EPB Communication Timeout Monitoring"
+      description "The EPB system SHALL monitor communication timeouts for all safety-critical messages and transition to safe state when timeouts exceed design limits"
+      rationale "Timeout monitoring detects communication failures and prevents operating with stale or missing safety data"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_ComTimeout
+
+  def requirement REQ_SAF_008
+    name "EPB Freedom from Interference"
+    description "The EPB system SHALL demonstrate freedom from interference between ASIL-D and lower ASIL elements through partitioning, monitoring, or protection mechanisms"
+    rationale "Interference from lower criticality elements could compromise safety functions violating ISO 26262 freedom from interference requirements"
+    status draft
+    reqtype safety
+    safetylevel ASIL-D
+    hazardid "H007 - Interference Between Safety Elements"
+    safetygoal "SG008 - Ensure freedom from interference for safety functions"
+    coverage "100% interference scenarios"
+    implements ref function EPB_SafetyPartition
+    
+    def requirement REQ_SAF_008_1
+      name "EPB Memory Protection"
+      description "The EPB system SHALL implement memory protection mechanisms preventing corruption of safety-critical data and code by non-safety elements"
+      rationale "Memory protection ensures safety functions cannot be compromised by faults in comfort or convenience features"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_MemoryProtection
+      
+    def requirement REQ_SAF_008_2
+      name "EPB Resource Monitoring"
+      description "The EPB system SHALL monitor shared resources including CPU time, memory usage, and communication bandwidth to prevent starvation of safety functions"
+      rationale "Resource monitoring ensures safety functions always have required computational resources even under high system load"
+      status draft
+      reqtype safety
+      safetylevel ASIL-D
+      implements ref function EPB_ResourceMonitor

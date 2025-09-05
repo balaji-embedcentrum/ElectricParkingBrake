@@ -22,7 +22,7 @@ hdef block ElectricParkingBrakeECU
   composedof ref block EPB_InputProcessingSubsystem, EPB_ControlLogicSubsystem, EPB_ActuatorOutputSubsystem
   
   // Input interfaces (required by this block from external systems)
-  needs ref message VehicleStateOutput
+  needs ref message VehicleStateOutputqqqq
   needs ref message DriverEPBCommandOutput
   needs ref message ActuatorFeedbackOutput
   needs ref message VehicleCANInput
