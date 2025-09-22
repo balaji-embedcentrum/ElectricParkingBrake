@@ -27,7 +27,12 @@ hdef testset EPB_InputProcessingSubsystem_Tests
     satisfies ref requirement REQ_INPUT_001_1
     method HIL
     setup "Configure HIL with dual-channel speed signal generators capable of 0-350 km/h range, set up implausible change detection with configurable rate limits, enable fault injection capabilities"
-    steps "Apply valid speed range signals on both channels, test dual-channel comparison, verify out-of-range detection, verify implausible change detection, test standstill detection with timing requirements, inject channel faults"
+    steps """
+    Apply valid speed range signals on both channels, 
+    test dual-channel comparison, verify out-of-range detection, 
+    verify implausible change detection, 
+    test standstill detection with timing requirements, inject channel faults
+    """
     expected "Valid speed range processed without faults, dual-channel agreement verified, out-of-range speeds flagged within 10ms, implausible changes detected, standstill detected properly, channel faults trigger fail-safe responses"
     passcriteria "Range validation response time less than 10ms, implausible change detection within 100ms, standstill detection timing 500±50ms, dual-channel disagreement detection within 5ms, 150% fault coverage achieved"
     safetylevel ASIL-D
@@ -87,15 +92,15 @@ hdef testset EPB_InputProcessingSubsystem_Tests
     testresult notrun
     owner "Plausibility Check Test Team"
 
-  def testcase TEST_INPUT_006_CAN_MESSAGE_PROCESSING
-    name "CAN Message Processing and Protocol Validation"
-    description "Validate CAN message reception, protocol compliance, and message integrity verification"
+  def testcase TEST_INPUT_006_CAN_operation_PROCESSING
+    name "CAN operation Processing and Protocol Validation"
+    description "Validate CAN operation reception, protocol compliance, and operation integrity verification"
     satisfies ref requirement REQ_INPUT_006
     method HIL
-    setup "Configure HIL with CAN bus simulator capable of message generation and corruption, set up vehicle network message database with EPB-relevant messages"
-    steps "Transmit valid CAN messages according to vehicle network specification, transmit messages with checksum errors and format violations, test message timing validation"
-    expected "Valid CAN messages processed correctly with protocol compliance, message format violations and checksum errors detected, stale messages detected and flagged for timeout"
-    passcriteria "100% message reception rate for valid protocol-compliant messages, message format violation detection within 1 CAN frame time, timestamp validation accuracy within ±10ms"
+    setup "Configure HIL with CAN bus simulator capable of operation generation and corruption, set up vehicle network operation database with EPB-relevant operations"
+    steps "Transmit valid CAN operations according to vehicle network specification, transmit operations with checksum errors and format violations, test operation timing validation"
+    expected "Valid CAN operations processed correctly with protocol compliance, operation format violations and checksum errors detected, stale operations detected and flagged for timeout"
+    passcriteria "100% operation reception rate for valid protocol-compliant operations, operation format violation detection within 1 CAN frame time, timestamp validation accuracy within ±10ms"
     testresult notrun
     owner "CAN Processing Test Team"
 

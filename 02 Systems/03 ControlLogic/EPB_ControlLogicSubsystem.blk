@@ -13,9 +13,9 @@ hdef block EPB_ControlLogicSubsystem
   enables ref feature InterfaceFeatures
 
   // Input interfaces (from Input Processing Subsystem)
-  needs ref message ProcessedVehicleState
-  needs ref message ProcessedDriverCommand
-  needs ref message ProcessedActuatorFeedback
+  needs ref operation ProcessedVehicleState
+  needs ref operation ProcessedDriverCommand
+  needs ref operation ProcessedActuatorFeedback
   needs ref signal ProcessedVehicleSpeed
   needs ref signal ProcessedSlopeAngle
   needs ref signal ProcessedIgnitionState
@@ -24,7 +24,7 @@ hdef block EPB_ControlLogicSubsystem
   needs ref signal ProcessedActuatorCurrent
 
   // Output interfaces (control commands and status)
-  def message EPBControlCommand
+  def operation EPBControlCommand
     name "EPB Control Command"
     description "Primary control command containing engagement/release decisions and force targets"
     designrationale "Unified control command structure ensures consistent command interpretation across actuator subsystems"
@@ -33,7 +33,7 @@ hdef block EPB_ControlLogicSubsystem
     safetylevel ASIL-D
     tags "control-command", "engagement-control", "force-target", "safety-critical"
 
-  def message SafetyStatus
+  def operation SafetyStatus
     name "EPB Safety Status"
     description "Comprehensive safety status including interlock states and fault conditions"
     designrationale "Safety status monitoring enables rapid fault detection and safe system degradation"
@@ -42,7 +42,7 @@ hdef block EPB_ControlLogicSubsystem
     safetylevel ASIL-D
     tags "safety-status", "fault-detection", "interlock-monitoring", "diagnostics"
 
-  def message DiagnosticOutput
+  def operation DiagnosticOutput
     name "EPB Diagnostic Output"
     description "Diagnostic information for service tools and system health monitoring"
     designrationale "Comprehensive diagnostics support field service and predictive maintenance"

@@ -1,0 +1,202 @@
+use functionset EPB_InputProcessingSubsystem_Functions
+use requirementset EPB_InputProcessingSubsystem_Requirements
+use block EPB_InputProcessingSubsystem
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef statemachine EPB_InputProcessingStateMachine
+  name "EPB Input Processing Subsystem State Machine"
+  description """
+    Complete state machine controlling EPB input processing operations including initialization,
+    active processing, fault handling, and diagnostic modes with full ISO 26262 ASIL-D compliance.
+    """
+  owner "Input Processing Systems Team"
+  tags "input-processing", "state-machine", "safety-critical", "iso26262"
+  safetylevel ASIL-D
+  status approved
+  allocatedto ref block EPB_InputProcessingSubsystem
+  implements ref requirement REQ_IP_001
+
+  def state Uninitialized
+    name "Uninitialized State"
+    description "Input processing subsystem in uninitialized state, waiting for system startup"
+    owner "System Initialization Team"
+    tags "uninitialized", "startup", "initial"
+    status implemented
+    initialstate true
+    implements ref requirement REQ_IP_001_1
+    when ref config c_BasicEPBFeatures
+
+  def state Initializing
+    name "Initializing State"
+    description "Input processing subsystem performing initialization and self-diagnostics"
+    owner "Initialization Team"
+    tags "initializing", "self-test", "startup"
+    status implemented
+    implements ref requirement REQ_IP_002
+    when ref config c_FailureDiagnostics
+
+  def state Active
+    name "Active Processing State"
+    description "Input processing subsystem actively processing all input signals and operations"
+    owner "Processing Team"
+    tags "active", "processing", "operational"
+    status implemented
+    implements ref requirement REQ_IP_003
+
+  def state Degraded
+    name "Degraded Processing State"
+    description "Input processing subsystem operating with reduced functionality due to sensor faults"
+    owner "Fault Tolerance Team"
+    tags "degraded", "partial-function", "fault-tolerance"
+    status implemented
+    implements ref requirement REQ_IP_004
+    when ref config c_FailureDiagnostics
+
+  def state Diagnostic
+    name "Diagnostic Mode State"
+    description "Input processing subsystem in diagnostic mode for maintenance and testing"
+    owner "Diagnostic Team"
+    tags "diagnostic", "maintenance", "testing"
+    status implemented
+    implements ref requirement REQ_IP_005
+    when ref config c_ECUDiagnostics
+
+  def state Fault
+    name "Fault State"
+    description "Input processing subsystem in fault condition requiring immediate attention"
+    owner "Safety Team"
+    tags "fault", "safety-critical", "emergency"
+    status implemented
+    endstate true
+    implements ref requirement REQ_IP_006
+    when ref config c_FailureDiagnostics
+
+  def transition SystemStartup
+    name "System Startup Transition"
+    description "Transition from uninitialized to initializing when system power-up detected"
+    owner "Initialization Team"
+    tags "startup", "power-up", "initialization"
+    status implemented
+    from ref state Uninitialized
+    to ref state Initializing
+    condition "power_supply_stable AND system_clock_active AND configuration_loaded"
+    call ref function InitializeChairSystem
+    implements ref requirement REQ_IP_007
+    when ref config c_BasicEPBFeatures
+
+  def transition InitializationComplete
+    name "Initialization Complete Transition"
+    description "Transition from initializing to active when all self-tests pass successfully"
+    owner "Initialization Team"
+    tags "initialization-complete", "self-test-pass", "active"
+    status implemented
+    from ref state Initializing
+    to ref state Active
+    condition "self_diagnostics_passed AND all_sensors_calibrated AND communication_established"
+    call ref function VehicleStateValidator
+    implements ref requirement REQ_IP_008
+
+  def transition InitializationFailed
+    name "Initialization Failed Transition"
+    description "Transition from initializing to fault when initialization or self-tests fail"
+    owner "Safety Team"
+    tags "initialization-failed", "self-test-fail", "fault"
+    status implemented
+    from ref state Initializing
+    to ref state Fault
+    condition "self_diagnostics_failed OR sensor_calibration_failed OR communication_timeout"
+    call ref function FaultDetector
+    implements ref requirement REQ_IP_009
+    when ref config c_FailureDiagnostics
+
+  def transition SensorDegradation
+    name "Sensor Degradation Transition"
+    description "Transition from active to degraded when sensor faults detected but system can continue"
+    owner "Fault Management Team"
+    tags "sensor-degradation", "partial-fault", "degraded-mode"
+    status implemented
+    from ref state Active
+    to ref state Degraded
+    condition "sensor_fault_detected AND redundant_sensors_available AND safety_criteria_met"
+    call ref function PlausibilityChecker
+    implements ref requirement REQ_IP_010
+    when ref config c_FailureDiagnostics
+
+  def transition CriticalFaultDetected
+    name "Critical Fault Detection Transition"
+    description "Transition from active to fault when critical safety fault detected"
+    owner "Safety Team"
+    tags "critical-fault", "safety-violation", "emergency"
+    status implemented
+    from ref state Active
+    to ref state Fault
+    condition "critical_sensor_failure OR communication_loss OR safety_violation_detected"
+    call ref function FaultDetector
+    implements ref requirement REQ_IP_011
+    when ref config c_FailureDiagnostics
+
+  def transition DegradedToFault
+    name "Degraded to Fault Transition"
+    description "Transition from degraded to fault when additional failures compromise safety"
+    owner "Safety Team"
+    tags "degraded-fault", "multiple-failures", "safety-critical"
+    status implemented
+    from ref state Degraded
+    to ref state Fault
+    condition "additional_sensor_failure OR safety_threshold_exceeded OR timeout_exceeded"
+    call ref function FaultDetector
+    implements ref requirement REQ_IP_012
+    when ref config c_FailureDiagnostics
+
+  def transition EnterDiagnostic
+    name "Enter Diagnostic Mode Transition"
+    description "Transition from active to diagnostic mode for maintenance operations"
+    owner "Maintenance Team"
+    tags "diagnostic-entry", "maintenance", "service-mode"
+    status implemented
+    from ref state Active
+    to ref state Diagnostic
+    condition "diagnostic_mode_requested AND vehicle_stationary AND service_tool_connected"
+    call ref function PerformSafetyDiagnostics
+    implements ref requirement REQ_IP_013
+    when ref config c_ECUDiagnostics
+
+  def transition ExitDiagnostic
+    name "Exit Diagnostic Mode Transition"
+    description "Transition from diagnostic mode back to active processing"
+    owner "Maintenance Team"
+    tags "diagnostic-exit", "return-to-service", "operational"
+    status implemented
+    from ref state Diagnostic
+    to ref state Active
+    condition "diagnostic_complete AND all_tests_passed AND service_tool_disconnected"
+    call ref function VehicleStateValidator
+    implements ref requirement REQ_IP_014
+    when ref config c_ECUDiagnostics
+
+  def transition DiagnosticFault
+    name "Diagnostic Fault Transition"
+    description "Transition from diagnostic to fault when diagnostic tests reveal critical issues"
+    owner "Diagnostic Team"
+    tags "diagnostic-fault", "test-failure", "maintenance-fault"
+    status implemented
+    from ref state Diagnostic
+    to ref state Fault
+    condition "diagnostic_test_failed OR hardware_fault_detected OR calibration_error"
+    call ref function FaultDetector
+    implements ref requirement REQ_IP_015
+    when ref config c_ECUDiagnostics
+
+  def transition SystemRecovery
+    name "System Recovery Transition"
+    description "Transition from degraded back to active when sensor faults are resolved"
+    owner "Recovery Team"
+    tags "system-recovery", "fault-cleared", "restoration"
+    status implemented
+    from ref state Degraded
+    to ref state Active
+    condition "sensor_faults_cleared AND all_sensors_operational AND safety_validation_passed"
+    call ref function VehicleStateValidator
+    implements ref requirement REQ_IP_016
+    when ref config c_FailureDiagnostics
+

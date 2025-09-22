@@ -1,0 +1,55 @@
+use featureset ElectricParkingBrakeFeatures
+
+hdef variantset ElectricParkingBrakeFeaturesVariants
+  name "ElectricParkingBrakeFeatures Variant Model"
+  description "Configuration variants for electricparkingbrakefeatures product family"
+  owner "Product Line Engineering"
+  tags "variants", "configuration", "product-family"
+
+  extends ref feature CoreEPBFeatures mandatory selected
+    extends ref feature BrakeEngagement mandatory
+      extends ref feature EngagementControl mandatory
+        extends ref feature ForceControlAlgorithm mandatory
+          extends ref feature PIDController mandatory
+          extends ref feature AdaptiveControl optional
+        extends ref feature LoadEstimation mandatory
+          extends ref feature StaticLoadEstimation mandatory
+          extends ref feature DynamicLoadEstimation optional
+        extends ref feature MotorControlStrategy mandatory
+          extends ref feature BasicPWMControl mandatory
+          extends ref feature AdvancedVectorControl optional
+      extends ref feature PositionFeedback mandatory
+        extends ref feature PrimarySensorTechnology or
+          extends ref feature PotentiometerSensor or
+          extends ref feature HallEffectSensor or
+          extends ref feature EncoderSensor or
+        extends ref feature SecondarySensorTechnology or
+          extends ref feature BackupPotentiometer or
+          extends ref feature BackupHallSensor or
+    extends ref feature BrakeDisengagement mandatory
+      extends ref feature SafetyInterlocks mandatory
+      extends ref feature ControlledRelease mandatory
+    extends ref feature BrakeHolding mandatory
+      extends ref feature HoldingForceMonitoring mandatory
+      extends ref feature SlopeCompensation mandatory
+  extends ref feature SafetyFeatures mandatory selected
+    extends ref feature FailureDiagnostics mandatory
+      extends ref feature ActuatorDiagnostics mandatory
+      extends ref feature ECUDiagnostics mandatory
+    extends ref feature EmergencyOperation mandatory
+      extends ref feature EmergencyEngagement mandatory
+      extends ref feature FailSafeModes mandatory
+  extends ref feature ComfortFeatures optional selected
+    extends ref feature AutomaticEngagement optional
+    extends ref feature AutomaticDisengagement optional
+    extends ref feature HillHoldAssist optional
+  extends ref feature InterfaceFeatures mandatory selected
+    extends ref feature CANInterface mandatory
+    extends ref feature DriverInterface mandatory
+      extends ref feature SwitchInterface mandatory
+      extends ref feature StatusIndicators mandatory
+
+// TODO: Configure feature selections for your specific variant
+// - Change 'optional' to 'selected' for features you want included
+// - Maintain proper indentation hierarchy
+// - Ensure parent-child relationships are preserved

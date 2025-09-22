@@ -5,31 +5,31 @@ hdef block VehicleSystemsInterface
   description "External vehicle systems that provide inputs and interfaces to the Electric Parking Brake ECU"
   designrationale "Centralized definition of external vehicle system interfaces ensures clear boundary definition and proper interface specification for EPB integration"
   owner "Systems Integration Team"
-  level system
+  level external
   safetylevel ASIL-D
   tags "vehicle-interface", "external-systems", "EPB-integration", "ASIL-D", "system-boundary"
 
   enables ref feature InterfaceFeatures
 
-  // Message interfaces (outputs to EPB ECU)
-  def message VehicleStateOutput
-    name "Vehicle State Output Message"
+  // operation interfaces (outputs to EPB ECU)
+  def operation VehicleStateOutput
+    name "Vehicle State Output operation"
     description "Vehicle state information including speed, slope, ignition, transmission status from vehicle control systems"
     designrationale "Comprehensive vehicle state data enables informed EPB decision making based on current vehicle conditions"
     owner "Vehicle State Integration Team"
     datatype VehicleStateStruct
     tags "vehicle-state", "system-integration", "environmental-data"
     
-  def message DriverCommandOutput
-    name "Driver Command Output Message"
+  def operation DriverCommandOutput
+    name "Driver Command Output operation"
     description "Driver input commands from EPB switch, instrument cluster, and HMI systems"
     designrationale "Direct driver command relay ensures immediate response to driver intentions without processing delays"
     owner "Driver Interface Integration Team"
     datatype DriverCommandStruct
     tags "driver-command", "HMI-integration", "user-input"
     
-  def message ActuatorFeedbackOutput
-    name "Actuator Feedback Output Message"
+  def operation ActuatorFeedbackOutput
+    name "Actuator Feedback Output operation"
     description "Electric actuator feedback including position, force, current, and temperature from brake actuator systems"
     designrationale "Real-time actuator feedback enables closed-loop control and comprehensive system health monitoring"
     owner "Actuator Systems Integration Team"

@@ -1,5 +1,6 @@
 use featureset ElectricParkingBrakeFeatures
 use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+use functionset VehicleStateProcessingModule_Functions
 
 hdef functionset EPB_InputProcessingSubsystem_Functions
   name "EPB Input Processing Subsystem Functions"
@@ -7,6 +8,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
   owner "Input Processing Team"
   tags "input-processing", "signal-conditioning", "validation", "fault-detection", "ASIL-D"
   safetylevel ASIL-D
+  level subsystem
 
   def function VehicleStateValidator
     name "Vehicle State Signal Validator - ISO 26262 Enhanced"
@@ -16,6 +18,19 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_FailureDiagnostics
     safetylevel ASIL-D
+    decomposesto ref function VehicleStateRangeChecker, VehicleStatePlausibilityAnalyzer, VehicleStateIntegrityVerifier
+    needs ref operation GetVehicleState
+    needs ref operation ValidateSignalRange
+    needs ref operation CheckSignalIntegrity
+    needs ref signal RawVehicleState
+    needs ref signal ValidationCriteria
+    needs ref signal SystemHealthStatus
+    offers ref operation ValidateVehicleState
+    offers ref operation ReportValidationResult
+    offers ref operation HandleValidationError
+    offers ref signal ValidatedVehicleState
+    offers ref signal ValidationStatus
+    offers ref signal ValidationError
 
   def function VehicleSpeedProcessor
     name "Vehicle Speed Signal Processor - ISO 26262 Enhanced"
@@ -25,6 +40,20 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_SecondarySensorTechnology
     safetylevel ASIL-D
+    decomposesto ref function SpeedSignalFilter, SpeedRangeValidator, StandstillDetector, SpeedPlausibilityChecker, DualChannelSpeedMonitor
+    needs ref operation GetSystemState
+    needs ref operation ValidateVehicleState
+    needs ref operation ValidateSpeedRange
+    needs ref operation DetectStandstill
+    needs ref signal ValidatedVehicleState
+    needs ref signal SpeedThresholds
+    needs ref signal FilterParameters
+    offers ref operation ProcessSpeedSignal
+    offers ref operation DetectStandstillState
+    offers ref operation ValidateSpeedPlausibility
+    offers ref signal ProcessedSpeed
+    offers ref signal StandstillStatus
+    offers ref signal SpeedValidationResult
 
   def function SlopeAngleProcessor
     name "Slope Angle Signal Processor - ISO 26262 Enhanced"
@@ -34,6 +63,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_SlopeCompensation
     safetylevel ASIL-D
+    decomposesto ref function SlopeSignalFilter, SlopeCalibrationManager, GradientCalculator, SlopePlausibilityValidator, TemporalSlopeRedundancy
 
   def function DriverCommandProcessor
     name "Driver Command Signal Processor - ISO 26262 Enhanced"
@@ -43,6 +73,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_ECUDiagnostics
     safetylevel ASIL-D
+    decomposesto ref function CommandDebouncer, CommandPatternRecognizer, CommandSelfTest, CommandPlausibilityChecker
 
   def function ActuatorFeedbackProcessor
     name "Actuator Feedback Signal Processor - ISO 26262 Enhanced"
@@ -52,6 +83,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_ActuatorDiagnostics
     safetylevel ASIL-D
+    decomposesto ref function PositionFeedbackProcessor, CurrentFeedbackProcessor, CrossChannelFeedbackComparison, SensorFusionEngine, FeedbackWatchdogMonitor
 
   def function IgnitionStateProcessor
     name "Ignition State Signal Processor - ISO 26262 Enhanced"
@@ -61,6 +93,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_SafetyInterlocks
     safetylevel ASIL-D
+    decomposesto ref function IgnitionDebouncer, PowerStateTransitionDetector, IgnitionWatchdogMonitor, FailSafeResponseManager
 
   def function TransmissionStateProcessor
     name "Transmission State Signal Processor"
@@ -69,15 +102,17 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "transmission-processing", "gear-validation", "drivetrain-status"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function GearPositionValidator, DrivetrainStatusDeterminer, TransmissionStateFilter
 
-  def function CANMessageProcessor
-    name "CAN Message Processor - ISO 26262 Enhanced"
-    description "Processes incoming CAN messages with 150% fault coverage including timestamp validation, protocol validation, message sequence checking, and message integrity verification per ISO 26262 ASIL-D"
+  def function CANoperationProcessor
+    name "CAN operation Processor - ISO 26262 Enhanced"
+    description "Processes incoming CAN operations with 150% fault coverage including timestamp validation, protocol validation, operation sequence checking, and operation integrity verification per ISO 26262 ASIL-D"
     owner "CAN Processing Team"
-    tags "CAN-processing", "protocol-validation", "timestamp-checking", "message-integrity", "ISO26262", "ASIL-D", "150%-coverage"
+    tags "CAN-processing", "protocol-validation", "timestamp-checking", "operation-integrity", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
     when ref config c_CANInterface
     safetylevel ASIL-D
+    decomposesto ref function CANTimestampValidator, CANProtocolValidator, CANoperationSequenceChecker, CANoperationIntegrityVerifier
 
   def function SignalDebouncer
     name "Multi-Signal Debouncer"
@@ -86,6 +121,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "debouncing", "digital-signals", "timing-control", "noise-filtering"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function DigitalSignalDebouncer, DebounceTimerManager
 
   def function SignalFilter
     name "Analog Signal Filter"
@@ -94,6 +130,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "signal-filtering", "analog-processing", "noise-reduction", "digital-filter"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function AnalogSignalFilter, FilterParameterManager, NoiseReductionEngine
 
   def function RangeValidator
     name "Signal Range Validator - ISO 26262 Enhanced"
@@ -103,6 +140,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_HoldingForceMonitoring
     safetylevel ASIL-D
+    decomposesto ref function AnalogRangeValidator, DigitalRangeValidator, OutOfRangeDetector, SafeValueSubstitutor
 
   def function PlausibilityChecker
     name "Signal Plausibility Checker - ISO 26262 Enhanced"
@@ -112,6 +150,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_FailSafeModes
     safetylevel ASIL-D
+    decomposesto ref function CrossSignalConsistencyChecker, PhysicalLimitsValidator, ErrorContainmentManager, FailSafeResponseGenerator
 
   def function SignalCalibrator
     name "Signal Calibration Manager"
@@ -120,6 +159,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "signal-calibration", "offset-correction", "scaling", "sensor-compensation"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function OffsetCorrectionManager, ScalingFactorManager, CalibrationDataValidator
 
   def function FaultDetector
     name "Input Signal Fault Detector - ISO 26262 Enhanced"
@@ -129,6 +169,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_EmergencyEngagement
     safetylevel ASIL-D
+    decomposesto ref function StuckAtConditionDetector, SignalLossDetector, OutOfRangeFailureDetector, ComprehensiveFailureAnalyzer, FailSafeResponseCoordinator
 
   def function DiagnosticProcessor
     name "Input Diagnostic Processor"
@@ -137,6 +178,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "diagnostic-processing", "health-monitoring", "diagnostic-response", "system-status"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function DiagnosticRequestHandler, DiagnosticResponseGenerator, HealthStatusMonitor
 
   def function TimestampValidator
     name "Signal Timestamp Validator"
@@ -145,6 +187,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "timestamp-validation", "freshness-checking", "communication-delay", "data-currency"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function SignalFreshnessChecker, CommunicationDelayDetector, DataCurrencyValidator
 
   def function InputDataFusion
     name "Input Data Fusion Engine"
@@ -153,6 +196,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "data-fusion", "sensor-fusion", "multi-source", "robustness"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function MultiSourceDataFusion, SensorFusionAlgorithm, RobustnessEnhancer
 
   def function InputBufferManager
     name "Input Signal Buffer Manager"
@@ -161,6 +205,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "buffer-management", "historical-data", "trend-analysis", "data-storage"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function SignalBufferManager, TrendAnalysisEngine, DataStorageManager
 
   def function ErrorHandler
     name "Input Processing Error Handler"
@@ -169,6 +214,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "error-handling", "error-logging", "system-protection", "fault-response"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function ErrorResponseManager, ErrorLoggingSystem, SystemProtectionManager
 
   def function InputConfigurationManager
     name "Input Processing Configuration Manager"
@@ -178,6 +224,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_DriverInterface
     safetylevel ASIL-D
+    decomposesto ref function FilterSettingsManager, ThresholdManager, CalibrationDataManager
 
   // Functions for disabled configurations to achieve 150% ISO 26262 coverage
   def function AdaptiveControlValidator
@@ -188,6 +235,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_AdaptiveControl
     safetylevel ASIL-D
+    decomposesto ref function AdaptiveControlLockoutVerifier
 
   def function DynamicLoadEstimationBlocker
     name "Dynamic Load Estimation Blocker - ISO 26262 Disabled Mode"
@@ -197,6 +245,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_DynamicLoadEstimation
     safetylevel ASIL-D
+    decomposesto ref function DynamicLoadEstimationBypass
 
   def function AdvancedVectorControlBlocker
     name "Advanced Vector Control Blocker - ISO 26262 Disabled Mode"
@@ -206,6 +255,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_AdvancedVectorControl
     safetylevel ASIL-D
+    decomposesto ref function AdvancedVectorControlLockout
 
   def function HallEffectSensorBlocker
     name "Hall Effect Sensor Input Blocker - ISO 26262 Disabled Mode"
@@ -215,6 +265,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_HallEffectSensor
     safetylevel ASIL-D
+    decomposesto ref function HallEffectSensorIsolator
 
   def function EncoderSensorBlocker
     name "Encoder Sensor Input Blocker - ISO 26262 Disabled Mode"
@@ -224,6 +275,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_EncoderSensor
     safetylevel ASIL-D
+    decomposesto ref function EncoderSensorDisabler
 
   def function BackupHallSensorBlocker
     name "Backup Hall Sensor Blocker - ISO 26262 Disabled Mode"
@@ -233,6 +285,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_BackupHallSensor
     safetylevel ASIL-D
+    decomposesto ref function BackupHallSensorIsolator
 
   def function AutomaticEngagementBlocker
     name "Automatic Engagement Feature Blocker - ISO 26262 Disabled Mode"
@@ -242,6 +295,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_AutomaticEngagement
     safetylevel ASIL-D
+    decomposesto ref function AutomaticEngagementDisabler
 
   def function AutomaticDisengagementBlocker
     name "Automatic Disengagement Feature Blocker - ISO 26262 Disabled Mode"
@@ -251,6 +305,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_AutomaticDisengagement
     safetylevel ASIL-D
+    decomposesto ref function AutomaticDisengagementDisabler
 
   def function HillHoldAssistBlocker
     name "Hill Hold Assist Feature Blocker - ISO 26262 Disabled Mode"
@@ -260,6 +315,7 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     enables ref feature InterfaceFeatures
     when ref config c_HillHoldAssist
     safetylevel ASIL-D
+    decomposesto ref function HillHoldAssistDisabler
 
   def function DisabledFeatureMonitor
     name "Disabled Feature Configuration Monitor - ISO 26262 Enhanced"
@@ -268,3 +324,4 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     tags "disabled-monitoring", "configuration-integrity", "activation-detection", "state-validation", "ISO26262", "ASIL-D", "150%-coverage"
     enables ref feature InterfaceFeatures
     safetylevel ASIL-D
+    decomposesto ref function DisabledFeatureIntegrityMonitor

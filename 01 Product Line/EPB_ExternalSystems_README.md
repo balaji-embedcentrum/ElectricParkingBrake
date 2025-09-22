@@ -4,9 +4,9 @@
 This document describes the external system blocks that provide interfaces to the Electric Parking Brake (EPB) ECU. These blocks define the boundary between the EPB system and external vehicle systems.
 
 ## Sylang v2.21.24 Syntax Updates
-**Important**: As of Sylang v2.21.24, the `direction` keyword is no longer valid in block (.blk) files. Message and signal definitions now use only `datatype` and `description` properties. Interface direction is determined by context and naming conventions:
-- Messages/signals ending with "Output" typically provide data to other blocks
-- Messages/signals ending with "Input" typically receive data from other blocks
+**Important**: As of Sylang v2.21.24, the `direction` keyword is no longer valid in block (.blk) files. operation and signal definitions now use only `datatype` and `description` properties. Interface direction is determined by context and naming conventions:
+- operations/signals ending with "Output" typically provide data to other blocks
+- operations/signals ending with "Input" typically receive data from other blocks
 - The EPB ECU uses input naming to indicate interfaces it needs from external systems
 
 ## Block Definition Properties
@@ -23,7 +23,7 @@ All EPB block files now include comprehensive property definitions following Syl
 - **tags**: Searchable classification tags
 - **enables**: Features enabled by this block
 
-### **Required Properties for Messages/Signals:**
+### **Required Properties for operations/Signals:**
 - **name**: Human-readable interface name
 - **description**: Detailed functional description
 - **designrationale**: Engineering justification for interface design
@@ -119,7 +119,7 @@ All external system blocks maintain **ASIL-D** safety classification to ensure:
 
 ## Implementation Notes
 
-1. **Message Mapping**: Each output message/signal from external systems maps to corresponding input message/signal in EPB ECU
+1. **operation Mapping**: Each output operation/signal from external systems maps to corresponding input operation/signal in EPB ECU
 2. **Data Types**: Consistent data type definitions across interface boundaries
 3. **Safety Compliance**: All interfaces comply with ISO 26262 ASIL-D requirements
 4. **Traceability**: Clear traceability from feature model to block interfaces

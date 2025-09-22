@@ -76,9 +76,9 @@ hdef usecase EPB_InputProcessingSubsystem_UseCases
     when ref config c_SecondarySensorTechnology
 
   def usecase UC_005
-    name "Process CAN Messages"
-    description "Validate CAN message protocol compliance and integrity"
-    from ref function CANMessageProcessor
+    name "Process CAN operations"
+    description "Validate CAN operation protocol compliance and integrity"
+    from ref function CANoperationProcessor
     to ref actor ControlLogicSubsystem
     connection associated
     when ref config c_CANInterface

@@ -1,0 +1,73 @@
+use featureset ElectricParkingBrakeFeatures
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+use block VehicleSystemsInterface
+
+hdef block VehicleStateProcessingModule
+  name "Vehicle State Processing Module"
+  description "Module responsible for processing and validating all vehicle state information including speed, slope, ignition, and transmission states"
+  designrationale "Dedicated vehicle state processing ensures consistent validation and conditioning of safety-critical vehicle parameters"
+  owner "Vehicle State Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "vehicle-state", "speed-processing", "slope-processing", "safety-critical"
+
+  // Input interfaces from external vehicle systems
+  needs ref operation VehicleStateOutput
+  needs ref signal VehicleSpeedOutput
+  needs ref signal SlopeAngleOutput
+  needs ref signal IgnitionStateOutput
+  needs ref signal TransmissionStateOutput
+
+  // Output interfaces (processed vehicle state)
+  def operation ProcessedVehicleState
+    name "Processed Vehicle State operation"
+    description "Validated and conditioned vehicle state information"
+    owner "Vehicle State Team"
+    datatype VehicleStateStruct
+    safetylevel ASIL-D
+    tags "validated-state", "safety-critical"
+
+  def signal ProcessedVehicleSpeed
+    name "Validated Vehicle Speed Signal"
+    description "Range-checked and validated vehicle speed signal with fault detection"
+    owner "Speed Validation Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "speed-validation", "range-check", "fault-detection"
+
+  def signal ProcessedSlopeAngle
+    name "Validated Slope Angle Signal"
+    description "Filtered and validated vehicle slope angle for adaptive force control"
+    owner "Slope Processing Team"
+    datatype float32
+    tags "slope-processing", "signal-filtering"
+
+  def signal ProcessedIgnitionState
+    name "Debounced Ignition State Signal"
+    description "Debounced ignition state signal for reliable power state detection"
+    owner "Ignition Processing Team"
+    datatype IgnitionEnum
+    tags "ignition-processing", "debouncing"
+
+  def signal ProcessedTransmissionState
+    name "Validated Transmission State Signal"
+    description "Validated transmission state and gear position information"
+    owner "Transmission Processing Team"
+    datatype TransmissionEnum
+    tags "transmission-validation", "gear-position"
+
+  def signal VehicleStateValidity
+    name "Vehicle State Validity Signal"
+    description "Overall validity status of vehicle state data"
+    owner "State Validation Team"
+    datatype bool
+    safetylevel ASIL-D
+    tags "validity-check", "data-integrity"
+
+  def signal VehicleMotionStatus
+    name "Vehicle Motion Status Signal"
+    description "Processed vehicle motion status (stationary, moving, unknown)"
+    owner "Motion Detection Team"
+    datatype MotionStatusEnum
+    safetylevel ASIL-D
+    tags "motion-detection", "stationary-check"

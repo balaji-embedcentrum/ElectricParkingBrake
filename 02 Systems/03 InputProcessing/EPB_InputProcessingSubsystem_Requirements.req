@@ -128,16 +128,16 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
       implements ref function PlausibilityChecker
 
   def requirement REQ_INPUT_006
-    name "CAN Message Processing"
-    description "The input processing subsystem SHALL process incoming CAN messages with protocol validation, timestamp checking, and message integrity verification"
-    rationale "Robust CAN message processing ensures reliable vehicle network communication and prevents corruption-induced faults"
+    name "CAN operation Processing"
+    description "The input processing subsystem SHALL process incoming CAN operations with protocol validation, timestamp checking, and operation integrity verification"
+    rationale "Robust CAN operation processing ensures reliable vehicle network communication and prevents corruption-induced faults"
     status approved
     reqtype interface
-    implements ref function CANMessageProcessor
+    implements ref function CANoperationProcessor
     
     def requirement REQ_INPUT_006_1
-      name "Message Timestamp Validation"
-      description "WHEN receiving CAN messages THEN the system SHALL validate message timestamps, detect stale messages (>200ms age), and flag communication timeouts"
+      name "operation Timestamp Validation"
+      description "WHEN receiving CAN operations THEN the system SHALL validate operation timestamps, detect stale operations (>200ms age), and flag communication timeouts"
       rationale "Timestamp validation ensures EPB decisions are based on current vehicle data and detects communication failures"
       status approved
       reqtype interface
@@ -145,11 +145,11 @@ hdef requirementset EPB_InputProcessingSubsystem_Requirements
       
     def requirement REQ_INPUT_006_2
       name "CAN Protocol Compliance"
-      description "WHEN processing CAN messages THEN the system SHALL verify message format, validate checksums, and ensure protocol compliance according to vehicle network specifications"
-      rationale "Protocol compliance ensures reliable communication and prevents message corruption from affecting EPB operation"
+      description "WHEN processing CAN operations THEN the system SHALL verify operation format, validate checksums, and ensure protocol compliance according to vehicle network specifications"
+      rationale "Protocol compliance ensures reliable communication and prevents operation corruption from affecting EPB operation"
       status approved
       reqtype interface
-      implements ref function CANMessageProcessor
+      implements ref function CANoperationProcessor
 
   def requirement REQ_INPUT_007
     name "Input Signal Calibration"

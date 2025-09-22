@@ -1,0 +1,412 @@
+use functionset ElectricParkingBrakeFunctions
+use failureset EPB_InputProcessingFailures
+use block ElectricParkingBrakeECU
+
+hdef failureset EPB_SystemFailureAnalysis
+  name "Electric Parking Brake System Failure Analysis"
+  description "Comprehensive FMEA for Electric Parking Brake system covering all safety-high failure modes with ASIL-D compliance"
+  owner "Functional Safety Team"
+  tags "FMEA", "EPB-system", "ASIL-D", "safety-high", "failure-analysis"
+  level system
+  safetylevel ASIL-D
+  occursin ref block ElectricParkingBrakeECU
+  timingreference ms
+
+  def failuremode CompleteECUPowerLoss
+    name "Complete ECU Power Supply Failure"
+    description "Total loss of electrical power to the EPB ECU resulting in complete system shutdown and loss of all safety functions"
+    owner "Hardware Safety Team"
+    tags "power-failure", "system-shutdown", "safety-high"
+    
+    failurerate 2.5e-6
+    severity 10
+    detectability 1
+    occurrence 2
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 1
+    propagationdelay 5
+    recoverytime 5000
+    
+    causedby ref failuremode PowerSupplyFailure within 1
+    
+    effects ref failuremode SystemProcessorFailure within 5
+    effects ref failuremode CompleteSystemCommunicationLoss within 10
+    effects ref failuremode MotorControllerFailure within 5
+    
+    detectedby ref function EPB_ProcessorMonitor within 1
+    detectedby ref function EPB_CommunicationMonitor within 10
+    
+    mitigatedby ref function EPB_EmergencyBrakeController within 2
+    mitigatedby ref function EPB_FailureManager within 5
+
+  def failuremode SystemProcessorFailure
+    name "EPB System Processor Failure"
+    description "Main processor failure affecting EPB_SystetateManager and core control functions"
+    owner "Hardware Safety Team"
+    tags "processor-failure", "state-management", "control-failure"
+    
+    failurerate 1.8e-6
+    severity 9
+    detectability 2
+    occurrence 3
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 10
+    propagationdelay 50
+    recoverytime 2000
+    
+    
+    effects ref failuremode StateManagerFailure within 50
+    effects ref failuremode RequestProcessorFailure within 50
+    
+    detectedby ref function EPB_ProcessorMonitor within 10
+    
+    mitigatedby ref function EPB_FailureManager within 100
+    mitigatedby ref function EPB_EmergencyBrakeController within 50
+
+  def failuremode MotorControllerFailure
+    name "EPB Motor Controller Failure"
+    description "Failure of EPB_MotorController affecting PWM generation and actuator control"
+    owner "Syste Engineering Team"
+    tags "motor-control", "actuator-failure", "PWM-failure"
+    
+    failurerate 3.2e-6
+    severity 8
+    detectability 3
+    occurrence 4
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 20
+    propagationdelay 100
+    recoverytime 500
+    
+
+
+    effects ref failuremode ForceCalculationError within 100
+    effects ref failuremode PositionSensorFailure within 150
+    
+    detectedby ref function EPB_MotorDiagnostics within 20
+    detectedby ref function EPB_ProcessorMonitor within 50
+    
+    mitigatedby ref function EPB_EmergencyBrakeController within 100
+    mitigatedby ref function EPB_FailureManager within 200
+
+  def failuremode ForceCalculationError
+    name "EPB Force Calculation System Failure"
+    description "Failure in EPB_ForceCalculator leading to incorrect brake force application"
+    owner "Syste Engineering Team"
+    tags "force-calculation", "physics-model", "calculation-error"
+    
+    failurerate 1.5e-6
+    severity 7
+    detectability 4
+    occurrence 3
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 50
+    propagationdelay 200
+    recoverytime 1000
+
+    causedby ref failuremode PowerSupplyFailure within 1
+    
+    effects ref failuremode ForceMonitoringSystemFailure within 200
+    
+    detectedby ref function EPB_ForceMonitor within 50
+    detectedby ref function EPB_SensorDiagnostics within 100
+    
+    mitigatedby ref function EPB_SafetyValidator within 100
+    mitigatedby ref function EPB_FailureManager within 200
+
+  def failuremode PositionSensorFailure
+    name "EPB Position Sensor System Failure"
+    description "Failure of EPB_PositionEstimator affecting position feedback and control accuracy"
+    owner "Syste Engineering Team"
+    tags "position-sensing", "sensor-failure", "feedback-failure"
+    
+    failurerate 2.8e-6
+    severity 7
+    detectability 3
+    occurrence 4
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 30
+    propagationdelay 150
+    recoverytime 800
+    
+    causedby ref failuremode ActuatorPositionSensorFailure within 30
+    
+    effects ref failuremode CalibrationSystemFailure within 150
+    
+    detectedby ref function EPB_SensorDiagnostics within 30
+    detectedby ref function EPB_PositionEstimator within 50
+    
+    mitigatedby ref function EPB_FailureManager within 150
+    mitigatedby ref function EPB_SafetyValidator within 100
+
+  def failuremode SafetyInterlockFailure
+    name "EPB Safety Interlock System Failure"
+    description "Failure of EPB_SafetyValidator compromising safety validation functions"
+    owner "Functional Safety Team"
+    tags "safety-interlock", "validation-failure", "safety-high"
+    
+    failurerate 1.2e-6
+    severity 9
+    detectability 2
+    occurrence 2
+    actionpriority medium
+    safetylevel ASIL-D
+    
+    faultdetectiontime 25
+    propagationdelay 100
+    recoverytime 1500
+    
+    causedby ref failuremode VehicleSpeedSensorFailure within 25
+    
+    effects ref failuremode ReleaseControllerFailure within 100
+    
+    detectedby ref function EPB_ProcessorMonitor within 25
+    detectedby ref function EPB_FailureManager within 50
+    
+    mitigatedby ref function EPB_EmergencyBrakeController within 50
+    mitigatedby ref function EPB_FailureManager within 100
+
+  def failuremode CANBusCommunicationFailure
+    name "EPB CAN Communication System Failure"
+    description "Failure of EPB_CANTransmitter or EPB_CANReceiver affecting vehicle network communication"
+    owner "Syste Engineering Team"
+    tags "CAN-communication", "network-failure", "data-transmission"
+    
+    failurerate 4.5e-6
+    severity 6
+    detectability 3
+    occurrence 5
+    actionpriority medium
+    safetylevel ASIL-D
+    
+    faultdetectiontime 100
+    propagationdelay 500
+    recoverytime 2000
+    
+    causedby ref failuremode CANBusCommunicationFailure within 100
+    
+    effects ref failuremode DriverInterfaceFailure within 500
+    
+    detectedby ref function EPB_CommunicationMonitor within 100
+    
+    mitigatedby ref function EPB_FailureManager within 500
+    mitigatedby ref function EPB_IndicatorController within 200
+
+  def failuremode EmergencyBrakeSystemFailure
+    name "EPB Emergency Brake System Failure"
+    description "Failure of EPB_EmergencyBrakeController compromising last-resort safety function"
+    owner "Functional Safety Team"
+    tags "emergency-brake", "fail-safe", "safety-high"
+    
+    failurerate 0.8e-6
+    severity 10
+    detectability 2
+    occurrence 1
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 15
+    propagationdelay 50
+    recoverytime 3000
+    
+    detectedby ref function EPB_ProcessorMonitor within 15
+    detectedby ref function EPB_FailureManager within 30
+    
+    mitigatedby ref function EPB_FailureManager within 50
+
+  def failuremode ThermalProtectionSystemFailure
+    name "EPB Thermal Protection System Failure"
+    description "Failure of EPB_ThermalManager leading to thermal overload risks"
+    owner "Syste Engineering Team"
+    tags "thermal-protection", "overload-risk", "temperature-monitoring"
+    
+    failurerate 2.2e-6
+    severity 7
+    detectability 4
+    occurrence 3
+    actionpriority low
+    safetylevel ASIL-D
+    
+    faultdetectiontime 200
+    propagationdelay 1000
+    recoverytime 3000
+    
+    effects ref failuremode MotorControllerFailure within 1000
+    
+    detectedby ref function EPB_MotorDiagnostics within 200
+    detectedby ref function EPB_ProcessorMonitor within 500
+    
+    mitigatedby ref function EPB_FailureManager within 1000
+
+  def failuremode MotorDiagnosticSystemFailure
+    name "EPB Motor Diagnostic System Failure"
+    description "Failure of EPB_MotorDiagnostics affecting motor health monitoring capabilities"
+    owner "Functional Safety Team"
+    tags "motor-diagnostics", "health-monitoring", "diagnostic-failure"
+    
+    failurerate 1.8e-6
+    severity 6
+    detectability 5
+    occurrence 3
+    actionpriority medium
+    safetylevel ASIL-D
+    
+    faultdetectiontime 500
+    propagationdelay 2000
+    recoverytime 1000
+    
+    detectedby ref function EPB_ProcessorMonitor within 500
+    
+    mitigatedby ref function EPB_FailureManager within 2000
+
+  def failuremode SensorDiagnosticSystemFailure
+    name "EPB Sensor Diagnostic System Failure"
+    description "Failure of EPB_SensorDiagnostics affecting sensor validation and cross-checks"
+    owner "Functional Safety Team"
+    tags "sensor-diagnostics", "validation-failure", "cross-check"
+    
+    failurerate 2.1e-6
+    severity 6
+    detectability 4
+    occurrence 4
+    actionpriority medium
+    safetylevel ASIL-D
+    
+    faultdetectiontime 300
+    propagationdelay 1500
+    recoverytime 800
+    
+    detectedby ref function EPB_ProcessorMonitor within 300
+    
+    mitigatedby ref function EPB_FailureManager within 1500
+
+  def failuremode SystemHealthMonitorFailure
+    name "EPB System Health Monitor Failure"
+    description "Failure of EPB_ProcessorMonitor affecting overall system health monitoring"
+    owner "Functional Safety Team"
+    tags "health-monitoring", "processor-monitor", "watchdog-failure"
+    
+    failurerate 1.4e-6
+    severity 8
+    detectability 3
+    occurrence 2
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 100
+    propagationdelay 500
+    recoverytime 2000
+    
+    detectedby ref function EPB_FailureManager within 100
+    
+    mitigatedby ref function EPB_EmergencyBrakeController within 500
+
+  def failuremode CalibrationSystemFailure
+    name "EPB Calibration System Failure"
+    description "Failure of EPB_CalibrationManager affecting system calibration and accuracy"
+    owner "Syste Engineering Team"
+    tags "calibration", "accuracy-loss", "end-stop-learning"
+    
+    failurerate 3.5e-6
+    severity 5
+    detectability 6
+    occurrence 4
+    actionpriority medium
+    safetylevel ASIL-D
+    
+    faultdetectiontime 1000
+    propagationdelay 5000
+    recoverytime 10000
+    
+    
+    detectedby ref function EPB_SensorDiagnostics within 1000
+    
+    mitigatedby ref function EPB_FailureManager within 5000
+
+  def failuremode ForceMonitoringSystemFailure
+    name "EPB Force Monitoring System Failure"
+    description "Failure of EPB_ForceMonitor affecting brake force validation and monitoring"
+    owner "Syste Engineering Team"
+    tags "force-monitoring", "validation-failure", "monitoring-loss"
+    
+    failurerate 2.7e-6
+    severity 7
+    detectability 4
+    occurrence 3
+    actionpriority high
+    safetylevel ASIL-D
+    
+    faultdetectiontime 200
+    propagationdelay 1000
+    recoverytime 1500
+    
+    
+    detectedby ref function EPB_SensorDiagnostics within 200
+    
+    mitigatedby ref function EPB_SafetyValidator within 1000
+
+  // Additional derived failure modes
+  def failuremode StateManagerFailure
+    name "EPB State Manager Failure"
+    description "Failure of EPB_SystetateManager affecting state transitions"
+    severity 8
+    detectability 3
+    occurrence 3
+    actionpriority high
+
+  def failuremode RequestProcessorFailure
+    name "EPB Request Processor Failure" 
+    description "Failure of EPB_RequestProcessor affecting command processing"
+
+    severity 7
+    detectability 4
+    occurrence 3
+    actionpriority high
+
+  def failuremode CompleteSystemCommunicationLoss
+    name "Complete System Communication Loss"
+    description "Total loss of all communication capabilities"
+    
+    causedby ref failuremode CANBusCommunicationFailure within 200
+
+    severity 8
+    detectability 2
+    occurrence 2
+    actionpriority high
+
+  def failuremode DriverInterfaceFailure
+    name "Driver Interface System Failure"
+    description "Failure affecting driver feedback and interaction"
+
+    severity 6
+    detectability 3
+    occurrence 4
+    actionpriority medium
+
+  def failuremode ReleaseControllerFailure
+    name "EPB Release Controller Failure"
+    description "Failure of EPB_ReleaseController affecting controlled release"
+
+    severity 8
+    detectability 3
+    occurrence 2
+    actionpriority high
+
+  def failuremode SlopeEstimatorFailure
+    name "EPB Slope Estimator Failure"
+    description "Failure of EPB_SlopeEstimator affecting slope compensation"
+    severity 5
+    detectability 5
+    occurrence 3
+    actionpriority medium
+    effects ref failuremode ForceCalculationError within 150

@@ -5,6 +5,7 @@ use block VehicleNetworkInterface
 use block EPB_InputProcessingSubsystem
 use block EPB_ControlLogicSubsystem
 use block EPB_ActuatorOutputSubsystem
+use block EPB_DiagnosticSubsystem
 
 hdef block ElectricParkingBrakeECU
   name "Electric Parking Brake Electronic Control Unit"
@@ -19,13 +20,13 @@ hdef block ElectricParkingBrakeECU
   enables ref feature CoreEPBFeatures
   
   // Subsystem composition - EPB ECU is composed of three main subsystems
-  composedof ref block EPB_InputProcessingSubsystem, EPB_ControlLogicSubsystem, EPB_ActuatorOutputSubsystem
+  decomposesto ref block EPB_InputProcessingSubsystem, EPB_ControlLogicSubsystem, EPB_ActuatorOutputSubsystem, EPB_DiagnosticSubsystem
   
   // Input interfaces (required by this block from external systems)
-  needs ref message VehicleStateOutput
-  needs ref message DriverEPBCommandOutput
-  needs ref message ActuatorFeedbackOutput
-  needs ref message VehicleCANInput
+  needs ref operation VehicleStateOutput
+  needs ref operation DriverEPBCommandOutput
+  needs ref operation ActuatorFeedbackOutput
+  needs ref operation VehicleCANInput
   needs ref signal VehicleSpeedOutput
   needs ref signal SlopeAngleOutput
   needs ref signal IgnitionStateOutput
@@ -35,7 +36,7 @@ hdef block ElectricParkingBrakeECU
   needs ref signal EPBSwitchPosition
   needs ref signal DiagnosticRequest
   exposesout ref signal MotorPWMCommand, ForceTarget
-  exposesout ref message DiagnosticOutput
+  exposesout ref operation DiagnosticOutput
 
   
   // NOTE: This block depends on interfaces from external system blocks:
@@ -43,25 +44,25 @@ hdef block ElectricParkingBrakeECU
   // - DriverInterfaceSystem: DriverEPBCommandOutput, EPBSwitchPosition  
   // - VehicleNetworkInterface: VehicleCANInput, DiagnosticRequest
 
-  // Message interfaces (outputs from this block)
-  def message EPB_ControlCommand
-    name "EPB Control Command Message"
+  // operation interfaces (outputs from this block)
+  def operation EPB_ControlCommand
+    name "EPB Control Command operation"
     description "Main control commands for brake engagement, disengagement, and force control"
     designrationale "Standardized command interface enables consistent EPB operation across all vehicle control systems"
     owner "Control Systems Team"
     datatype EPB_ControlStruct
     tags "control-command", "brake-engagement", "force-control"
     
-  def message EPB_StatusReport
-    name "EPB Status Report Message"
+  def operation EPB_StatusReport
+    name "EPB Status Report operation"
     description "Current EPB status including engagement state, force level, and operational mode"
     designrationale "Comprehensive status reporting enables real-time monitoring and diagnostic capabilities"
     owner "Diagnostic Systems Team"
     datatype EPB_StatusStruct
     tags "status-report", "system-health", "diagnostics"
     
-  def message EPB_DiagnosticData
-    name "EPB Diagnostic Data Message"
+  def operation EPB_DiagnosticData
+    name "EPB Diagnostic Data operation"
     description "Comprehensive diagnostic information for system health monitoring and fault detection"
     designrationale "Detailed diagnostic data supports predictive maintenance and fault isolation"
     owner "Diagnostic Systems Team"
@@ -69,25 +70,25 @@ hdef block ElectricParkingBrakeECU
     safetylevel ASIL-D
     tags "diagnostics", "fault-detection", "maintenance"
     
-  // Input message interfaces (received by this block)
-  def message VehicleStateInput
-    name "Vehicle State Input Message"
+  // Input operation interfaces (received by this block)
+  def operation VehicleStateInput
+    name "Vehicle State Input operation"
     description "Vehicle state information including speed, slope, ignition, transmission status from VehicleSystemsInterface block"
     designrationale "Centralized vehicle state input ensures consistent environmental awareness for EPB decision making"
     owner "Vehicle Integration Team"
     datatype VehicleStateStruct
     tags "vehicle-state", "environmental-input", "system-integration"
     
-  def message DriverCommandInput
-    name "Driver Command Input Message"
+  def operation DriverCommandInput
+    name "Driver Command Input operation"
     description "Driver input commands from EPB switch and related controls from DriverInterfaceSystem block"
     designrationale "Direct driver command interface ensures immediate response to driver intentions and manual override capabilities"
     owner "HMI Integration Team"
     datatype DriverCommandStruct
     tags "driver-command", "manual-control", "user-interface"
     
-  def message ActuatorFeedback
-    name "Actuator Feedback Message"
+  def operation ActuatorFeedback
+    name "Actuator Feedback operation"
     description "Electric actuator feedback including position, force, current, and temperature from VehicleSystemsInterface block"
     designrationale "Real-time actuator feedback enables closed-loop control and safety monitoring of brake engagement"
     owner "Actuator Integration Team"

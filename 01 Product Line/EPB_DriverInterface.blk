@@ -5,31 +5,31 @@ hdef block DriverInterfaceSystem
   description "Driver controls and feedback systems for Electric Parking Brake operation"
   designrationale "Dedicated driver interface block ensures proper human-machine interface design and safety-critical driver feedback"
   owner "HMI Engineering Team"
-  level system
+  level external
   safetylevel ASIL-D
   tags "driver-interface", "HMI", "EPB-controls", "ASIL-D", "human-machine-interface"
 
   enables ref feature DriverInterface
 
-  // Message interfaces (bidirectional with EPB ECU)
-  def message DriverEPBCommandOutput
-    name "Driver EPB Command Output Message"
+  // operation interfaces (bidirectional with EPB ECU)
+  def operation DriverEPBCommandOutput
+    name "Driver EPB Command Output operation"
     description "Driver EPB commands from control switch including engage, disengage, and emergency requests"
     designrationale "Direct driver command interface ensures immediate response to driver intentions without processing delays"
     owner "Driver Control Interface Team"
     datatype DriverCommandStruct
     tags "driver-command", "switch-interface", "manual-control"
     
-  def message EPB_StatusInput
-    name "EPB Status Input Message"
+  def operation EPB_StatusInput
+    name "EPB Status Input operation"
     description "EPB status information for driver display and indicator control"
     designrationale "Real-time status feedback enables driver awareness of EPB system state and operation"
     owner "Driver Feedback Team"
     datatype EPB_StatusStruct
     tags "status-display", "driver-feedback", "system-awareness"
     
-  def message EPB_DiagnosticInput
-    name "EPB Diagnostic Input Message"
+  def operation EPB_DiagnosticInput
+    name "EPB Diagnostic Input operation"
     description "EPB diagnostic information for driver warning and maintenance alerts"
     designrationale "Diagnostic information enables driver awareness of system health and maintenance requirements"
     owner "Driver Alert Team"

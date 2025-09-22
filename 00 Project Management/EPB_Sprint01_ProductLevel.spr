@@ -72,7 +72,7 @@ hdef sprint EPB_Sprint01_ProductLevel
         priority critical
         points "13"
         outputfile "EPB_FeatureModel.fml"
-        P
+        
       def task ReviewFeatureModel
         name "Review EPB Feature Model"
         description "Technical review of feature model for completeness, consistency, and safety classification"
@@ -135,7 +135,7 @@ hdef sprint EPB_Sprint01_ProductLevel
 
   def epic BlockArchitecture
     name "EPB Block Architecture"
-    description "Define EPB system blocks, ECU interfaces, message protocols, and signal definitions"
+    description "Define EPB system blocks, ECU interfaces, operation protocols, and signal definitions"
     assignedto ref agent HardwareEngineer
     issuestatus done
     priority critical
@@ -150,7 +150,7 @@ hdef sprint EPB_Sprint01_ProductLevel
       
       def task CreateBlockModel
         name "Create EPB Block Model (.blk)"
-        description "Define comprehensive EPB block model with ECU blocks, interfaces, messages, and signals"
+        description "Define comprehensive EPB block model with ECU blocks, interfaces, operations, and signals"
         assignedto ref agent HardwareEngineer
         issuestatus done
         priority critical
@@ -162,7 +162,7 @@ hdef sprint EPB_Sprint01_ProductLevel
         description "Technical review of block model for interface consistency, communication protocols, and safety isolation"
         assignedto ref agent SystemsEngineer
         issuestatus done
-        comment "SYSTEMS ENGINEER REVIEW: EPB Block Model demonstrates solid hardware architecture foundation. ✅ Main ECU block properly defined with ASIL-D classification. ✅ Comprehensive message interface covering control commands, status reporting, and diagnostics. ✅ Signal interfaces well-defined for real-time monitoring and feedback. ✅ Input/output directions clearly specified. ✅ Datatype definitions appropriate for automotive communication protocols. ✅ Feature traceability maintained to core EPB features. Interface design supports both safety-critical real-time control and diagnostic communication requirements. APPROVED for detailed design baseline."
+        comment "SYSTEMS ENGINEER REVIEW: EPB Block Model demonstrates solid hardware architecture foundation. ✅ Main ECU block properly defined with ASIL-D classification. ✅ Comprehensive operation interface covering control commands, status reporting, and diagnostics. ✅ Signal interfaces well-defined for real-time monitoring and feedback. ✅ Input/output directions clearly specified. ✅ Datatype definitions appropriate for automotive communication protocols. ✅ Feature traceability maintained to core EPB features. Interface design supports both safety-critical real-time control and diagnostic communication requirements. APPROVED for detailed design baseline."
         priority high
         points "8"
         

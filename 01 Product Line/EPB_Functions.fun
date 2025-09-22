@@ -1,5 +1,7 @@
 use featureset ElectricParkingBrakeFeatures
-use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+use functionset EPB_ActuatorOutputSubsystem_Functions
+use functionset EPB_ControlLogicSubsystem_Functions
+use functionset EPB_InputProcessingSubsystem_Functions
 
 
 hdef functionset ElectricParkingBrakeFunctions
@@ -8,6 +10,13 @@ hdef functionset ElectricParkingBrakeFunctions
   owner "Systems Engineering Team"
   tags "EPB-functions", "ASIL-D", "brake-control", "safety-functions"
   safetylevel ASIL-D
+  level system
+  needs ref signal StateChangeRequest
+  needs ref signal SafetyStatus
+  needs ref signal SystemHealth
+  offers ref operation SetSystemState
+  offers ref operation ProcessStateTransition
+  offers ref operation HandleFaultState
 
   def function EPB_SystemStateManager
     name "EPB System State Manager"
@@ -16,7 +25,20 @@ hdef functionset ElectricParkingBrakeFunctions
     tags "state-machine", "system-control", "mode-management"
     enables ref feature CoreEPBFeatures
     when ref config c_ComfortFeatures_AutomaticEngagement
+    decomposesto ref function VehicleStateValidator, VehicleSpeedProcessor
     safetylevel ASIL-D
+    needs ref operation GetSystemState
+    needs ref operation ValidateStateTransition
+    needs ref operation CheckSafetyConditions
+    needs ref signal StateChangeRequest
+    needs ref signal SafetyStatus
+    needs ref signal SystemHealth
+    offers ref operation SetSystemState
+    offers ref operation ProcessStateTransition
+    offers ref operation HandleFaultState
+    offers ref signal CurrentSystemState
+    offers ref signal StateTransitionComplete
+    offers ref signal FaultDetected
 
   def function EPB_RequestProcessor
     name "EPB Request Processor" 
@@ -24,6 +46,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "request-processing", "command-validation", "input-handling"
     enables ref feature CoreEPBFeatures
+    decomposesto ref function RequestProcessingImplementation, SwitchDebouncingImplementation, CANReceptionImplementation
     safetylevel ASIL-D
 
   def function EPB_MotorController
@@ -32,6 +55,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "motor-control", "PWM", "current-control", "position-control"
     enables ref feature BrakeEngagement
+    decomposesto ref function MotorControlImplementation
     safetylevel ASIL-D
 
   def function EPB_ForceCalculator
@@ -40,6 +64,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "force-calculation", "physics-model", "environmental-compensation"
     enables ref feature EngagementControl
+    decomposesto ref function ForceCalculationImplementation, SlopeEstimationImplementation, ForceMonitoringImplementation
     safetylevel ASIL-D
 
   def function EPB_PositionEstimator
@@ -49,6 +74,7 @@ hdef functionset ElectricParkingBrakeFunctions
     tags "position-estimation", "sensor-fusion", "fault-detection"
     enables ref feature PositionFeedback
     when ref config c_ComfortFeatures_AutomaticEngagement
+    decomposesto ref function PositionEstimationImplementation, SensorDiagnosticsImplementation, MotorDiagnosticsImplementation
     safetylevel ASIL-D
 
   def function EPB_SafetyValidator
@@ -57,6 +83,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "safety-validation", "interlock-checking", "condition-monitoring"
     enables ref feature SafetyInterlocks
+    decomposesto ref function SafetyValidationImplementation, ProcessorMonitoringImplementation, CommunicationMonitoringImplementation, SensorDiagnosticsImplementation
     safetylevel ASIL-D
 
   def function EPB_ReleaseController
@@ -65,6 +92,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "release-control", "rollback-prevention", "torque-transition"
     enables ref feature ControlledRelease
+    decomposesto ref function ReleaseControlImplementation, MotorControlImplementation, ForceMonitoringImplementation, SafetyValidationImplementation
     safetylevel ASIL-D
 
   def function EPB_ForceMonitor
@@ -73,6 +101,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "force-monitoring", "temperature-compensation", "wear-compensation"
     enables ref feature HoldingForceMonitoring
+    decomposesto ref function ForceMonitoringImplementation, SensorDiagnosticsImplementation, ThermalManagementImplementation, MotorDiagnosticsImplementation
     safetylevel ASIL-D
 
   def function EPB_SlopeEstimator
@@ -81,6 +110,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "slope-estimation", "accelerometer", "vehicle-dynamics"
     enables ref feature SlopeCompensation
+    decomposesto ref function SlopeEstimationImplementation, SensorDiagnosticsImplementation, CANReceptionImplementation
     safetylevel ASIL-D
 
   def function EPB_MotorDiagnostics
@@ -89,6 +119,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "motor-diagnostics", "current-analysis", "thermal-monitoring"
     enables ref feature ActuatorDiagnostics
+    decomposesto ref function MotorDiagnosticsImplementation, ThermalManagementImplementation, ProcessorMonitoringImplementation, CANTransmissionImplementation
     safetylevel ASIL-D
 
   def function EPB_SensorDiagnostics
@@ -97,6 +128,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "sensor-diagnostics", "cross-validation", "plausibility-analysis"
     enables ref feature ActuatorDiagnostics
+    decomposesto ref function SensorDiagnosticsImplementation, ProcessorMonitoringImplementation, CANTransmissionImplementation, IndicatorControlImplementation
     safetylevel ASIL-D
 
   def function EPB_ProcessorMonitor
@@ -105,14 +137,22 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "processor-monitoring", "watchdog", "memory-integrity"
     enables ref feature ECUDiagnostics
+    decomposesto ref function ProcessorMonitoringImplementation
+    decomposesto ref function CommunicationMonitoringImplementation
+    decomposesto ref function CANTransmissionImplementation
+    decomposesto ref function IndicatorControlImplementation
     safetylevel ASIL-D
 
   def function EPB_CommunicationMonitor
     name "EPB Communication Monitor"
-    description "Monitors CAN bus health, message timing, checksum validation, and communication fault detection"
+    description "Monitors CAN bus health, operation timing, checksum validation, and communication fault detection"
     owner "Functional Safety Team"
-    tags "communication-monitoring", "CAN-health", "message-validation"
+    tags "communication-monitoring", "CAN-health", "operation-validation"
     enables ref feature ECUDiagnostics
+    decomposesto ref function CommunicationMonitoringImplementation
+    decomposesto ref function CANTransmissionImplementation
+    decomposesto ref function CANReceptionImplementation
+    decomposesto ref function IndicatorControlImplementation
     safetylevel ASIL-D
 
   def function EPB_EmergencyBrakeController
@@ -121,6 +161,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "emergency-control", "fail-safe", "bypass-control"
     enables ref feature EmergencyEngagement
+    decomposesto ref function EmergencyBrakeControlImplementation
     safetylevel ASIL-D
 
   def function EPB_FailureManager
@@ -129,22 +170,25 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Functional Safety Team"
     tags "failure-management", "degraded-modes", "safety-maintenance"
     enables ref feature FailSafeModes
+    decomposesto ref function FailureManagementImplementation
     safetylevel ASIL-D
 
   def function EPB_CANTransmitter
     name "EPB CAN Transmitter"
     description "Formats and transmits EPB status, diagnostic data, and fault information over vehicle CAN network"
     owner "Systems Engineering Team"
-    tags "CAN-transmission", "message-formatting", "status-reporting"
+    tags "CAN-transmission", "operation-formatting", "status-reporting"
     enables ref feature CANInterface
+    decomposesto ref function CANTransmissionImplementation
     safetylevel ASIL-D
 
   def function EPB_CANReceiver
     name "EPB CAN Receiver"
     description "Receives and validates vehicle state information, driver commands, and configuration data from CAN network"
     owner "Systems Engineering Team"
-    tags "CAN-reception", "message-validation", "data-parsing"
+    tags "CAN-reception", "operation-validation", "data-parsing"
     enables ref feature CANInterface
+    decomposesto ref function CANReceptionImplementation
     safetylevel ASIL-D
 
   def function EPB_SwitchDebouncer
@@ -153,6 +197,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "switch-debouncing", "pattern-detection", "input-filtering"
     enables ref feature SwitchInterface
+    decomposesto ref function SwitchDebouncingImplementation
     safetylevel ASIL-D
 
   def function EPB_IndicatorController
@@ -161,6 +206,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "indicator-control", "warning-lights", "audio-feedback"
     enables ref feature StatusIndicators
+    decomposesto ref function IndicatorControlImplementation
     safetylevel ASIL-D
 
   def function EPB_AutoEngageLogic
@@ -169,6 +215,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "auto-engagement", "logic-processing", "timer-management"
     enables ref feature AutomaticEngagement
+    decomposesto ref function AutoEngageLogicImplementation
     safetylevel QM
 
   def function EPB_AutoDisengageLogic
@@ -177,6 +224,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "auto-disengagement", "driver-readiness", "condition-analysis"
     enables ref feature AutomaticDisengagement
+    decomposesto ref function AutoDisengageLogicImplementation
     safetylevel QM
 
   def function EPB_HillHoldTimer
@@ -185,6 +233,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "hill-hold", "timer-management", "transition-control"
     enables ref feature HillHoldAssist
+    decomposesto ref function HillHoldTimerImplementation
     safetylevel ASIL-B
 
   def function EPB_CalibrationManager
@@ -193,6 +242,7 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "calibration", "end-stop-learning", "aging-compensation"
     enables ref feature CoreEPBFeatures
+    decomposesto ref function CalibrationManagementImplementation
     safetylevel ASIL-D
 
   def function EPB_ThermalManager
@@ -201,4 +251,5 @@ hdef functionset ElectricParkingBrakeFunctions
     owner "Systems Engineering Team"
     tags "thermal-protection", "temperature-monitoring", "duty-cycle-limiting"
     enables ref feature SafetyFeatures
+    decomposesto ref function ThermalManagementImplementation
     safetylevel ASIL-D

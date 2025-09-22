@@ -12,7 +12,9 @@ hdef requirementset EPB_FunctionalRequirements
 
   def requirement REQ_FUNC_001
     name "EPB System State Management"
-    description "The EPB system SHALL manage system states including IDLE, ENGAGING, ENGAGED, DISENGAGING, and FAULT states with deterministic transitions"
+    description """
+    The EPB system SHALL manage system states including IDLE, 
+    ENGAGING, ENGAGED, DISENGAGING, and FAULT states with deterministic transitions"""
     rationale "Clear state management ensures predictable system behavior and enables proper user feedback and safety monitoring per ISO 26262"
     status approved
     reqtype functional
@@ -154,8 +156,8 @@ hdef requirementset EPB_FunctionalRequirements
     
     def requirement REQ_FUNC_006_1
       name "Periodic Status Broadcasting"
-      description "WHEN operating normally THEN the system SHALL broadcast EPB status including engagement state, force level, and system health every 100ms AND SHALL use standard automotive CAN message formats"
-      rationale "Regular status updates enable other vehicle systems to respond appropriately to EPB state with standard message formats ensuring compatibility with vehicle networks"
+      description "WHEN operating normally THEN the system SHALL broadcast EPB status including engagement state, force level, and system health every 100ms AND SHALL use standard automotive CAN operation formats"
+      rationale "Regular status updates enable other vehicle systems to respond appropriately to EPB state with standard operation formats ensuring compatibility with vehicle networks"
       status approved
       reqtype interface
       implements ref function EPB_CANTransmitter

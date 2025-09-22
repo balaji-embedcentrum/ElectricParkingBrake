@@ -1,0 +1,278 @@
+// EPB_InputProcessingSubsystem_FailureAnalysis.flr - Complete FMEA Example
+use functionset EPB_InputProcessingSubsystem_Functions
+use requirementset EPB_InputProcessingSubsystem_Requirements
+use testset EPB_InputProcessingSubsystem_Tests
+use block EPB_InputProcessingSubsystem
+use failureset EPB_SystemFailureAnalysis
+
+hdef failureset EPB_InputProcessingFailures
+  name "EPB Input Processing Subsystem FMEA"
+  description "Comprehensive failure mode and effects analysis for the Electric Parking Brake Input Processing Subsystem. \
+    Covers signal processing, validation, fault detection, and communication failures. \
+    Addresses ISO 26262 ASIL-D safety requirements for automotive brake systems."
+  owner "EPB Safety Engineering Team"
+  tags "fmea", "epb", "input-processing", "safety-critical", "automotive", "brake-system"
+  level subsystem
+  safetylevel ASIL-D
+  occursin ref block EPB_InputProcessingSubsystem
+  timingreference ms
+
+  def failuremode VehicleSpeedSensorFailure
+    name "Vehicle Speed Sensor Signal Failure"
+    description "
+      Loss or corruption of vehicle speed sensor signal input.
+      Results in inability to determine vehicle motion state for EPB safety decisions.
+      Critical for preventing EPB engagement while vehicle is moving.
+      "
+    owner "Sensor Safety Team"
+    tags "speed-sensor", "signal-failure", "safety-critical"
+    
+    // FMEA Quantitative Analysis
+    failurerate 2.1e-6        // 2.1 failures per million hours
+    severity 9                // High severity - safety critical
+    detectability 4           // Good detection capability
+    occurrence 5              // Moderate occurrence likelihood
+    actionpriority high       // High priority for action
+    safetylevel ASIL-D
+    
+    // Temporal Properties
+    faultdetectiontime 20   // Detected within 20 milliseconds
+    faulttolerancetime 10   // System can tolerate for 10ms
+    propagationdelay 50     // Propagates to system failure in 50ms
+    recoverytime 1000      // 1000ms required for recovery
+    
+    // Failure Causality Chain with Timing
+    causedby ref failuremode SensorWiringDamage within 100
+    causedby ref failuremode SensorInternalFailure within 200
+    causedby ref failuremode SignalInterference within 50
+    
+    // Failure Effects with Timing
+    effects ref failuremode EPB_UnsafeEngagement within 100
+    effects ref failuremode SpeedValidationFailure within 30
+    effects ref failuremode IncorrectMotionDetection within 50
+    
+    // Detection Mechanisms with Response Time
+    detectedby ref function VehicleSpeedProcessor within 20
+    detectedby ref function FaultDetector within 30
+    detectedby ref function SystemHealthMonitoring within 40
+    
+    // Mitigation Strategies with Activation Time
+    mitigatedby ref function SpeedPlausibilityCheck within 10
+    mitigatedby ref function RedundantSpeedSource within 50
+    mitigatedby ref function SafetyConstraintValidation within 30
+    
+    // Testing and Requirements Traceability
+    testedby ref testcase TEST_INPUT_002
+    testedby ref testcase TEST_INPUT_006
+    testedby ref testcase TEST_INPUT_009
+    derivedfrom ref requirement REQ_INPUT_001
+    derivedfrom ref requirement REQ_INPUT_004
+    derivedfrom ref requirement REQ_INPUT_008
+
+  def failuremode ActuatorPositionSensorFailure
+    name "EPB Actuator Position Sensor Failure"
+    description """
+      Loss of actuator position feedback signal.
+      Prevents accurate determination of EPB engagement status.
+      """
+    owner "Actuator Safety Team"
+    tags "position-sensor", "actuator-feedback", "safety"
+    
+    failurerate 1.8e-6
+    severity 7                // High severity but not catastrophic
+    detectability 5           // Moderate detection capability
+    occurrence 4              // Moderate occurrence likelihood
+    actionpriority medium
+    safetylevel ASIL-C
+    
+    // Temporal Properties
+    faultdetectiontime 30ms
+    propagationdelay 100ms
+    recoverytime 800ms
+    
+    // Failure Causality Chain
+    causedby ref failuremode PositionSensorWearOut within 500ms
+    causedby ref failuremode PositionSensorCalibrationDrift within 1000ms
+    
+    // Failure Effects
+    effects ref failuremode UnknownActuatorPosition within 100ms
+    effects ref failuremode ActuatorControlUncertainty within 200ms
+    
+    // Detection and Mitigation
+    detectedby ref function ActuatorFeedbackProcessor within 30ms
+    detectedby ref function PositionValidation within 50ms
+    
+    mitigatedby ref function PositionEstimation within 20ms
+    mitigatedby ref function ActuatorModelValidation within 100ms
+    
+    // Testing and Requirements
+    testedby ref testcase TEST_INPUT_003
+    testedby ref testcase TEST_INPUT_007
+    derivedfrom ref requirement REQ_INPUT_005
+    derivedfrom ref requirement REQ_INPUT_009
+
+  def failuremode CANBusCommunicationFailure
+    name "CAN Bus Communication Failure"
+    description """
+      Loss of communication on vehicle CAN network.
+      Prevents reception of critical vehicle state information.
+      """
+    owner "Network Safety Team"
+    tags "can-bus", "communication", "network-failure"
+    
+    failurerate 1.5e-6
+    severity 8                // High severity - communication critical
+    detectability 3           // Good detection capability
+    occurrence 3              // Low-moderate occurrence
+    actionpriority high
+    safetylevel ASIL-D
+    
+    // Temporal Properties
+    faultdetectiontime 100ms  // CAN timeout detection
+    propagationdelay 200ms
+    recoverytime 2000ms
+    
+    // Failure Causality Chain
+    causedby ref failuremode CANTransceiverFailure within 50ms
+    causedby ref failuremode BusWiringDamage within 100ms
+    causedby ref failuremode BusOverloadCondition within 20ms
+    
+    // Failure Effects
+    effects ref failuremode VehicleStateDataLoss within 200ms
+    effects ref failuremode SystemIsolation within 500ms
+    
+    // Detection and Mitigation
+    detectedby ref function CANoperationProcessor within 100ms
+    detectedby ref function NetworkHealthMonitor within 150ms
+    
+    mitigatedby ref function CANBusRedundancy within 50ms
+    mitigatedby ref function operationTimeoutHandling within 100ms
+    mitigatedby ref function NetworkDegradedMode within 200ms
+    
+    // Testing and Requirements
+    testedby ref testcase TEST_INPUT_004
+    testedby ref testcase TEST_INPUT_008
+    derivedfrom ref requirement REQ_INPUT_002
+    derivedfrom ref requirement REQ_INPUT_006
+
+  def failuremode PowerSupplyFailure
+    name "Input Processing Module Power Failure"
+    description """
+      Loss of power supply to input processing module.
+      Results in complete loss of input processing functionality.
+      """
+    owner "Power Safety Team"
+    tags "power-supply", "hardware", "critical"
+    
+    failurerate 0.9e-6
+    severity 10               // Maximum severity - complete loss
+    detectability 2           // Easy to detect (obvious)
+    occurrence 2              // Low occurrence
+    actionpriority high
+    safetylevel ASIL-D
+    
+    // Temporal Properties
+    faultdetectiontime 10ms   // Power loss detected quickly
+    recoverytime 5000ms       // Long recovery time
+    
+    // Failure Effects
+    effects ref failuremode CompleteInputLoss within 10ms
+    effects ref failuremode CompleteModuleShutdown within 20ms
+    
+    // Detection and Mitigation
+    detectedby ref function PowerMonitoring within 10ms
+    detectedby ref function VoltageSupervision within 5ms
+    
+    mitigatedby ref function BackupPowerSource within 5ms
+    mitigatedby ref function EmergencySafeMode within 50ms
+    
+    // Testing and Requirements
+    testedby ref testcase TEST_INPUT_001
+    derivedfrom ref requirement REQ_INPUT_010
+    derivedfrom ref requirement REQ_INPUT_012
+
+  // Root Cause Failure Modes
+  def failuremode SensorWiringDamage
+    name "Speed Sensor Wiring Damage"
+    description "Physical damage to speed sensor wiring harness"
+    owner "Wiring Safety Team"
+    tags "wiring", "physical-damage", "root-cause"
+    
+    failurerate 0.5e-6
+    severity 8
+    detectability 4
+    occurrence 3
+    actionpriority medium
+    safetylevel ASIL-C
+    
+    effects ref failuremode VehicleSpeedSensorFailure within 100ms
+    
+    detectedby ref function WiringDiagnostic within 200ms
+    mitigatedby ref function WiringProtection within 1ms
+    
+    testedby ref testcase TEST_INPUT_002
+    derivedfrom ref requirement REQ_INPUT_001
+
+  def failuremode SensorInternalFailure
+    name "Speed Sensor Internal Component Failure"
+    description "Internal speed sensor hardware component failure"
+    owner "Sensor Safety Team"
+    tags "sensor", "hardware", "internal-failure"
+    
+    failurerate 0.4e-6
+    severity 8
+    detectability 3
+    occurrence 2
+    actionpriority medium
+    safetylevel ASIL-C
+    
+    effects ref failuremode VehicleSpeedSensorFailure within 200ms
+    
+    detectedby ref function SensorSelfTest within 100ms
+    mitigatedby ref function SensorRedundancy within 50ms
+    
+    testedby ref testcase TEST_INPUT_006
+    derivedfrom ref requirement REQ_INPUT_008
+
+  // Effect Failure Modes
+  def failuremode EPB_UnsafeEngagement
+    name "EPB Unsafe Engagement Attempt"
+    description "EPB attempts to engage while vehicle is moving"
+    owner "Safety Critical Team"
+    tags "unsafe-operation", "safety-critical", "engagement"
+    
+    failurerate 0.1e-6
+    severity 10               // Maximum severity - safety critical
+    detectability 2
+    occurrence 1
+    actionpriority high
+    safetylevel ASIL-D
+    
+    causedby ref failuremode VehicleSpeedSensorFailure within 100ms
+    
+    detectedby ref function SafetyMonitor within 10ms
+    mitigatedby ref function EmergencyDisable within 5ms
+    
+    testedby ref testcase TEST_INPUT_011
+    derivedfrom ref requirement REQ_INPUT_013
+
+  def failuremode CompleteInputLoss
+    name "Complete Loss of Input Processing"
+    description "Total loss of all input processing capability"
+    owner "System Safety Team"
+    tags "complete-failure", "system-loss", "critical"
+    
+    failurerate 0.2e-6
+    severity 10
+    detectability 1
+    occurrence 1
+    actionpriority high
+    safetylevel ASIL-D
+    
+    causedby ref failuremode PowerSupplyFailure within 10ms
+    
+    detectedby ref function SystemMonitor within 15ms
+    mitigatedby ref function BackupSystem within 100ms
+    
+    testedby ref testcase TEST_INPUT_001
+    derivedfrom ref requirement REQ_INPUT_010

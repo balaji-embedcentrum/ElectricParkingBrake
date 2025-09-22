@@ -58,7 +58,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Product-Level Safety Requirements"
         description "Develop ASIL-D safety requirements including hazard analysis, safety goals, and functional safety requirements per ISO 26262"
         assignedto ref agent FunctionalSafetyEngineer
-        issuestatus open
+        issuestatus done
         priority critical
         points "8"
         outputfile "EPB_SafetyRequirements.req"
@@ -67,7 +67,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Safety Requirements"
         description "ISO 26262 compliant review of safety requirements including ASIL decomposition and safety goal verification"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "3"
         
@@ -75,7 +75,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Safety Requirements"
         description "Final approval of safety requirements baseline"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "2"
 
@@ -90,7 +90,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Product-Level Performance Requirements"
         description "Develop performance requirements for timing, accuracy, efficiency, and load specifications"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "5"
         outputfile "EPB_PerformanceRequirements.req"
@@ -99,7 +99,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Performance Requirements"
         description "Review performance requirements for achievability, measurement methods, and acceptance criteria"
         assignedto ref agent VerificationEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
         
@@ -107,7 +107,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Performance Requirements"
         description "Final approval of performance requirements baseline"
         assignedto ref agent ProjectManager
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
 
@@ -122,7 +122,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Product-Level Interface Requirements"
         description "Develop interface requirements for vehicle integration, CAN communication protocols, and external system interactions"
         assignedto ref agent SystemIntegrator
-        issuestatus open
+        issuestatus done
         priority high
         points "5"
         outputfile "EPB_InterfaceRequirements.req"
@@ -131,7 +131,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Interface Requirements"
         description "Review interface requirements for compatibility, protocol compliance, and integration feasibility"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
         
@@ -139,7 +139,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Interface Requirements"
         description "Final approval of interface requirements baseline"
         assignedto ref agent ProjectManager
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
 
@@ -154,7 +154,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Product-Level Environmental Requirements"
         description "Develop environmental requirements for automotive operating conditions, EMC compliance, and reliability specifications"
         assignedto ref agent ReliabilityEngineer
-        issuestatus open
+        issuestatus done
         priority medium
         points "5"
         outputfile "EPB_EnvironmentalRequirements.req"
@@ -163,7 +163,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Environmental Requirements"
         description "Review environmental requirements for automotive compliance and test specification adequacy"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus done
         priority medium
         points "2"
         
@@ -171,7 +171,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Environmental Requirements"
         description "Final approval of environmental requirements baseline"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus done
         priority medium
         points "2"
 
@@ -186,7 +186,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Consolidate Requirements Baseline"
         description "Consolidate all approved requirements into unified baseline with traceability matrix"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority critical
         points "3"
         outputfile "EPB_RequirementsBaseline.req"
@@ -195,7 +195,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Requirements Baseline"
         description "Final review of consolidated requirements baseline for completeness and consistency"
         assignedto ref agent ProjectManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "2"
         
@@ -203,7 +203,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Requirements Baseline"
         description "Final approval of complete requirements baseline for design and test development"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "2"
 
@@ -226,7 +226,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Functional Test Cases"
         description "Develop comprehensive functional test cases covering normal operation, edge cases, and error conditions"
         assignedto ref agent VerificationEngineer
-        issuestatus open
+        issuestatus done
         priority critical
         points "8"
         outputfile "EPB_FunctionalTestCases.tst"
@@ -235,7 +235,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Functional Test Cases"
         description "Review functional test cases for requirements coverage, test adequacy, and execution feasibility"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "3"
         
@@ -243,7 +243,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Functional Test Cases"
         description "Final approval of functional test cases baseline"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
 
@@ -258,7 +258,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Safety Test Cases"
         description "Develop ASIL-D compliant safety test cases including fault injection, failure mode testing, and safety mechanism validation"
         assignedto ref agent FunctionalSafetyEngineer
-        issuestatus open
+        issuestatus done
         priority critical
         points "8"
         outputfile "EPB_SafetyTestCases.tst"
@@ -267,7 +267,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Safety Test Cases"
         description "Review safety test cases for ISO 26262 compliance, fault coverage, and safety validation adequacy"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "3"
         
@@ -275,7 +275,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Safety Test Cases"
         description "Final approval of safety test cases baseline"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus done
         priority critical
         points "2"
 
@@ -290,7 +290,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Performance Test Cases"
         description "Develop performance test cases for timing, accuracy, efficiency, and load testing scenarios"
         assignedto ref agent VerificationEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "5"
         outputfile "EPB_PerformanceTestCases.tst"
@@ -299,7 +299,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Performance Test Cases"
         description "Review performance test cases for measurement accuracy, test conditions, and acceptance criteria"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
         
@@ -307,7 +307,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Performance Test Cases"
         description "Final approval of performance test cases baseline"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
 
@@ -322,7 +322,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Interface Test Cases"
         description "Develop interface test cases for CAN communication, vehicle integration, and external system interaction testing"
         assignedto ref agent SystemIntegrator
-        issuestatus open
+        issuestatus done
         priority high
         points "5"
         outputfile "EPB_InterfaceTestCases.tst"
@@ -331,7 +331,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Interface Test Cases"
         description "Review interface test cases for protocol compliance, integration scenarios, and communication validation"
         assignedto ref agent SystemsEngineer
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
         
@@ -339,7 +339,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Interface Test Cases"
         description "Final approval of interface test cases baseline"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus done
         priority high
         points "2"
 
@@ -354,7 +354,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Create Environmental Test Cases"
         description "Develop environmental test cases for temperature, vibration, EMC, and automotive environmental condition testing"
         assignedto ref agent ValidationEngineer
-        issuestatus open
+        issuestatus done
         priority medium
         points "5"
         outputfile "EPB_EnvironmentalTestCases.tst"
@@ -363,7 +363,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Environmental Test Cases"
         description "Review environmental test cases for automotive standard compliance and test procedure adequacy"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus inprogress
         priority medium
         points "2"
         
@@ -371,7 +371,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Environmental Test Cases"
         description "Final approval of environmental test cases baseline"
         assignedto ref agent QualityManager
-        issuestatus open
+        issuestatus inprogress
         priority medium
         points "2"
 
@@ -386,7 +386,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Consolidate Test Cases Baseline"
         description "Consolidate all approved test cases into unified baseline with requirements traceability"
         assignedto ref agent VerificationEngineer
-        issuestatus open
+        issuestatus inprogress
         priority critical
         points "3"
         outputfile "EPB_TestCasesBaseline.tst"
@@ -395,7 +395,7 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Review Test Cases Baseline"
         description "Final review of consolidated test cases baseline for completeness and requirements coverage"
         assignedto ref agent SafetyManager
-        issuestatus open
+        issuestatus inprogress
         priority critical
         points "2"
         
@@ -403,6 +403,6 @@ hdef sprint EPB_Sprint02_Requirements_TestCases
         name "Approve Test Cases Baseline"
         description "Final approval of complete test cases baseline for verification and validation activities"
         assignedto ref agent ProjectManager
-        issuestatus open
+        issuestatus inprogress
         priority critical
         points "2"

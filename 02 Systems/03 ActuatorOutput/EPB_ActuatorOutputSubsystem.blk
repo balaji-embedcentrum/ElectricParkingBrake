@@ -13,14 +13,14 @@ hdef block EPB_ActuatorOutputSubsystem
   enables ref feature InterfaceFeatures
 
   // Input interfaces (from Control Logic Subsystem)
-  needs ref message EPBControlCommand
-  needs ref message SafetyStatus
+  needs ref operation EPBControlCommand
+  needs ref operation SafetyStatus
   needs ref signal EPBEngagementCommand
   needs ref signal ForceTarget
   needs ref signal SafetyInterlock
 
   // Output interfaces (to external actuators and feedback)
-  def message ActuatorControlOutput
+  def operation ActuatorControlOutput
     name "Actuator Control Output"
     description "Motor control commands including PWM, direction, and safety enable signals"
     designrationale "Comprehensive motor control interface ensures precise actuator positioning and force control"
@@ -29,7 +29,7 @@ hdef block EPB_ActuatorOutputSubsystem
     safetylevel ASIL-D
     tags "motor-control", "pwm-control", "safety-enable", "actuator-interface"
 
-  def message ActuatorDiagnosticOutput
+  def operation ActuatorDiagnosticOutput
     name "Actuator Diagnostic Output"
     description "Actuator-specific diagnostic information for health monitoring and fault detection"
     designrationale "Actuator diagnostics enable predictive maintenance and rapid fault isolation"

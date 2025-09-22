@@ -1,0 +1,43 @@
+{
+  "model": {
+    "name": "New Model",
+    "version": "1.0",
+    "description": "A new simulation model",
+    "simulation": {
+      "start_time": 0,
+      "stop_time": 10,
+      "step_size": 0.01,
+      "solver": "euler"
+    },
+    "blocks": [
+      {
+        "id": "block_1757123507882",
+        "type": "constant",
+        "position": {
+          "x": 97.53125,
+          "y": 326
+        },
+        "parameters": {
+          "value": 1
+        }
+      },
+      {
+        "id": "block_1757123511500",
+        "type": "integrator",
+        "position": {
+          "x": 400,
+          "y": 300
+        },
+        "parameters": {
+          "initial_condition": 0
+        }
+      }
+    ],
+    "connections": [
+      {
+        "from": "block_1757123507882.out",
+        "to": "block_1757123511500.in"
+      }
+    ]
+  }
+}
