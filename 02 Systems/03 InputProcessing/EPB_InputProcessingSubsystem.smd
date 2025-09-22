@@ -200,3 +200,268 @@ hdef statemachine EPB_InputProcessingStateMachine
     implements ref requirement REQ_IP_016
     when ref config c_FailureDiagnostics
 
+hdef statemachine EPB_InputProcessingSubsystemStateMachine
+  name "EPB Input Processing Subsystem State Machine"
+  description "Complete state machine for EPB Input Processing Subsystem controlling signal validation, processing, fault detection, and output generation with ISO 26262 ASIL-D compliance. Manages transitions between initialization, normal operation, fault conditions, and diagnostic modes."
+  owner "Input Processing Systems Team"
+  tags "input-processing", "state-machine", "signal-validation", "iso26262", "ASIL-D"
+  safetylevel ASIL-D
+  status approved
+  allocatedto ref block EPB_InputProcessingSubsystem
+  implements ref function VehicleStateValidator
+
+  def state Initialization
+    name "System Initialization State"
+    description "Input processing subsystem initializing all signal validators, processors, and diagnostic functions. Performing self-tests, calibration validation, and establishing baseline signal states."
+    owner "Input Processing Team"
+    tags "initialization", "self-test", "calibration", "startup"
+    status implemented
+    initialstate true
+    implements ref function VehicleStateValidator
+    when ref config c_ComfortFeatures_ECUDiagnostics
+
+  def state SignalAcquisition
+    name "Signal Acquisition State"
+    description """
+      Actively acquiring and buffering input signals from vehicle systems, driver interfaces, 
+      and actuator feedback. Performing initial range checks and signal quality validation.
+      """
+    owner "Signal Processing Team"
+    tags "acquisition", "buffering", "range-check", "signal-quality"
+    status implemented
+    implements ref requirement REQ_INPUT_002
+    when ref config c_FailureDiagnostics
+
+  def state SignalValidation
+    name "Signal Validation State"
+    description """
+      Comprehensive validation of acquired signals including plausibility checks, 
+      cross-validation between redundant channels, and fault detection algorithms.
+      """
+    owner "Validation Team"
+    tags "validation", "plausibility", "cross-validation", "fault-detection"
+    status implemented
+    implements ref requirement REQ_INPUT_001_1
+    when ref config c_SecondarySensorTechnology
+
+  def state SignalProcessing
+    name "Signal Processing State"
+    description """
+      Processing validated signals through filtering, conditioning, calibration, and 
+      conversion to internal formats for EPB control system consumption.
+      """
+    owner "Signal Processing Team"
+    tags "processing", "filtering", "conditioning", "calibration"
+    status implemented
+    implements ref requirement REQ_INPUT_003
+    when ref config c_SlopeCompensation
+
+  def state OutputGeneration
+    name "Output Generation State"
+    description """
+      Generating processed output messages and signals for internal EPB subsystems
+      with timestamp validation and integrity checking.
+      """
+    owner "Output Generation Team"
+    tags "output-generation", "messaging", "timestamp", "integrity"
+    status implemented
+    implements ref requirement REQ_INPUT_004
+
+  def state FaultDetected
+    name "Fault Detection State"
+    description """
+      Input processing subsystem detected fault condition requiring diagnostic attention.
+      Implementing fault isolation, fallback signal generation, and error reporting.
+      """
+    owner "Diagnostics Team"
+    tags "fault", "diagnostic", "isolation", "fallback"
+    status implemented
+    implements ref requirement REQ_INPUT_FAULT_001
+    when ref config c_FailureDiagnostics
+
+  def state DiagnosticMode
+    name "Diagnostic Mode State"
+    description """
+      Special diagnostic mode for calibration, testing, and maintenance operations
+      with enhanced monitoring and data logging capabilities.
+      """
+    owner "Service Team"
+    tags "diagnostic", "calibration", "testing", "maintenance"
+    status implemented
+    implements ref requirement REQ_INPUT_DIAG_001
+    when ref config c_ECUDiagnostics
+
+  def state SafeMode
+    name "Safe Mode State"
+    description """
+      Safe operation mode with minimal signal processing using validated fallback values
+      and conservative assumptions for continued operation during fault conditions.
+      """
+    owner "Safety Team"
+    tags "safe-mode", "fallback", "conservative", "fault-tolerance"
+    status implemented
+    endstate true
+    implements ref requirement REQ_INPUT_SAFE_001
+
+  def transition InitializationComplete
+    name "Initialization Complete Transition"
+    description "Transition from initialization to signal acquisition when all self-tests pass and system is ready"
+    owner "Input Processing Team"
+    tags "initialization-complete", "self-test-pass", "ready"
+    status implemented
+    from ref state Initialization
+    to ref state SignalAcquisition
+    condition "self_tests_passed AND calibration_valid AND signal_sources_available AND system_healthy"
+    calls ref function InitializeSignalProcessors
+    implements ref requirement REQ_INPUT_INIT_COMPLETE_001
+    when ref config c_ECUDiagnostics
+
+  def transition SignalsAcquired
+    name "Signals Acquired Transition"
+    description "Transition from acquisition to validation when sufficient signal samples are buffered"
+    owner "Signal Processing Team"
+    tags "signals-acquired", "buffering-complete", "validation-ready"
+    status implemented
+    from ref state SignalAcquisition
+    to ref state SignalValidation
+    condition "signal_buffers_filled AND sample_rate_adequate AND signal_integrity_ok"
+    calls ref function PrepareValidation
+    implements ref requirement REQ_INPUT_ACQUIRE_COMPLETE_001
+
+  def transition ValidationComplete
+    name "Validation Complete Transition"
+    description "Transition from validation to processing when all signals pass validation checks"
+    owner "Validation Team"
+    tags "validation-complete", "signals-valid", "processing-ready"
+    status implemented
+    from ref state SignalValidation
+    to ref state SignalProcessing
+    condition "plausibility_checks_passed AND cross_validation_ok AND fault_flags_clear"
+    calls ref function StartSignalProcessing
+    implements ref requirement REQ_INPUT_VALIDATION_COMPLETE_001
+    when ref config c_SecondarySensorTechnology
+
+  def transition ProcessingComplete
+    name "Processing Complete Transition"
+    description "Transition from processing to output generation when signal conditioning is complete"
+    owner "Signal Processing Team"
+    tags "processing-complete", "conditioning-done", "output-ready"
+    status implemented
+    from ref state SignalProcessing
+    to ref state OutputGeneration
+    condition "filtering_complete AND calibration_applied AND format_conversion_done"
+    call ref function GenerateOutputs
+    implements ref requirement REQ_INPUT_PROCESSING_COMPLETE_001
+
+  def transition OutputGenerated
+    name "Output Generated Transition"
+    description "Transition back to acquisition for next processing cycle when outputs are generated"
+    owner "Output Generation Team"
+    tags "output-generated", "cycle-complete", "next-cycle"
+    status implemented
+    from ref state OutputGeneration
+    to ref state SignalAcquisition
+    condition "outputs_published AND integrity_verified AND next_cycle_ready"
+    calls ref function StartNextCycle
+    implements ref requirement REQ_INPUT_OUTPUT_COMPLETE_001
+
+  def transition FaultFromAcquisition
+    name "Fault From Acquisition Transition"
+    description "Emergency transition to fault state when signal acquisition failures detected"
+    owner "Diagnostics Team"
+    tags "acquisition-fault", "signal-loss", "emergency"
+    status implemented
+    from ref state SignalAcquisition
+    to ref state FaultDetected
+    condition "signal_timeout OR signal_out_of_range OR acquisition_hardware_failure"
+    calls ref function HandleAcquisitionFault
+    implements ref requirement REQ_INPUT_FAULT_ACQUISITION_001
+    when ref config c_FailureDiagnostics
+
+  def transition FaultFromValidation
+    name "Fault From Validation Transition"
+    description "Emergency transition to fault state when validation failures detected"
+    owner "Diagnostics Team"
+    tags "validation-fault", "plausibility-failure", "cross-check-failure"
+    status implemented
+    from ref state SignalValidation
+    to ref state FaultDetected
+    condition "plausibility_failure OR cross_validation_mismatch OR redundancy_loss"
+    calls ref function HandleValidationFault
+    implements ref requirement REQ_INPUT_FAULT_VALIDATION_001
+    when ref config c_SecondarySensorTechnology
+
+  def transition FaultFromProcessing
+    name "Fault From Processing Transition"
+    description "Emergency transition to fault state when processing failures detected"
+    owner "Diagnostics Team"
+    tags "processing-fault", "algorithm-failure", "computation-error"
+    status implemented
+    from ref state SignalProcessing
+    to ref state FaultDetected
+    condition "processing_algorithm_failure OR computation_overflow OR calibration_error"
+    calls ref function HandleProcessingFault
+    implements ref requirement REQ_INPUT_FAULT_PROCESSING_001
+
+  def transition DiagnosticEntry
+    name "Diagnostic Entry Transition"
+    description "Transition to diagnostic mode when diagnostic request received"
+    owner "Service Team"
+    tags "diagnostic-entry", "service-request", "maintenance"
+    status implemented
+    from ref state SignalAcquisition
+    to ref state DiagnosticMode
+    condition "diagnostic_request_received AND service_mode_authorized AND system_idle"
+    calls ref function EnterDiagnosticMode
+    implements ref requirement REQ_INPUT_DIAGNOSTIC_ENTRY_001
+    when ref config c_ECUDiagnostics
+
+  def transition DiagnosticExit
+    name "Diagnostic Exit Transition"
+    description "Transition from diagnostic mode back to normal operation"
+    owner "Service Team"
+    tags "diagnostic-exit", "service-complete", "normal-operation"
+    status implemented
+    from ref state DiagnosticMode
+    to ref state SignalAcquisition
+    condition "diagnostic_complete AND calibration_updated AND service_authorized_exit"
+    calls ref function ExitDiagnosticMode
+    implements ref requirement REQ_INPUT_DIAGNOSTIC_EXIT_001
+
+  def transition SafeModeEntry
+    name "Safe Mode Entry Transition"
+    description "Critical transition to safe mode when multiple faults compromise system integrity"
+    owner "Safety Team"
+    tags "safe-mode-entry", "critical-fault", "system-compromise"
+    status implemented
+    from ref state FaultDetected
+    to ref state SafeMode
+    condition "multiple_faults_detected OR safety_critical_failure OR fault_isolation_failed"
+    calls ref function EnterSafeMode
+    implements ref requirement REQ_INPUT_SAFE_ENTRY_001
+
+  def transition FaultRecovery
+    name "Fault Recovery Transition"
+    description "Transition from fault state back to acquisition when fault conditions are resolved"
+    owner "Diagnostics Team"
+    tags "fault-recovery", "fault-clear", "system-restore"
+    status implemented
+    from ref state FaultDetected
+    to ref state SignalAcquisition
+    condition "fault_conditions_cleared AND recovery_validation_passed AND system_integrity_restored"
+    calls ref function RecoverFromFault
+    implements ref requirement REQ_INPUT_FAULT_RECOVERY_001
+    when ref config c_FailureDiagnostics
+
+  def transition InitializationFailure
+    name "Initialization Failure Transition"
+    description "Transition from initialization to safe mode when critical initialization failures occur"
+    owner "Safety Team"
+    tags "initialization-failure", "startup-fault", "critical-failure"
+    status implemented
+    from ref state Initialization
+    to ref state SafeMode
+    condition "self_test_failure OR calibration_invalid OR critical_hardware_failure"
+    calls ref function HandleInitializationFailure
+    implements ref requirement REQ_INPUT_INIT_FAILURE_001
+    when ref config c_ECUDiagnostics
