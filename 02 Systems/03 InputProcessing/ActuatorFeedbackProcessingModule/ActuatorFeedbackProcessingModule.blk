@@ -1,0 +1,23 @@
+
+use interfaceset ActuatorFeedbackProcessingInterface
+use interfaceset InputProcessingInterface
+use interfaceset VehicleSystemsInterface
+use interfaceset ActuatorOutputInterface
+
+hdef block ActuatorFeedbackProcessingModule
+  name "Actuator Feedback Processing Module"
+  description "Module responsible for processing, validating, and conditioning all actuator feedback signals including position, current, and fault detection"
+  designrationale "Dedicated actuator feedback processing ensures reliable sensor data with proper calibration, filtering, and fault detection for closed-loop control"
+  owner "Actuator Feedback Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "actuator-feedback", "sensor-processing", "calibration", "fault-detection", "safety-critical"
+
+  // Input interfaces from actuator output system
+  needs ref operation ActuatorFeedbackOutput
+  needs ref signal ActuatorPositionOutput, ActuatorCurrentOutput
+
+  // Output interfaces (processed actuator feedback) - provided by ActuatorFeedbackProcessingInterface
+  provides ref operation ProcessedActuatorFeedback
+  provides ref signal ProcessedActuatorPosition, ProcessedActuatorCurrent, ActuatorFaultStatus
+  provides ref signal ActuatorCalibrationStatus, ActuatorLoadEstimate

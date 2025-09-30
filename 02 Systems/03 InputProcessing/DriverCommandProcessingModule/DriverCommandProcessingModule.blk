@@ -1,0 +1,23 @@
+
+use interfaceset DriverCommandProcessingInterface
+use interfaceset InputProcessingInterface
+use interfaceset VehicleSystemsInterface
+use block DriverInterfaceSystem
+
+
+hdef block DriverCommandProcessingModule
+  name "Driver Command Processing Module"
+  description "Module responsible for processing, validating, and debouncing all driver commands including EPB switch operations and command sequences"
+  designrationale "Dedicated driver command processing ensures reliable interpretation of driver intentions with proper debouncing and sequence validation"
+  owner "Driver Command Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "driver-command", "command-processing", "debouncing", "sequence-validation", "safety-critical"
+
+  // Input interfaces from driver interface system
+  needs ref operation DriverCommandOutput
+  needs ref signal EPBSwitchPosition
+
+  // Output interfaces (processed driver commands) - provided by DriverCommandProcessingInterface
+  provides ref operation ProcessedDriverCommand
+  provides ref signal ProcessedEPBSwitchPosition, CommandValidity, CommandDebounceStatus, CommandSequenceStatus

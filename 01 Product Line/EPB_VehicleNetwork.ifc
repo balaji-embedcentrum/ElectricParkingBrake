@@ -1,21 +1,15 @@
-use featureset ElectricParkingBrakeFeatures
-
-hdef block VehicleNetworkInterface
+hdef interfaceset VehicleNetworkInterface
   name "Vehicle Network Communication Interface"
   description "CAN bus and network communication systems for EPB integration with vehicle systems"
-  designrationale "Dedicated network interface block ensures proper vehicle integration, diagnostic access, and compliance with automotive communication standards"
   owner "Network Engineering Team"
   level external
   safetylevel ASIL-D
   tags "CAN-bus", "vehicle-network", "communication", "ASIL-D", "automotive-protocols"
 
-  enables ref feature CANInterface
-
   // operation interfaces (bidirectional with vehicle network)
   def operation EPB_CANStatusOutput
     name "EPB CAN Status Output operation"
     description "EPB status broadcast on vehicle CAN network for other ECUs and diagnostic tools"
-    designrationale "Standardized CAN status broadcasting enables vehicle-wide awareness of EPB system state"
     owner "CAN Protocol Team"
     datatype EPB_StatusStruct
     tags "CAN-broadcast", "status-sharing", "vehicle-integration"
@@ -23,7 +17,6 @@ hdef block VehicleNetworkInterface
   def operation EPB_CANDiagnosticOutput
     name "EPB CAN Diagnostic Output operation"
     description "EPB diagnostic data broadcast for vehicle diagnostics and service tools"
-    designrationale "Diagnostic data broadcasting enables remote diagnostics and service tool access"
     owner "Diagnostic Protocol Team"
     datatype EPB_DiagnosticStruct
     tags "diagnostic-broadcast", "service-tools", "remote-diagnostics"
@@ -31,7 +24,6 @@ hdef block VehicleNetworkInterface
   def operation VehicleCANInput
     name "Vehicle CAN Input operation"
     description "Vehicle network data input including ABS status, ESP status, and other relevant vehicle systems"
-    designrationale "Vehicle CAN data integration enables coordinated system operation and cross-system safety checks"
     owner "Vehicle Integration Team"
     datatype VehicleCANStruct
     tags "vehicle-data", "system-coordination", "cross-system-integration"
@@ -40,7 +32,6 @@ hdef block VehicleNetworkInterface
   def signal CANBusActivity
     name "CAN Bus Activity Signal"
     description "CAN bus activity indicator for network health monitoring"
-    designrationale "Network activity monitoring enables detection of communication failures and network health assessment"
     owner "Network Health Team"
     datatype boolean
     tags "network-health", "activity-monitoring", "communication-status"
@@ -48,7 +39,6 @@ hdef block VehicleNetworkInterface
   def signal DiagnosticRequest
     name "Diagnostic Request Signal"
     description "Diagnostic request signal from OBD port or service tools"
-    designrationale "Diagnostic request handling enables service tool access and maintenance diagnostics"
     owner "Service Interface Team"
     datatype DiagnosticRequestEnum
     tags "diagnostic-request", "service-tools", "OBD-interface"
@@ -56,7 +46,6 @@ hdef block VehicleNetworkInterface
   def signal NetworkFaultStatus
     name "Network Fault Status Signal"
     description "Network communication fault status for system diagnostics"
-    designrationale "Network fault detection enables identification of communication issues and system isolation"
     owner "Network Fault Detection Team"
     datatype NetworkFaultEnum
     safetylevel ASIL-D

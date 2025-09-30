@@ -1,0 +1,88 @@
+hdef interfaceset ActuatorOutputInterface
+  name "Actuator Output Interface"
+  description "Interface definitions for EPB Actuator Output Subsystem operations and signals"
+  owner "Actuator Control Team"
+  level subsystem
+  safetylevel ASIL-D
+  tags "actuator-control", "motor-drive", "position-control", "ASIL-D", "interface"
+
+  // Additional signals specific to Actuator Output Subsystem
+
+  // Output interfaces (to external actuators and feedback)
+  def operation ActuatorControlOutput
+    name "Actuator Control Output"
+    description "Motor control commands including PWM, direction, and safety enable signals"
+    owner "Motor Control Team"
+    datatype ActuatorControlStruct
+    safetylevel ASIL-D
+    tags "motor-control", "pwm-control", "safety-enable", "actuator-interface"
+
+  def operation ActuatorDiagnosticOutput
+    name "Actuator Diagnostic Output"
+    description "Actuator-specific diagnostic information for health monitoring and fault detection"
+    owner "Actuator Diagnostics Team"
+    datatype ActuatorDiagnosticStruct
+    tags "actuator-diagnostics", "health-monitoring", "fault-isolation"
+
+  def signal MotorPWMCommand
+    name "Motor PWM Command Signal"
+    description "Pulse-width modulation command for motor speed and torque control"
+    owner "PWM Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "pwm-command", "motor-control", "torque-control"
+
+  def signal MotorDirectionCommand
+    name "Motor Direction Command Signal"
+    description "Motor rotation direction for engagement/release operations"
+    owner "Direction Control Team"
+    datatype DirectionEnum
+    safetylevel ASIL-D
+    tags "direction-control", "engagement-release", "motor-operation"
+
+  def signal ActuatorEnable
+    name "Actuator Enable Signal"
+    description "Safety enable signal for actuator power control"
+    owner "Safety Enable Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "safety-enable", "power-control", "emergency-shutdown"
+
+  def signal ForceMonitor
+    name "Force Monitor Signal"
+    description "Real-time force monitoring for closed-loop control and safety verification"
+    owner "Force Monitoring Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "force-monitoring", "closed-loop", "mechanical-safety"
+
+  def signal ActuatorPositionFeedback
+    name "Actuator Position Feedback Signal"
+    description "Actuator position feedback for position control and end-stop detection"
+    owner "Position Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "position-feedback", "position-control", "end-stop-protection"
+
+  def signal TemperatureMonitor
+    name "Temperature Monitor Signal"
+    description "Actuator temperature monitoring for thermal protection"
+    owner "Thermal Monitoring Team"
+    datatype float32
+    tags "temperature-monitoring", "thermal-protection", "derating-control"
+
+  def signal CurrentMonitor
+    name "Current Monitor Signal"
+    description "Motor current monitoring for load detection and protection"
+    owner "Current Monitoring Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "current-monitoring", "load-detection", "overcurrent-protection"
+
+  def signal ActuatorFaultStatus
+    name "Actuator Fault Status Signal"
+    description "Actuator-specific fault status for immediate response"
+    owner "Actuator Fault Team"
+    datatype ActuatorFaultEnum
+    safetylevel ASIL-D
+    tags "actuator-fault", "failure-response", "safety-degradation"

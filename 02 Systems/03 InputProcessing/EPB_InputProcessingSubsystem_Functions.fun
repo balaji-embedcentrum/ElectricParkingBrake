@@ -25,12 +25,12 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     needs ref signal RawVehicleState
     needs ref signal ValidationCriteria
     needs ref signal SystemHealthStatus
-    offers ref operation ValidateVehicleState
-    offers ref operation ReportValidationResult
-    offers ref operation HandleValidationError
-    offers ref signal ValidatedVehicleState
-    offers ref signal ValidationStatus
-    offers ref signal ValidationError
+    provides ref operation ValidateVehicleState
+    provides ref operation ReportValidationResult
+    provides ref operation HandleValidationError
+    provides ref signal ValidatedVehicleState
+    provides ref signal ValidationStatus
+    provides ref signal ValidationError
 
   def function VehicleSpeedProcessor
     name "Vehicle Speed Signal Processor - ISO 26262 Enhanced"
@@ -48,12 +48,12 @@ hdef functionset EPB_InputProcessingSubsystem_Functions
     needs ref signal ValidatedVehicleState
     needs ref signal SpeedThresholds
     needs ref signal FilterParameters
-    offers ref operation ProcessSpeedSignal
-    offers ref operation DetectStandstillState
-    offers ref operation ValidateSpeedPlausibility
-    offers ref signal ProcessedSpeed
-    offers ref signal StandstillStatus
-    offers ref signal SpeedValidationResult
+    provides ref operation ProcessSpeedSignal
+    provides ref operation DetectStandstillState
+    provides ref operation ValidateSpeedPlausibility
+    provides ref signal ProcessedSpeed
+    provides ref signal StandstillStatus
+    provides ref signal SpeedValidationResult
 
   def function SlopeAngleProcessor
     name "Slope Angle Signal Processor - ISO 26262 Enhanced"

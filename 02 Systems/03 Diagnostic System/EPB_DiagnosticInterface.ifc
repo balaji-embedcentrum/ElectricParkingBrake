@@ -1,0 +1,141 @@
+hdef interfaceset DiagnosticInterface
+  name "Diagnostic Interface"
+  description "Interface definitions for EPB Diagnostic Subsystem operations and signals"
+  owner "Diagnostic Systems Team"
+  level subsystem
+  safetylevel ASIL-D
+  tags "diagnostics", "fault-detection", "health-monitoring", "ASIL-D", "interface"
+
+  // Input interfaces (from other subsystems)
+  def operation EPB_StatusReport
+    name "EPB Status Report"
+    description "Comprehensive status report from EPB system including engagement state and health"
+    owner "EPB System Team"
+    datatype EPBStatusStruct
+    safetylevel ASIL-D
+    tags "status-report", "system-health", "engagement-status"
+
+  def operation ActuatorFeedback
+    name "Actuator Feedback"
+    description "Actuator feedback information including position, current, and fault status"
+    owner "Actuator Team"
+    datatype ActuatorFeedbackStruct
+    safetylevel ASIL-D
+    tags "actuator-feedback", "position-current", "fault-status"
+
+  def signal EPB_SystemHeartbeat
+    name "EPB System Heartbeat Signal"
+    description "System heartbeat indicating EPB system is alive and functioning"
+    owner "System Monitoring Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "heartbeat", "system-alive", "health-monitoring"
+
+
+  // Output interfaces (diagnostic outputs)
+  def operation DiagnosticOutput1
+    name "Primary Diagnostic Output"
+    description "Primary diagnostic output for service tools and system monitoring"
+    owner "Diagnostic Output Team"
+    datatype DiagnosticOutputStruct
+    safetylevel ASIL-D
+    tags "diagnostic-output", "service-tools", "system-monitoring"
+
+  def operation SystemHealthReport
+    name "System Health Report"
+    description "Comprehensive system health report for maintenance and monitoring"
+    owner "Health Reporting Team"
+    datatype HealthReportStruct
+    tags "health-report", "maintenance", "system-monitoring"
+
+  def operation FaultIsolationReport
+    name "Fault Isolation Report"
+    description "Detailed fault isolation report for troubleshooting and repair"
+    owner "Fault Analysis Team"
+    datatype FaultIsolationStruct
+    safetylevel ASIL-D
+    tags "fault-isolation", "troubleshooting", "repair-guidance"
+
+  def operation DiagnosticTrendData
+    name "Diagnostic Trend Data"
+    description "Historical diagnostic trend data for predictive analysis"
+    owner "Trend Analysis Team"
+    datatype TrendDataStruct
+    tags "trend-data", "predictive-analysis", "historical-data"
+
+  // Additional signals specific to Diagnostic Subsystem
+
+  // Internal diagnostic signals
+  def signal DiagnosticCoverageStatus
+    name "Diagnostic Coverage Status Signal"
+    description "Real-time diagnostic coverage status indicating achieved fault detection coverage percentage"
+    owner "Coverage Analysis Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "coverage-status", "ISO26262-compliance", "fault-detection-coverage"
+
+  def signal SystemDegradationLevel
+    name "System Degradation Level Signal"
+    description "Overall system degradation level from 0-100% based on component health analysis"
+    owner "Health Assessment Team"
+    datatype float32
+    tags "degradation-level", "health-assessment", "lifecycle-planning"
+
+  def signal FaultPriorityLevel
+    name "Fault Priority Level Signal"
+    description "Highest priority fault level currently detected in the system"
+    owner "Fault Management Team"
+    datatype uint8
+    safetylevel ASIL-D
+    tags "fault-priority", "response-urgency", "resource-allocation"
+
+  def signal DiagnosticTestStatus
+    name "Diagnostic Test Status Signal"
+    description "Status of ongoing diagnostic tests and self-test procedures"
+    owner "Test Management Team"
+    datatype DiagnosticTestEnum
+    tags "test-status", "self-test", "diagnostic-integrity"
+
+  def signal PredictiveMaintenanceAlert
+    name "Predictive Maintenance Alert Signal"
+    description "Alert signal indicating components approaching end-of-life or requiring preventive maintenance"
+    owner "Predictive Maintenance Team"
+    datatype MaintenanceAlertEnum
+    tags "predictive-maintenance", "end-of-life", "preventive-maintenance"
+
+  def signal DiagnosticDataValidity
+    name "Diagnostic Data Validity Signal"
+    description "Validity status of diagnostic data and measurement accuracy"
+    owner "Data Quality Team"
+    datatype bool
+    safetylevel ASIL-D
+    tags "data-validity", "measurement-accuracy", "diagnostic-reliability"
+
+  def signal SystemRecoveryStatus
+    name "System Recovery Status Signal"
+    description "Status of automatic recovery procedures and system restoration capabilities"
+    owner "Recovery Management Team"
+    datatype RecoveryStatusEnum
+    tags "recovery-status", "fault-tolerance", "graceful-degradation"
+
+  def signal FailsafeActivationStatus
+    name "Failsafe Activation Status Signal"
+    description "Status of failsafe mechanisms and emergency response procedures"
+    owner "Safety Systems Team"
+    datatype bool
+    safetylevel ASIL-D
+    tags "failsafe-status", "emergency-response", "safety-mechanisms"
+
+  def signal ComponentLifeCycleStatus
+    name "Component Life Cycle Status Signal"
+    description "Individual component lifecycle status and remaining operational life estimation"
+    owner "Component Management Team"
+    datatype ComponentLifeCycleStruct
+    tags "lifecycle-status", "replacement-scheduling", "inventory-management"
+
+  def signal EnvironmentalStressLevel
+    name "Environmental Stress Level Signal"
+    description "Current environmental stress level affecting system performance and reliability"
+    owner "Environmental Monitoring Team"
+    datatype float32
+    tags "environmental-stress", "adaptive-thresholds", "stress-based-maintenance"

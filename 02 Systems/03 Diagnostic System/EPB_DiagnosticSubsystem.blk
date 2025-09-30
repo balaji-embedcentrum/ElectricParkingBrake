@@ -1,7 +1,8 @@
 use featureset ElectricParkingBrakeFeatures
 use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
-use block ElectricParkingBrakeECU
-use block VehicleSystemsInterface
+use interfaceset DiagnosticInterface
+use interfaceset EPB_Interfaces
+use interfaceset VehicleSystemsInterface
 
 
 hdef block EPB_DiagnosticSubsystem
@@ -19,133 +20,14 @@ hdef block EPB_DiagnosticSubsystem
   // Configuration dependencies for enhanced diagnostics
   when ref config c_FailureDiagnostics
 
-  // Input interfaces from EPB ECU
-  needs ref operation EPB_StatusReport
-  needs ref operation ActuatorFeedback
-  needs ref signal EPB_SystemHeartbeat
-  needs ref signal EPB_EngagementStatus
-  needs ref signal EPB_FaultAlert
-  needs ref signal EPB_ForceLevel
-  needs ref signal ActuatorPosition
-  needs ref signal ActuatorCurrentOutput
-  needs ref signal VehicleSpeed
+  // Input interfaces from EPB ECU - provided by DiagnosticInterface
+  needs ref operation EPB_StatusReport, ActuatorFeedback
+  needs ref signal EPB_SystemHeartbeat, EPB_EngagementStatus, EPB_FaultAlert
+  needs ref signal EPB_ForceLevel, ActuatorPosition, ActuatorCurrentOutput, VehicleSpeed
 
-  // Output interfaces to EPB ECU
-  def operation DiagnosticOutput1
-    name "Diagnostic Output operation"
-    description "Comprehensive diagnostic results and system health status for EPB ECU consumption"
-    designrationale "Consolidated diagnostic output enables centralized health monitoring and fault response coordination"
-    owner "Diagnostic Systems Team"
-    datatype DiagnosticOutputStruct
-    safetylevel ASIL-D
-    tags "diagnostic-output", "health-status", "fault-results"
-
-  def operation SystemHealthReport
-    name "System Health Report operation"
-    description "Detailed system health assessment including component status and degradation analysis"
-    designrationale "Comprehensive health reporting supports predictive maintenance and system lifecycle management"
-    owner "Health Monitoring Team"
-    datatype SystemHealthStruct
-    tags "health-report", "predictive-maintenance", "lifecycle-management"
-
-  def operation FaultIsolationReport
-    name "Fault Isolation Report operation"
-    description "Detailed fault isolation results identifying specific failed components or functions"
-    designrationale "Precise fault isolation enables targeted maintenance actions and minimizes system downtime"
-    owner "Fault Analysis Team"
-    datatype FaultIsolationStruct
-    safetylevel ASIL-D
-    tags "fault-isolation", "component-failure", "maintenance-targeting"
-
-  def operation DiagnosticTrendData
-    name "Diagnostic Trend Data operation"
-    description "Long-term diagnostic trend analysis for predictive maintenance and performance optimization"
-    designrationale "Trend analysis enables proactive maintenance scheduling and performance degradation prediction"
-    owner "Data Analytics Team"
-    datatype TrendDataStruct
-    tags "trend-analysis", "predictive-analytics", "performance-optimization"
-
-  // Internal diagnostic signals
-  def signal DiagnosticCoverageStatus
-    name "Diagnostic Coverage Status Signal"
-    description "Real-time diagnostic coverage status indicating achieved fault detection coverage percentage"
-    designrationale "Coverage monitoring ensures compliance with ISO 26262 diagnostic coverage requirements"
-    owner "Coverage Analysis Team"
-    datatype float32
-    safetylevel ASIL-D
-    tags "coverage-status", "ISO26262-compliance", "fault-detection-coverage"
-
-  def signal SystemDegradationLevel
-    name "System Degradation Level Signal"
-    description "Overall system degradation level from 0-100% based on component health analysis"
-    designrationale "Quantified degradation level supports maintenance decision making and system lifecycle planning"
-    owner "Health Assessment Team"
-    datatype float32
-    tags "degradation-level", "health-assessment", "lifecycle-planning"
-
-  def signal FaultPriorityLevel
-    name "Fault Priority Level Signal"
-    description "Highest priority fault level currently detected in the system"
-    designrationale "Priority-based fault indication enables appropriate response urgency and resource allocation"
-    owner "Fault Management Team"
-    datatype uint8
-    safetylevel ASIL-D
-    tags "fault-priority", "response-urgency", "resource-allocation"
-
-  def signal DiagnosticTestStatus
-    name "Diagnostic Test Status Signal"
-    description "Status of ongoing diagnostic tests and self-test procedures"
-    designrationale "Test status monitoring ensures diagnostic system integrity and validates test execution"
-    owner "Test Management Team"
-    datatype DiagnosticTestEnum
-    tags "test-status", "self-test", "diagnostic-integrity"
-
-  def signal PredictiveMaintenanceAlert
-    name "Predictive Maintenance Alert Signal"
-    description "Alert signal indicating components approaching end-of-life or requiring preventive maintenance"
-    designrationale "Proactive maintenance alerts prevent unexpected failures and optimize maintenance scheduling"
-    owner "Predictive Maintenance Team"
-    datatype MaintenanceAlertEnum
-    tags "predictive-maintenance", "end-of-life", "preventive-maintenance"
-
-  def signal DiagnosticDataValidity
-    name "Diagnostic Data Validity Signal"
-    description "Validity status of diagnostic data and measurement accuracy"
-    designrationale "Data validity monitoring ensures diagnostic reliability and supports decision confidence"
-    owner "Data Quality Team"
-    datatype bool
-    safetylevel ASIL-D
-    tags "data-validity", "measurement-accuracy", "diagnostic-reliability"
-
-  def signal SystemRecoveryStatus
-    name "System Recovery Status Signal"
-    description "Status of automatic recovery procedures and system restoration capabilities"
-    designrationale "Recovery status monitoring supports fault tolerance and graceful degradation strategies"
-    owner "Recovery Management Team"
-    datatype RecoveryStatusEnum
-    tags "recovery-status", "fault-tolerance", "graceful-degradation"
-
-  def signal FailsafeActivationStatus
-    name "Failsafe Activation Status Signal"
-    description "Status of failsafe mechanisms and emergency response procedures"
-    designrationale "Failsafe monitoring ensures safety mechanism availability and proper emergency response"
-    owner "Safety Systems Team"
-    datatype bool
-    safetylevel ASIL-D
-    tags "failsafe-status", "emergency-response", "safety-mechanisms"
-
-  def signal ComponentLifeCycleStatus
-    name "Component Life Cycle Status Signal"
-    description "Individual component lifecycle status and remaining operational life estimation"
-    designrationale "Component lifecycle tracking enables optimized replacement scheduling and inventory management"
-    owner "Component Management Team"
-    datatype ComponentLifeCycleStruct
-    tags "lifecycle-status", "replacement-scheduling", "inventory-management"
-
-  def signal EnvironmentalStressLevel
-    name "Environmental Stress Level Signal"
-    description "Current environmental stress level affecting system performance and reliability"
-    designrationale "Environmental monitoring enables adaptive diagnostic thresholds and stress-based maintenance"
-    owner "Environmental Monitoring Team"
-    datatype float32
-    tags "environmental-stress", "adaptive-thresholds", "stress-based-maintenance"
+  // Output interfaces to EPB ECU - provided by DiagnosticInterface
+  provides ref operation DiagnosticOutput1, SystemHealthReport, FaultIsolationReport, DiagnosticTrendData
+  provides ref signal DiagnosticCoverageStatus, SystemDegradationLevel, FaultPriorityLevel
+  provides ref signal DiagnosticTestStatus, PredictiveMaintenanceAlert, DiagnosticDataValidity
+  provides ref signal SystemRecoveryStatus, FailsafeActivationStatus, ComponentLifeCycleStatus
+  provides ref signal EnvironmentalStressLevel

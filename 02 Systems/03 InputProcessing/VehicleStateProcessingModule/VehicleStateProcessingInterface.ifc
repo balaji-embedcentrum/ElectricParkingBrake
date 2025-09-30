@@ -1,0 +1,24 @@
+hdef interfaceset VehicleStateProcessingInterface
+  name "Vehicle State Processing Interface"
+  description "Interface definitions for Vehicle State Processing Module operations and signals"
+  owner "Vehicle State Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "vehicle-state", "speed-processing", "slope-processing", "safety-critical", "interface"
+
+  // Additional signals specific to Vehicle State Processing Module
+  def signal VehicleStateValidity
+    name "Vehicle State Validity Signal"
+    description "Overall validity status of vehicle state data"
+    owner "State Validation Team"
+    datatype bool
+    safetylevel ASIL-D
+    tags "validity-check", "data-integrity"
+
+  def signal VehicleMotionStatus
+    name "Vehicle Motion Status Signal"
+    description "Processed vehicle motion status (stationary, moving, unknown)"
+    owner "Motion Detection Team"
+    datatype MotionStatusEnum
+    safetylevel ASIL-D
+    tags "motion-detection", "stationary-check"

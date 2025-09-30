@@ -2,6 +2,9 @@ use featureset ElectricParkingBrakeFeatures
 use functionset EPB_ActuatorOutputSubsystem_Functions
 use functionset EPB_ControlLogicSubsystem_Functions
 use functionset EPB_InputProcessingSubsystem_Functions
+use block ElectricParkingBrakeECU
+use interfaceset EPB_Interfaces
+use interfaceset VehicleNetworkInterface
 
 
 hdef functionset ElectricParkingBrakeFunctions
@@ -11,12 +14,10 @@ hdef functionset ElectricParkingBrakeFunctions
   tags "EPB-functions", "ASIL-D", "brake-control", "safety-functions"
   safetylevel ASIL-D
   level system
-  needs ref signal StateChangeRequest
+  needs ref signal ActuatorCurrent
   needs ref signal SafetyStatus
   needs ref signal SystemHealth
-  offers ref operation SetSystemState
-  offers ref operation ProcessStateTransition
-  offers ref operation HandleFaultState
+  provides ref operation SetSystemState, ProcessStateTransition, HandleFaultState
 
   def function EPB_SystemStateManager
     name "EPB System State Manager"
@@ -33,12 +34,12 @@ hdef functionset ElectricParkingBrakeFunctions
     needs ref signal StateChangeRequest
     needs ref signal SafetyStatus
     needs ref signal SystemHealth
-    offers ref operation SetSystemState
-    offers ref operation ProcessStateTransition
-    offers ref operation HandleFaultState
-    offers ref signal CurrentSystemState
-    offers ref signal StateTransitionComplete
-    offers ref signal FaultDetected
+    provides ref operation SetSystemState
+    provides ref operation ProcessStateTransition
+    provides ref operation HandleFaultState
+    provides ref signal CurrentSystemState
+    provides ref signal StateTransitionComplete
+    provides ref signal FaultDetected
 
   def function EPB_RequestProcessor
     name "EPB Request Processor" 

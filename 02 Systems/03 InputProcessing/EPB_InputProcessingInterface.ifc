@@ -1,0 +1,77 @@
+use featureset ElectricParkingBrakeFeatures
+
+hdef interfaceset InputProcessingInterface
+  name "Input Processing Interface"
+  description "Interface definitions for EPB Input Processing Subsystem operations and signals"
+  owner "Input Processing Team"
+  level internal
+  safetylevel ASIL-D
+  tags "input-processing", "signal-conditioning", "fault-detection", "ASIL-D", "interface"
+
+  // Output interfaces (processed inputs for internal use)
+  def operation ProcessedVehicleState
+    name "Processed Vehicle State Input"
+    description "Validated and conditioned vehicle state information for internal EPB processing"
+    owner "Vehicle State Processing Team"
+    datatype VehicleStateStruct
+    safetylevel ASIL-D
+    tags "vehicle-state", "validated-input", "safety-critical"
+
+  def operation ProcessedDriverCommand
+    name "Processed Driver Command Input"
+    description "Validated driver commands with debouncing and command interpretation"
+    owner "Driver Command Processing Team"
+    datatype DriverCommandStruct
+    tags "driver-command", "validated-input", "command-processing"
+
+  def operation ProcessedActuatorFeedback
+    name "Processed Actuator Feedback"
+    description "Conditioned actuator feedback with sensor fusion and fault detection"
+    owner "Actuator Feedback Processing Team"
+    datatype ActuatorFeedbackStruct
+    safetylevel ASIL-D
+    tags "actuator-feedback", "sensor-fusion", "fault-detection"
+
+  def signal ProcessedVehicleSpeed
+    name "Validated Vehicle Speed Signal"
+    description "Range-checked and validated vehicle speed signal"
+    owner "Speed Validation Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "vehicle-speed", "range-validation", "safety-interlock"
+
+  def signal ProcessedSlopeAngle
+    name "Validated Slope Angle Signal"
+    description "Filtered and validated vehicle slope angle for adaptive force control"
+    owner "Slope Processing Team"
+    datatype float32
+    tags "slope-angle", "signal-filtering", "adaptive-control"
+
+  def signal ProcessedIgnitionState
+    name "Debounced Ignition State Signal"
+    description "Debounced ignition state signal for reliable power state detection"
+    owner "Power State Processing Team"
+    datatype IgnitionEnum
+    tags "ignition-state", "debouncing", "power-management"
+
+  def signal ProcessedTransmissionState
+    name "Validated Transmission State Signal"
+    description "Validated transmission state and gear position information"
+    owner "Transmission Processing Team"
+    datatype TransmissionEnum
+    tags "transmission-state", "validation", "drivetrain-status"
+
+  def signal ProcessedActuatorPosition
+    name "Calibrated Actuator Position Signal"
+    description "Calibrated and linearized actuator position feedback"
+    owner "Position Calibration Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "position-feedback", "calibration", "linearization"
+
+  def signal ProcessedActuatorCurrent
+    name "Filtered Actuator Current Signal"
+    description "Filtered motor current signal with offset compensation"
+    owner "Current Processing Team"
+    datatype float32
+    tags "current-monitoring", "signal-filtering", "diagnostics"

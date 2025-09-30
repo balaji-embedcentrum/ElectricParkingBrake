@@ -1,0 +1,336 @@
+use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
+
+hdef interfaceset EPB_Interfaces
+  name "EPB Interface Definitions"
+  description "Comprehensive interface definitions for Electric Parking Brake system including operations, signals, data types, and parameters"
+  owner "Systems Engineering Team"
+  tags "EPB-interfaces", "brake-control", "automotive", "safety-critical", "ASIL-D"
+  safetylevel ASIL-D
+  
+  // Operations
+  def operation GetSystemState
+    name "Get System State"
+    description "Retrieves current EPB system state including IDLE, ENGAGING, ENGAGED, DISENGAGING, FAULT states"
+    owner "System State Manager"
+    tags "state-management", "read-only", "real-time"
+    safetylevel ASIL-D
+    level system
+    when ref config c_FailSafeModes
+    requires ref datatype SystemStateData
+    
+  def operation SetSystemState
+    name "Set System State"
+    description "Sets EPB system state with safety validation and state transition control"
+    owner "System State Manager"
+    tags "state-control", "write-operation", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    when ref config c_FailSafeModes
+    requires ref datatype VehicleStateData
+
+    
+  def operation ProcessStateTransition
+    name "Process State Transition"
+    description "Handles EPB state transitions with validation and safety checks"
+    owner "State Transition Manager"
+    tags "state-transition", "validation", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype TransitionData
+
+    
+  def operation HandleFaultState
+    name "Handle Fault State"
+    description "Manages EPB fault states with emergency response and recovery procedures"
+    owner "Fault Management System"
+    tags "fault-management", "emergency", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    when ref config c_FailSafeModes
+    requires ref datatype FaultData
+
+    
+  def operation ValidateVehicleState
+    name "Validate Vehicle State"
+    description "Validates incoming vehicle state signals with range checks and plausibility analysis"
+    owner "Vehicle State Validator"
+    tags "validation", "vehicle-state", "signal-integrity"
+    safetylevel ASIL-D
+    level subsystem
+    when ref config c_FailureDiagnostics
+    requires ref datatype VehicleStateData
+
+    
+  def operation ProcessSpeedSignal
+    name "Process Speed Signal"
+    description "Processes vehicle speed signal with filtering, validation, and standstill detection"
+    owner "Speed Processor"
+    tags "speed-processing", "signal-filtering", "validation"
+    safetylevel ASIL-D
+    level subsystem
+    when ref config c_SecondarySensorTechnology
+    requires ref datatype SpeedData
+    requires ref datatype FilterParameters
+    
+  // Signals
+  def signal CurrentSystemState
+    name "Current System State"
+    description "Real-time signal broadcasting current EPB system state to all interested systems"
+    owner "System State Manager"
+    tags "system-state", "broadcast", "real-time"
+    safetylevel ASIL-D
+    level system
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype SystemStateData
+    
+  def signal StateTransitionComplete
+    name "State Transition Complete"
+    description "Signal indicating successful completion of EPB state transition"
+    owner "State Transition Manager"
+    tags "state-transition", "completion", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype TransitionStatusData
+    
+  def signal FaultDetected
+    name "Fault Detected"
+    description "Signal indicating detection of EPB system faults with severity and location information"
+    owner "Fault Management System"
+    tags "fault-management", "diagnostics", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    when ref config c_FailSafeModes
+    requires ref datatype FaultData
+    
+  def signal ValidatedVehicleState
+    name "Validated Vehicle State"
+    description "Signal containing validated vehicle state information after processing"
+    owner "Vehicle State Validator"
+    tags "vehicle-state", "validated", "processed"
+    safetylevel ASIL-D
+    level subsystem
+    when ref config c_FailureDiagnostics
+    requires ref datatype VehicleStateData
+    
+  def signal ProcessedSpeed
+    name "Processed Speed"
+    description "Signal containing processed vehicle speed data after filtering and validation"
+    owner "Speed Processor"
+    tags "speed-data", "processed", "filtered"
+    safetylevel ASIL-D
+    level subsystem
+    when ref config c_SecondarySensorTechnology
+    requires ref datatype SpeedData
+    
+  def signal StandstillStatus
+    name "Standstill Status"
+    description "Signal indicating vehicle standstill detection status"
+    owner "Speed Processor"
+    tags "standstill", "detection", "safety-critical"
+    safetylevel ASIL-D
+    level subsystem
+    when ref config c_SecondarySensorTechnology
+    requires ref datatype StandstillData
+    
+  def signal ActuatorCurrent
+    name "Actuator Current Signal"
+    description "Electric actuator motor current in Amperes from VehicleSystemsInterface block"
+    owner "Motor Control Team"
+    tags "current-monitoring", "fault-diagnosis", "motor-protection"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype CurrentData
+    
+  def signal ActuatorPosition
+    name "Actuator Position Signal"
+    description "Electric actuator position feedback in millimeters from VehicleSystemsInterface block"
+    owner "Position Control Team"
+    tags "position-feedback", "precision-control", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype PositionData
+    
+  def signal VehicleSpeed
+    name "Vehicle Speed Signal"
+    description "Vehicle speed signal from vehicle network via VehicleSystemsInterface block"
+    owner "Vehicle Integration Team"
+    tags "vehicle-speed", "safety-interlock", "motion-detection"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype SpeedData
+    
+  def signal EPB_EngagementStatus
+    name "EPB Engagement Status Signal"
+    description "Real-time EPB engagement status signal"
+    owner "Control Systems Team"
+    tags "engagement-status", "real-time", "safety-critical"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype EngagementStatusData
+    
+  def signal EPB_FaultAlert
+    name "EPB Fault Alert Signal"
+    description "Immediate fault alert signal for critical system failures"
+    owner "Safety Systems Team"
+    tags "fault-alert", "safety-critical", "emergency-response"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype FaultAlertData
+    
+  def signal EPB_ForceLevel
+    name "EPB Force Level Signal"
+    description "Current brake holding force level in Newtons"
+    owner "Force Control Team"
+    tags "force-level", "precision-control", "feedback"
+    safetylevel ASIL-D
+    level system
+    requires ref datatype ForceData
+    
+  // Data Types
+  def datatype SystemStateData
+    name "System State Data"
+    description "Data structure containing EPB system state information"
+    owner "Data Management Team"
+    tags "data-structure", "system-state", "composite"
+    safetylevel ASIL-D
+    level object
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype StateEnum
+    requires ref datatype TimestampData
+    
+  def datatype VehicleStateData
+    name "Vehicle State Data"
+    description "Comprehensive data structure containing all vehicle state information"
+    owner "Data Management Team"
+    tags "data-structure", "vehicle-state", "composite"
+    safetylevel ASIL-B
+    level object
+    when ref config c_FailureDiagnostics
+    requires ref datatype PositionData
+    requires ref datatype SystemStatusData
+    
+  def datatype SpeedData
+    name "Speed Data"
+    description "Data structure for speed-related information including current, target, and limits"
+    owner "Speed Control Team"
+    tags "speed-data", "control-data", "safety-critical"
+    safetylevel ASIL-D
+    level object
+    when ref config c_SecondarySensorTechnology
+    requires ref datatype SpeedLimits
+    
+  def datatype CurrentData
+    name "Current Data"
+    description "Data structure for actuator current information"
+    owner "Motor Control Team"
+    tags "current-data", "motor-data", "safety-critical"
+    safetylevel ASIL-D
+    level object
+    requires ref datatype CurrentLimits
+    
+  def datatype PositionData
+    name "Position Data"
+    description "Data structure for actuator position information"
+    owner "Position Control Team"
+    tags "position-data", "actuator-data", "safety-critical"
+    safetylevel ASIL-D
+    level object
+    
+  def datatype ForceData
+    name "Force Data"
+    description "Data structure for brake force information"
+    owner "Force Control Team"
+    tags "force-data", "brake-data", "safety-critical"
+    safetylevel ASIL-D
+    level object
+
+    
+  def datatype FaultData
+    name "Fault Data"
+    description "Data structure for fault information including severity and location"
+    owner "Fault Management Team"
+    tags "fault-data", "diagnostics", "safety-critical"
+    safetylevel ASIL-D
+    level object
+    when ref config c_FailSafeModes
+
+    
+  def datatype ValidationCriteria
+    name "Validation Criteria"
+    description "Data structure containing validation parameters and thresholds"
+    owner "Validation Team"
+    tags "validation", "criteria", "thresholds"
+    safetylevel ASIL-D
+    level object
+    when ref config c_FailureDiagnostics
+
+
+    
+  def datatype FilterParameters
+    name "Filter Parameters"
+    description "Data structure containing signal filtering parameters"
+    owner "Signal Processing Team"
+    tags "filtering", "parameters", "signal-processing"
+    safetylevel ASIL-D
+    level object
+    when ref config c_SecondarySensorTechnology
+    
+  // Parameters
+  def parameter StateRequest
+    name "State Request"
+    description "Request parameter for EPB system state information"
+    owner "Interface Team"
+    tags "request-parameter", "state-query"
+    safetylevel ASIL-D
+    level objectelement
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype RequestTypes
+    
+  def parameter SystemStateResponse
+    name "System State Response"
+    description "Response parameter containing EPB system state data"
+    owner "Interface Team"
+    tags "response-parameter", "state-data"
+    safetylevel ASIL-D
+    level objectelement
+    when ref config c_ComfortFeatures_AutomaticEngagement
+    requires ref datatype StatusCodes
+    
+  def parameter CurrentSpeed
+    name "Current Speed"
+    description "Current vehicle speed in km/h"
+    owner "Speed Team"
+    tags "speed-parameter", "real-time"
+    safetylevel ASIL-B
+    level objectelement
+    when ref config c_SecondarySensorTechnology
+    requires ref datatype SpeedUnits
+    
+  def parameter ActuatorCurrentValue
+    name "Actuator Current Value"
+    description "Current actuator motor current in Amperes"
+    owner "Motor Control Team"
+    tags "current-parameter", "motor-data"
+    safetylevel ASIL-D
+    level objectelement
+    requires ref datatype CurrentUnits
+    
+  def parameter ActuatorPositionValue
+    name "Actuator Position Value"
+    description "Current actuator position in millimeters"
+    owner "Position Control Team"
+    tags "position-parameter", "actuator-data"
+    safetylevel ASIL-D
+    level objectelement
+    requires ref datatype PositionUnits
+    
+  def parameter ForceLevel
+    name "Force Level"
+    description "Current brake holding force in Newtons"
+    owner "Force Control Team"
+    tags "force-parameter", "brake-data"
+    safetylevel ASIL-D
+    level objectelement
+    requires ref datatype ForceUnits

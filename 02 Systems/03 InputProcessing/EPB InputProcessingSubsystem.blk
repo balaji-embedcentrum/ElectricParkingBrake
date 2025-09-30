@@ -1,8 +1,14 @@
 use featureset ElectricParkingBrakeFeatures
-use block VehicleSystemsInterface
-use block DriverInterfaceSystem
-use block VehicleNetworkInterface
+use interfaceset VehicleSystemsInterface
+use interfaceset VehicleNetworkInterface
+use interfaceset InputProcessingInterface
+use interfaceset DriverCommandProcessingInterface
+use interfaceset ActuatorFeedbackProcessingInterface
 use block VehicleStateProcessingModule
+use block DriverCommandProcessingModule
+use block ActuatorFeedbackProcessingModule
+use block DriverInterfaceSystem
+use interfaceset ActuatorOutputInterface
 
 hdef block EPB_InputProcessingSubsystem
   name "EPB Input Processing Subsystem"
@@ -12,97 +18,28 @@ hdef block EPB_InputProcessingSubsystem
   level subsystem
   safetylevel ASIL-D
   tags "input-processing", "signal-conditioning", "fault-detection", "ASIL-D", "subsystem"
-  decomposesto ref block VehicleStateProcessingModule
+  decomposesto ref block VehicleStateProcessingModule, DriverCommandProcessingModule, ActuatorFeedbackProcessingModule
 
   enables ref feature InterfaceFeatures
 
   // Input interfaces (from external systems) - matches EPB ECU needs
   needs ref operation VehicleStateOutput
-  needs ref operation DriverEPBCommandOutput
+  needs ref operation DriverCommandOutput
   needs ref operation ActuatorFeedbackOutput
   needs ref operation VehicleCANInput
   needs ref signal VehicleSpeedOutput
   needs ref signal SlopeAngleOutput
   needs ref signal IgnitionStateOutput
   needs ref signal TransmissionStateOutput
+  needs ref signal EPBSwitchPosition
   needs ref signal ActuatorPositionOutput
   needs ref signal ActuatorCurrentOutput
-  needs ref signal EPBSwitchPosition
   needs ref signal DiagnosticRequest
 
-  // Output interfaces (processed inputs for internal use)
-  def operation ProcessedVehicleState
-    name "Processed Vehicle State Input"
-    description "Validated and conditioned vehicle state information for internal EPB processing"
-    designrationale "Input validation and signal conditioning ensures reliable data for safety-critical EPB decisions"
-    owner "Vehicle State Processing Team"
-    datatype VehicleStateStruct
-    safetylevel ASIL-D
-    tags "vehicle-state", "validated-input", "safety-critical"
-
-  def operation ProcessedDriverCommand
-    name "Processed Driver Command Input"
-    description "Validated driver commands with debouncing and command interpretation"
-    designrationale "Driver command processing ensures reliable interpretation of driver intentions with noise filtering"
-    owner "Driver Command Processing Team"
-    datatype DriverCommandStruct
-    tags "driver-command", "validated-input", "command-processing"
-
-  def operation ProcessedActuatorFeedback
-    name "Processed Actuator Feedback"
-    description "Conditioned actuator feedback with sensor fusion and fault detection"
-    designrationale "Actuator feedback processing provides reliable position and force information for closed-loop control"
-    owner "Actuator Feedback Processing Team"
-    datatype ActuatorFeedbackStruct
-    safetylevel ASIL-D
-    tags "actuator-feedback", "sensor-fusion", "fault-detection"
-
-  def signal ProcessedVehicleSpeed
-    name "Validated Vehicle Speed Signal"
-    description "Range-checked and validated vehicle speed signal"
-    designrationale "Speed validation prevents erroneous EPB engagement during vehicle motion"
-    owner "Speed Validation Team"
-    datatype float32
-    safetylevel ASIL-D
-    tags "vehicle-speed", "range-validation", "safety-interlock"
-
-  def signal ProcessedSlopeAngle
-    name "Validated Slope Angle Signal"
-    description "Filtered and validated vehicle slope angle for adaptive force control"
-    designrationale "Slope angle filtering removes noise while preserving accurate gradient information"
-    owner "Slope Processing Team"
-    datatype float32
-    tags "slope-angle", "signal-filtering", "adaptive-control"
-
-  def signal ProcessedIgnitionState
-    name "Debounced Ignition State Signal"
-    description "Debounced ignition state signal for reliable power state detection"
-    designrationale "Ignition state debouncing prevents spurious state changes during engine start/stop"
-    owner "Power State Processing Team"
-    datatype IgnitionEnum
-    tags "ignition-state", "debouncing", "power-management"
-
-  def signal ProcessedTransmissionState
-    name "Validated Transmission State Signal"
-    description "Validated transmission state and gear position information"
-    designrationale "Transmission state validation ensures reliable drivetrain status for EPB decisions"
-    owner "Transmission Processing Team"
-    datatype TransmissionEnum
-    tags "transmission-state", "validation", "drivetrain-status"
-
-  def signal ProcessedActuatorPosition
-    name "Calibrated Actuator Position Signal"
-    description "Calibrated and linearized actuator position feedback"
-    designrationale "Position calibration compensates for sensor non-linearity and provides accurate position data"
-    owner "Position Calibration Team"
-    datatype float32
-    safetylevel ASIL-D
-    tags "position-feedback", "calibration", "linearization"
-
-  def signal ProcessedActuatorCurrent
-    name "Filtered Actuator Current Signal"
-    description "Filtered motor current signal with offset compensation"
-    designrationale "Current filtering removes electrical noise while preserving load information for diagnostics"
-    owner "Current Processing Team"
-    datatype float32
-    tags "current-monitoring", "signal-filtering", "diagnostics"
+  // Output interfaces (processed inputs for internal use) - provided by InputProcessingInterface and internal modules
+  provides ref operation ProcessedVehicleState
+  provides ref operation ProcessedDriverCommand, ProcessedActuatorFeedback
+  provides ref signal ProcessedVehicleSpeed, ProcessedSlopeAngle, ProcessedIgnitionState
+  provides ref signal ProcessedTransmissionState, ProcessedActuatorPosition, ProcessedActuatorCurrent
+  provides ref signal ProcessedEPBSwitchPosition, CommandValidity, CommandDebounceStatus, CommandSequenceStatus
+  provides ref signal ActuatorFaultStatus, ActuatorCalibrationStatus, ActuatorLoadEstimate

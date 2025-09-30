@@ -1,0 +1,78 @@
+hdef interfaceset ControlLogicInterface
+  name "Control Logic Interface"
+  description "Interface definitions for EPB Control Logic Subsystem operations and signals"
+  owner "Control Logic Team"
+  level subsystem
+  safetylevel ASIL-D
+  tags "control-logic", "safety-interlocks", "force-control", "ASIL-D", "interface"
+
+  // Output interfaces (control commands and status) - provided by Control Logic Subsystem
+  def operation EPBControlCommand
+    name "EPB Control Command"
+    description "Primary control command containing engagement/release decisions and force targets"
+    owner "Control Command Team"
+    datatype EPBControlStruct
+    safetylevel ASIL-D
+    tags "control-command", "engagement-control", "force-target", "safety-critical"
+
+  def operation SafetyStatus
+    name "EPB Safety Status"
+    description "Comprehensive safety status including interlock states and fault conditions"
+    owner "Safety Monitoring Team"
+    datatype SafetyStatusStruct
+    safetylevel ASIL-D
+    tags "safety-status", "fault-detection", "interlock-monitoring", "diagnostics"
+
+  def operation DiagnosticOutput
+    name "EPB Diagnostic Output"
+    description "Diagnostic information for service tools and system health monitoring"
+    owner "Diagnostics Team"
+    datatype DiagnosticStruct
+    tags "diagnostics", "service-support", "health-monitoring"
+
+  def signal EPBEngagementCommand
+    name "EPB Engagement Command Signal"
+    description "Binary engagement command for actuator control"
+    owner "Engagement Control Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "engagement-command", "binary-control", "actuator-interface"
+
+  def signal ForceTarget
+    name "EPB Force Target Signal"
+    description "Target holding force based on vehicle conditions and driver preferences"
+    owner "Force Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "force-target", "adaptive-control", "performance-optimization"
+
+  def signal SafetyInterlock
+    name "Safety Interlock Signal"
+    description "Master safety interlock preventing unsafe EPB operation"
+    owner "Safety Interlock Team"
+    datatype boolean
+    safetylevel ASIL-D
+    tags "safety-interlock", "hazard-prevention", "ultimate-protection"
+
+  // Additional signals specific to Control Logic Subsystem
+  def signal SystemHealth
+    name "System Health Signal"
+    description "Overall system health indicator for user interface and vehicle systems"
+    owner "System Health Team"
+    datatype HealthEnum
+    tags "system-health", "user-feedback", "vehicle-integration"
+
+  def signal FaultStatus
+    name "Fault Status Signal"
+    description "Active fault status for immediate safety response"
+    owner "Fault Management Team"
+    datatype FaultEnum
+    safetylevel ASIL-D
+    tags "fault-status", "failure-response", "safety-critical"
+
+  def signal ControlMode
+    name "Control Mode Signal"
+    description "Current control mode (automatic, manual, emergency, etc.)"
+    owner "Mode Control Team"
+    datatype ControlModeEnum
+    tags "control-mode", "context-awareness", "user-interface"

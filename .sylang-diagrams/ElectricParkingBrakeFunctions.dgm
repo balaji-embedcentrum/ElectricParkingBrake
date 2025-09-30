@@ -1,0 +1,160 @@
+{
+  "fileUri": "",
+  "diagramType": "internal-block-diagram",
+  "positions": {
+    "ElectricParkingBrakeFunctions": {
+      "x": 646.3920266895934,
+      "y": -785.2533768963826,
+      "width": 1985.7472050135634,
+      "height": 1460.0000000000005
+    },
+    "EPB_SystemStateManager": {
+      "x": 886.3920266895934,
+      "y": -348.3070559402698,
+      "width": 216,
+      "height": 300
+    },
+    "EPB_RequestProcessor": {
+      "x": 1584.1392317031573,
+      "y": -485.25337689638263,
+      "width": 200,
+      "height": 120
+    },
+    "EPB_MotorController": {
+      "x": 1784.1392317031568,
+      "y": -485.25337689638263,
+      "width": 192,
+      "height": 120
+    },
+    "EPB_ForceCalculator": {
+      "x": 1984.1392317031568,
+      "y": -485.25337689638263,
+      "width": 192,
+      "height": 120
+    },
+    "EPB_PositionEstimator": {
+      "x": 2184.139231703157,
+      "y": -485.25337689638263,
+      "width": 208,
+      "height": 120
+    },
+    "EPB_SafetyValidator": {
+      "x": 1384.1392317031573,
+      "y": -285.2533768963826,
+      "width": 192,
+      "height": 120
+    },
+    "EPB_ReleaseController": {
+      "x": 1584.1392317031573,
+      "y": -285.2533768963826,
+      "width": 208,
+      "height": 120
+    },
+    "EPB_ForceMonitor": {
+      "x": 1784.1392317031568,
+      "y": -285.2533768963826,
+      "width": 168,
+      "height": 120
+    },
+    "EPB_SlopeEstimator": {
+      "x": 1984.1392317031568,
+      "y": -285.2533768963826,
+      "width": 184,
+      "height": 120
+    },
+    "EPB_MotorDiagnostics": {
+      "x": 2184.139231703157,
+      "y": -285.2533768963826,
+      "width": 200,
+      "height": 120
+    },
+    "EPB_SensorDiagnostics": {
+      "x": 1384.1392317031573,
+      "y": -85.25337689638258,
+      "width": 208,
+      "height": 120
+    },
+    "EPB_ProcessorMonitor": {
+      "x": 1584.1392317031573,
+      "y": -85.25337689638258,
+      "width": 200,
+      "height": 120
+    },
+    "EPB_CommunicationMonitor": {
+      "x": 1784.1392317031568,
+      "y": -85.25337689638258,
+      "width": 232,
+      "height": 120
+    },
+    "EPB_EmergencyBrakeController": {
+      "x": 1984.1392317031568,
+      "y": -85.25337689638258,
+      "width": 264,
+      "height": 120
+    },
+    "EPB_FailureManager": {
+      "x": 2184.139231703157,
+      "y": -85.25337689638258,
+      "width": 184,
+      "height": 120
+    },
+    "EPB_CANTransmitter": {
+      "x": 1384.1392317031573,
+      "y": 114.74662310361754,
+      "width": 184,
+      "height": 120
+    },
+    "EPB_CANReceiver": {
+      "x": 1584.1392317031573,
+      "y": 114.74662310361754,
+      "width": 160,
+      "height": 120
+    },
+    "EPB_SwitchDebouncer": {
+      "x": 1784.1392317031568,
+      "y": 114.74662310361754,
+      "width": 192,
+      "height": 120
+    },
+    "EPB_IndicatorController": {
+      "x": 1984.1392317031568,
+      "y": 114.74662310361754,
+      "width": 224,
+      "height": 120
+    },
+    "EPB_AutoEngageLogic": {
+      "x": 2184.139231703157,
+      "y": 114.74662310361754,
+      "width": 192,
+      "height": 120
+    },
+    "EPB_AutoDisengageLogic": {
+      "x": 1384.1392317031573,
+      "y": 314.7466231036177,
+      "width": 216,
+      "height": 120
+    },
+    "EPB_HillHoldTimer": {
+      "x": 1584.1392317031573,
+      "y": 314.7466231036177,
+      "width": 176,
+      "height": 120
+    },
+    "EPB_CalibrationManager": {
+      "x": 1784.1392317031568,
+      "y": 314.7466231036177,
+      "width": 216,
+      "height": 120
+    },
+    "EPB_ThermalManager": {
+      "x": 1984.1392317031568,
+      "y": 314.7466231036177,
+      "width": 184,
+      "height": 120
+    }
+  },
+  "lastModified": 1759232067169,
+  "version": "DIAGRAM POSITION MANAGER v2.26.30",
+  "identifier": "ElectricParkingBrakeFunctions",
+  "decompositionType": "functional"
+}

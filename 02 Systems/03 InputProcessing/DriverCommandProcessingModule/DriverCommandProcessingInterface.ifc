@@ -1,0 +1,39 @@
+hdef interfaceset DriverCommandProcessingInterface
+  name "Driver Command Processing Interface"
+  description "Interface definitions for Driver Command Processing Module operations and signals"
+  owner "Driver Command Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "driver-command", "command-processing", "debouncing", "ASIL-D", "interface"
+
+  // Additional signals specific to Driver Command Processing Module
+  def signal ProcessedEPBSwitchPosition
+    name "Processed EPB Switch Position Signal"
+    description "Debounced and validated EPB switch position signal"
+    owner "Switch Processing Team"
+    datatype SwitchPositionEnum
+    safetylevel ASIL-D
+    tags "processed-switch", "debounced-position", "safety-critical"
+
+  def signal CommandValidity
+    name "Command Validity Signal"
+    description "Validity status of processed driver commands"
+    owner "Command Validation Team"
+    datatype bool
+    safetylevel ASIL-D
+    tags "validity-check", "command-integrity", "safety-critical"
+
+  def signal CommandDebounceStatus
+    name "Command Debounce Status Signal"
+    description "Debounce status indicating if command is stable"
+    owner "Debounce Processing Team"
+    datatype DebounceStatusEnum
+    tags "debounce-status", "stability-check"
+
+  def signal CommandSequenceStatus
+    name "Command Sequence Status Signal"
+    description "Status of command sequence validation (e.g., proper engage/disengage sequence)"
+    owner "Sequence Validation Team"
+    datatype SequenceStatusEnum
+    safetylevel ASIL-D
+    tags "sequence-validation", "command-logic", "safety-critical"

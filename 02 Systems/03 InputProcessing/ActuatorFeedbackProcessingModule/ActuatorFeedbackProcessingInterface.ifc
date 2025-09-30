@@ -1,0 +1,22 @@
+hdef interfaceset ActuatorFeedbackProcessingInterface
+  name "Actuator Feedback Processing Interface"
+  description "Interface definitions for Actuator Feedback Processing Module operations and signals"
+  owner "Actuator Feedback Processing Team"
+  level module
+  safetylevel ASIL-D
+  tags "actuator-feedback", "sensor-fusion", "fault-detection", "ASIL-D", "interface"
+
+  def signal ActuatorCalibrationStatus
+    name "Actuator Calibration Status Signal"
+    description "Calibration status of actuator position and current sensors"
+    owner "Calibration Team"
+    datatype CalibrationStatusEnum
+    tags "calibration-status", "sensor-calibration"
+
+  def signal ActuatorLoadEstimate
+    name "Actuator Load Estimate Signal"
+    description "Estimated load on actuator based on current and position analysis"
+    owner "Load Analysis Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "load-estimate", "force-analysis", "safety-critical"
