@@ -35,7 +35,6 @@ hdef block EPB_InputProcessingSubsystem
   needs ref signal ActuatorPositionOutput
   needs ref signal ActuatorCurrentOutput
   needs ref signal DiagnosticRequest
-
   // Output interfaces (processed inputs for internal use) - provided by InputProcessingInterface and internal modules
   provides ref operation ProcessedVehicleState
   provides ref operation ProcessedDriverCommand, ProcessedActuatorFeedback
@@ -43,3 +42,4 @@ hdef block EPB_InputProcessingSubsystem
   provides ref signal ProcessedTransmissionState, ProcessedActuatorPosition, ProcessedActuatorCurrent
   provides ref signal ProcessedEPBSwitchPosition, CommandValidity, CommandDebounceStatus, CommandSequenceStatus
   provides ref signal ActuatorFaultStatus, ActuatorCalibrationStatus, ActuatorLoadEstimate
+
