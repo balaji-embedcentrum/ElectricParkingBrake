@@ -1,0 +1,281 @@
+use failureset EPB_InputProcessingFailures
+use failureset EPB_SystemFailureAnalysis
+use block EPB_InputProcessingSubsystem
+use block VehicleStateProcessingModule
+use block DriverCommandProcessingModule
+use block ActuatorFeedbackProcessingModule
+
+hdef faulttree EPB_InputProcessingFaultTree
+  name "EPB Input Processing Subsystem Fault Tree Analysis"
+  description """
+    Complete fault tree analysis for EPB Input Processing Subsystem per ISO 26262 Part 4 ASIL-D.
+    Top event is unsafe EPB operation due to input processing failures. Analyzes all paths from 
+    component failures through subsystem failures to top-level safety violations. Includes 
+    quantitative probability analysis and diagnostic coverage assessment for automotive brake systems.
+    """
+  owner "EPB Safety Analysis Team"
+  tags "fault-tree", "input-processing", "quantitative-fta", "ASIL-D", "automotive-brake"
+  safetylevel ASIL-D
+  
+  topevent ref failuremode EPB_UnsafeEngagement
+  
+  def gate InputProcessingSystemFailure
+    name "Input Processing System Complete Failure"
+    description """
+      Top-level gate analyzing all input processing failures that can lead to unsafe EPB operation.
+      OR gate because any one of these major input processing failures can cause unsafe engagement.
+      """
+    gatetype or
+    
+    input ref gate SensorSystemFailure, CommunicationSystemFailure, PowerSystemFailure, ProcessingModuleFailure
+    
+    output ref failuremode EPB_UnsafeEngagement
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate SensorSystemFailure
+    name "Sensor System Complete Failure"
+    description """
+      All critical sensors fail simultaneously or sensor processing fails completely.
+      OR gate because any major sensor failure can compromise safety-critical input processing.
+      """
+    gatetype or
+    
+    input ref gate VehicleSpeedSensorGate, ActuatorPositionSensorGate, SlopeAngleSensorFailure, IgnitionStateSensorFailure
+    
+    output ref gate InputProcessingSystemFailure
+    allocatedto ref block VehicleStateProcessingModule
+
+  def gate VehicleSpeedSensorGate
+    name "Vehicle Speed Sensor Complete Failure"
+    description """
+      Vehicle speed sensor system fails completely, preventing speed validation for EPB safety.
+      OR gate because any speed sensor failure path can cause unsafe engagement.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure, SensorWiringDamage, SensorInternalFailure
+    
+    output ref gate SensorSystemFailure
+    allocatedto ref block VehicleStateProcessingModule
+
+  def gate ActuatorPositionSensorGate
+    name "Actuator Position Sensor Complete Failure"
+    description """
+      Actuator position sensor system fails completely, preventing position feedback.
+      OR gate because any position sensor failure can compromise actuator control.
+      """
+    gatetype or
+    
+    input ref failuremode ActuatorPositionSensorFailure
+    
+    output ref gate SensorSystemFailure
+    allocatedto ref block ActuatorFeedbackProcessingModule
+
+  def gate SlopeAngleSensorFailure
+    name "Slope Angle Sensor Complete Failure"
+    description """
+      Slope angle sensor system fails completely, preventing gradient compensation.
+      OR gate because any slope sensor failure can affect brake force calculation.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate SensorSystemFailure
+    allocatedto ref block VehicleStateProcessingModule
+
+  def gate IgnitionStateSensorFailure
+    name "Ignition State Sensor Complete Failure"
+    description """
+      Ignition state sensor system fails completely, preventing vehicle state detection.
+      OR gate because any ignition sensor failure can affect EPB state management.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate SensorSystemFailure
+    allocatedto ref block VehicleStateProcessingModule
+
+  def gate CommunicationSystemFailure
+    name "Communication System Complete Failure"
+    description """
+      Vehicle network communication fails completely, preventing external data reception.
+      OR gate because any communication failure can isolate the input processing system.
+      """
+    gatetype or
+    
+    input ref gate CANBusCommunicationGate, NetworkInterfaceFailure, DataValidationFailure
+    
+    output ref gate InputProcessingSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate CANBusCommunicationGate
+    name "CAN Bus Communication Complete Failure"
+    description """
+      CAN bus communication fails completely, preventing vehicle data reception.
+      OR gate because any CAN communication failure can isolate the system.
+      """
+    gatetype or
+    
+    input ref failuremode CANBusCommunicationFailure
+    
+    output ref gate CommunicationSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate NetworkInterfaceFailure
+    name "Network Interface Complete Failure"
+    description """
+      Network interface hardware fails completely, preventing all communication.
+      OR gate because any network interface failure can cause communication loss.
+      """
+    gatetype or
+    
+    input ref failuremode CANBusCommunicationFailure
+    
+    output ref gate CommunicationSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate DataValidationFailure
+    name "Data Validation Complete Failure"
+    description """
+      Data validation and processing fails completely, preventing safe data interpretation.
+      OR gate because any validation failure can cause incorrect data processing.
+      """
+    gatetype or
+    
+    input ref failuremode CANBusCommunicationFailure
+    
+    output ref gate CommunicationSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate PowerSystemFailure
+    name "Power System Complete Failure"
+    description """
+      Power supply system fails completely, causing total input processing loss.
+      AND gate models dual power redundancy - both primary and backup must fail.
+      """
+    gatetype and
+    
+    input ref gate PrimaryPowerFailure, BackupPowerFailure
+    
+    output ref gate InputProcessingSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate PrimaryPowerFailure
+    name "Primary Power Supply Failure"
+    description """
+      Primary power supply fails completely, requiring backup power activation.
+      OR gate because any primary power failure can cause power loss.
+      """
+    gatetype or
+    
+    input ref failuremode PowerSupplyFailure
+    
+    output ref gate PowerSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate BackupPowerFailure
+    name "Backup Power Supply Failure"
+    description """
+      Backup power supply fails completely, preventing power redundancy.
+      OR gate because any backup power failure can cause total power loss.
+      """
+    gatetype or
+    
+    input ref failuremode PowerSupplyFailure
+    
+    output ref gate PowerSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate ProcessingModuleFailure
+    name "Processing Module Complete Failure"
+    description """
+      Input processing modules fail completely, preventing signal processing.
+      OR gate because any processing module failure can cause system failure.
+      """
+    gatetype or
+    
+    input ref gate VehicleStateProcessingFailure, DriverCommandProcessingFailure, ActuatorFeedbackProcessingFailure, SignalValidationFailure
+    
+    output ref gate InputProcessingSystemFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate VehicleStateProcessingFailure
+    name "Vehicle State Processing Complete Failure"
+    description """
+      Vehicle state processing module fails completely, preventing state validation.
+      OR gate because any vehicle state processing failure can cause unsafe operation.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate ProcessingModuleFailure
+    allocatedto ref block VehicleStateProcessingModule
+
+  def gate DriverCommandProcessingFailure
+    name "Driver Command Processing Complete Failure"
+    description """
+      Driver command processing module fails completely, preventing command validation.
+      OR gate because any driver command processing failure can cause unsafe operation.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate ProcessingModuleFailure
+    allocatedto ref block DriverCommandProcessingModule
+
+  def gate ActuatorFeedbackProcessingFailure
+    name "Actuator Feedback Processing Complete Failure"
+    description """
+      Actuator feedback processing module fails completely, preventing feedback validation.
+      OR gate because any actuator feedback processing failure can cause control uncertainty.
+      """
+    gatetype or
+    
+    input ref failuremode ActuatorPositionSensorFailure
+    
+    output ref gate ProcessingModuleFailure
+    allocatedto ref block ActuatorFeedbackProcessingModule
+
+  def gate SignalValidationFailure
+    name "Signal Validation Complete Failure"
+    description """
+      Signal validation system fails completely, preventing safe signal processing.
+      AND gate models dual validation redundancy - both validation paths must fail.
+      """
+    gatetype and
+    
+    input ref gate PrimaryValidationFailure, SecondaryValidationFailure
+    
+    output ref gate ProcessingModuleFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate PrimaryValidationFailure
+    name "Primary Signal Validation Failure"
+    description """
+      Primary signal validation fails completely, requiring secondary validation.
+      OR gate because any primary validation failure can cause validation loss.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate SignalValidationFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
+  def gate SecondaryValidationFailure
+    name "Secondary Signal Validation Failure"
+    description """
+      Secondary signal validation fails completely, preventing validation redundancy.
+      OR gate because any secondary validation failure can cause total validation loss.
+      """
+    gatetype or
+    
+    input ref failuremode VehicleSpeedSensorFailure
+    
+    output ref gate SignalValidationFailure
+    allocatedto ref block EPB_InputProcessingSubsystem
+
