@@ -22,19 +22,29 @@ extends, ref, feature, mandatory, optional, or, alternative, selected
 
 ## Syntax Structure
 ```
-use featureset <FeatureSetName>
+use featureset [featureset-ref]
 
-hdef variantset <VariantSetName>
-  <property> <value>
+hdef variantset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
 
-  extends ref feature <FeatureName> [mandatory|optional|or|alternative] [selected]
-    extends ref feature <ChildFeature> [flags] [selected]
+  extends ref feature [feature-ref] [mandatory|optional|or|alternative] [selected]
+    extends ref feature [sub-feature] [mandatory|optional|or|alternative] [selected]
       # Hierarchical extension structure mirrors .fml
+      
+### Selection States:
+ - Add 'selected' keyword to include feature in variant
+ - Omit 'selected' to exclude feature from variant
+
+### Constraint Rules:
+ - mandatory features: MUST be selected
+ - optional features: MAY be selected
+ - or features: AT LEAST ONE sibling must be selected
+ - alternative features: EXACTLY ONE sibling must be selected
 ```
 
-## Selection States
-- `selected` - Feature is included in this variant
-- No `selected` keyword - Feature is excluded
 
 ## Complete Example
 

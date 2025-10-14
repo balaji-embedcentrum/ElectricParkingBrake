@@ -16,6 +16,38 @@ safetymechanismeffectiveness, detectiontime, reactiontime, satisfies,
 mitigates, allocatedto, implementedby, detects, verifiedby, when, ref
 ```
 
+## Syntax Structure
+```
+use hazardanalysis [hazardanalysis-ref]
+use itemdefinition [itemdefinition-ref]
+
+hdef safetymechanismset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  iso26262part [string-literal]
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+
+  def safetymechanism [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    mechanismtype [Detection|Control|Mitigation]
+    safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+    safetymechanismeffectiveness [percentage]
+    detectiontime [time-value]
+    reactiontime [time-value]
+    
+    # Relationships
+    satisfies ref requirement [requirement-ref], [requirement-ref], ...
+    mitigates ref hazard [hazard-ref], [hazard-ref], ...
+    allocatedto ref block [block-ref]
+    implementedby ref function [function-ref], [function-ref], ...
+    detects ref failuremode [failuremode-ref], [failuremode-ref], ...
+    verifiedby ref testcase [testcase-ref], [testcase-ref], ...
+```
+
 ## Mechanism Types
 ```
 mechanismtype Detection    # Fault detection

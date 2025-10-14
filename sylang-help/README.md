@@ -13,6 +13,7 @@ Welcome to the Sylang Model-Based Systems Engineering Language reference documen
 ### System Architecture & Design
 - [**BLK** - Block Definition](blk-help.md) - Hardware/software blocks and interfaces
 - [**FUN** - Function Definition](fun-help.md) - Functional behavior specifications
+- [**IFC** - Interface Definition](ifc-help.md) - Operations, signals, datatypes, and parameters
 - [**REQ** - Requirement Definition](req-help.md) - System requirements with traceability
 - [**TST** - Test Definition](tst-help.md) - Validation and verification tests
 

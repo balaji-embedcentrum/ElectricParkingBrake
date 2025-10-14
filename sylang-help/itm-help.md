@@ -15,7 +15,35 @@ owner, tags, level, iso26262part, safetylevel, conditions, includes,
 excludes, itemscope, when, ref
 ```
 
-## Example
+## Syntax Structure
+```
+use featureset [featureset-ref]
+
+hdef itemdefinition [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  iso26262part [string-literal]
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+
+  def boundary [identifier]
+    name [string-literal]
+    description [string-literal]
+    includes ref block [block-ref], [block-ref], ...
+    excludes ref block [block-ref], [block-ref], ...
+    
+    def boundary [sub-boundary-id]
+      # Nested boundaries with same structure
+      
+  def operatingmode [identifier]
+    name [string-literal]
+    description [string-literal]
+    conditions [string-literal]
+    itemscope [string-literal]
+```
+
+## Complete Example
 ```sylang
 use featureset AutonomousVehicleFeatures
 

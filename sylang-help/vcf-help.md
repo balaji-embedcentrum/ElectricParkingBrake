@@ -20,24 +20,24 @@ use, hdef, configset, def, config, name, description, owner, tags,
 generatedfrom, generatedat, basedon, ref, feature, featureset, variantset
 ```
 
-## Syntax Structure (NEW v2.21.85)
+## Syntax Structure
 ```
-use featureset <FeatureSetName>
-use variantset <VariantSetName>
+use featureset [featureset-ref]
+use variantset [variantset-ref]
 
-hdef configset <ConfigSetName>
-  name <string>
-  description <string>
-  owner <string>
-  generatedfrom ref variantset <VariantSetName>
-  generatedat <ISO 8601 timestamp>
-  tags <comma-separated>
+hdef configset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  generatedfrom ref variantset [variantset-ref]
+  generatedat [ISO-8601-timestamp]
+  tags [string-literal], [string-literal], ...
 
-  def config <ConfigName> <0|1>
-    basedon ref feature <FeatureName>
+  def config [config-identifier] [0|1]
+    basedon ref feature [feature-ref]
     
-  def config <ConfigName> <0|1>
-    basedon ref feature <FeatureName>
+  def config [config-identifier] [0|1]
+    basedon ref feature [feature-ref]
 ```
 
 ## Config Values

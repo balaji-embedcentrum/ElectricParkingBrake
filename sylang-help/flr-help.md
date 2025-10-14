@@ -19,7 +19,57 @@ propagationdelay, recoverytime, causedby, effects, detectedby, mitigatedby,
 testedby, derivedfrom, within, when, ref
 ```
 
-## Flat Syntax Example (NEW - Recommended)
+## Syntax Structure
+```
+use blockset [blockset-ref]
+use functionset [functionset-ref]
+use requirementset [requirementset-ref]
+use testset [testset-ref]
+
+hdef failureset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+  timingreference [ms|us|s]
+  propagateto ref failureset [failureset-ref]
+  block ref block [block-ref]
+
+  def failuremode [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    tags [string-literal], [string-literal], ...
+    
+    # AIAG VDA Quantitative Analysis
+    failurerate [numeric-value]
+    severity [1-10]
+    occurrence [1-10]
+    detectability [1-10]
+    actionpriority [high|medium|low]
+    rpn [numeric-value]
+    
+    # Temporal Properties
+    faultdetectiontime [numeric-value]
+    faulttolerancetime [numeric-value]
+    propagationdelay [numeric-value]
+    recoverytime [numeric-value]
+    within [numeric-value]
+    
+    # Relationships
+    causedby ref failuremode [failuremode-ref], [failuremode-ref], ...
+    effects ref failuremode [failuremode-ref], [failuremode-ref], ...
+    detectedby ref function [function-ref], [function-ref], ...
+    mitigatedby ref function [function-ref], [function-ref], ...
+    testedby ref testcase [testcase-ref], [testcase-ref], ...
+    affects ref block [block-ref], [block-ref], ...
+    allocatedto ref block [block-ref]
+    derivedfrom ref requirement [requirement-ref]
+    when ref config [config-ref]
+```
+
+## Complete Example (Flat Syntax - Recommended)
 ```sylang
 use blockset AutomotiveECUBlocks
 use functionset PowerSupplyFunctions

@@ -1,10 +1,8 @@
-use featureset ElectricParkingBrakeFeatures
-
 hdef interfaceset InputProcessingInterface
   name "Input Processing Interface"
   description "Interface definitions for EPB Input Processing Subsystem operations and signals"
   owner "Input Processing Team"
-  level internal
+  level subsystem
   safetylevel ASIL-D
   tags "input-processing", "signal-conditioning", "fault-detection", "ASIL-D", "interface"
 

@@ -14,6 +14,33 @@ use, hdef, faulttree, def, gate, name, description, owner, tags,
 safetylevel, topevent, gatetype, input, output, allocatedto, when, ref
 ```
 
+## Syntax Structure
+```
+use failureset [failureset-ref]
+use hazardanalysis [hazardanalysis-ref]
+use safetymechanismset [safetymechanismset-ref]
+
+hdef faulttree [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+  topevent ref failuremode [failuremode-ref]
+
+  def gate [identifier]
+    name [string-literal]
+    description [string-literal]
+    gatetype [and|or|xor|inhibit]
+    input ref gate [gate-ref], [gate-ref], ...
+    input ref failuremode [failuremode-ref], [failuremode-ref], ...
+    output ref gate [gate-ref]
+    allocatedto ref block [block-ref]
+    
+    def gate [sub-gate-id]
+      # Nested gates with same structure
+```
+
 ## Gate Types
 ```
 gatetype and     # AND gate (all inputs must occur)

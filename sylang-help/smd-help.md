@@ -16,7 +16,41 @@ tags, safetylevel, status, allocatedto, implements, initialstate, endstate,
 from, to, condition, call, when, ref
 ```
 
-## Example
+## Syntax Structure
+```
+use functionset [functionset-ref]
+use requirementset [requirementset-ref]
+use block [block-ref]
+
+hdef statemachine [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+  status [draft|approved|implemented]
+  allocatedto ref block [block-ref]
+  implements ref requirement [requirement-ref]
+
+  def state [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    status [draft|implemented|verified]
+    initialstate [true|false]
+    endstate [true|false]
+    implements ref requirement [requirement-ref]
+    
+  def transition [identifier]
+    name [string-literal]
+    description [string-literal]
+    from ref state [state-ref]
+    to ref state [state-ref]
+    condition [string-literal]
+    call ref function [function-ref]
+```
+
+## Complete Example
 ```sylang
 use functionset EPBFunctions
 use requirementset EPBRequirements

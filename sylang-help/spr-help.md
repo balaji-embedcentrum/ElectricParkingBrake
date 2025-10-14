@@ -15,7 +15,45 @@ startdate, enddate, issuestatus, priority, assignedto, points,
 outputfile, comment, ref, agent
 ```
 
-## Example
+## Syntax Structure
+```
+use agentset [agentset-ref]
+
+hdef sprint [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  startdate [YYYY-MM-DD]
+  enddate [YYYY-MM-DD]
+  comment [string-literal]
+
+  def epic [identifier]
+    name [string-literal]
+    description [string-literal]
+    assignedto ref agent [agent-ref]
+    issuestatus [open|in-progress|closed|blocked]
+    priority [critical|high|medium|low]
+    comment [string-literal]
+    
+    def story [identifier]
+      name [string-literal]
+      description [string-literal]
+      assignedto ref agent [agent-ref]
+      issuestatus [open|in-progress|closed|blocked]
+      priority [critical|high|medium|low]
+      points [numeric-value]
+      
+      def task [identifier]
+        name [string-literal]
+        description [string-literal]
+        assignedto ref agent [agent-ref]
+        issuestatus [open|in-progress|closed|blocked]
+        priority [critical|high|medium|low]
+        points [numeric-value]
+        outputfile [file-path]
+```
+
+## Complete Example
 ```sylang
 use agentset AutonomousVehicleAgents
 

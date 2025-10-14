@@ -15,7 +15,41 @@ level, safetylevel, setup, passcriteria, testresult, expected, method,
 testlevel, steps, satisfies, derivedfrom, refinedfrom, when, ref, config
 ```
 
-## Example
+## Syntax Structure
+```
+use requirementset [requirementset-ref]
+use functionset [functionset-ref]
+use parameter [parameter-ref], [parameter-ref], ...
+
+hdef testset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+
+  def testcase [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    tags [string-literal], [string-literal], ...
+    method [HIL|SIL|VIL|MIL|manual|automated]
+    testlevel [unit|integration|system|acceptance]
+    setup [string-literal]
+    steps [string-literal]
+    expected [string-literal]
+    passcriteria [string-literal]
+    testresult [pass|fail|not-run|blocked]
+    safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+    
+    # Test relationships
+    satisfies ref requirement [requirement-ref], [requirement-ref], ...
+    derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
+    refinedfrom ref testcase [testcase-ref]
+    when ref config [config-ref]
+```
+
+## Complete Example
 ```sylang
 use requirementset AutonomousPerceptionRequirements
 use functionset AutonomousPerceptionFunctions

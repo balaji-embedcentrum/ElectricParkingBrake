@@ -1,76 +1,82 @@
 # Block Definition (.blk)
 
 ## Overview
-The `.blk` file defines **hardware/software blocks** with their interfaces (operations, signals, parameters). It represents architectural elements in your system design.
+The `.blk` file defines **hardware/software blocks** with their product characteristics. It represents architectural elements in your system design with AIAG VDA-compliant characteristics.
 
 ## File Structure Rules
 - **ONE** `hdef block` statement per file
-- **MULTIPLE** `def operation`, `def signal`, `def parameter` statements
+- **MULTIPLE** `def characteristic` statements (AIAG VDA product characteristics)
 - Can `use` configsets, featuresets, functionsets, interfacesets
-- Supports `needs`/`provides` for interfaces at hdef level
+- Supports `needs` for input interface references at hdef level
+- Supports `provides` for output interface references at hdef level
 - Block relationships defined at hdef level
+- **NOTE**: Operations, signals, parameters, and datatypes are defined in `.ifc` files, not in `.blk` files
 
 ## Valid Keywords
 ```
-use, hdef, block, def, operation, signal, parameter, characteristic,
+use, hdef, block, def, characteristic,
 name, description, designrationale, comment, owner, tags, level, 
-safetylevel, blocktype, chartype, specification, tolerance, controlmethod,
-measuringequipment, value, decomposesto, decomposesfrom, enables, needs, 
-provides, requires, meets, when, ref, config, datatype, composedof
+safetylevel, blocktype, chartype, unit, nominalvalue, upperlimit, lowerlimit,
+tolerance, controlmethod, measuringequipment, samplingplan, inspectionfrequency,
+documentreference, decomposedfrom, decomposesto, implements, enables,
+derivedfrom, implementedby, needs, meets, verifiedby,
+when, ref, config, feature, function, operation, signal, requirement, testcase
 ```
 
 ## Syntax Structure
 ```
-use configset <ConfigSetName>
-use featureset <FeatureSetName>
-use functionset <FunctionSetName>
-use interfaceset <InterfaceSetName>
+use configset [configset-ref]
+use featureset [featureset-ref]
+use functionset [functionset-ref]
+use interfaceset [interfaceset-ref]
 
-hdef block <BlockName>
-  name <string>
-  description """multiline"""
-  designrationale """multiline"""
-  comment """multiline"""
-  owner <string>
-  level <enum>
-  safetylevel <ASIL/SIL>
-  tags <comma-separated>
+hdef block [identifier]
+  name [string-literal]
+  description [string-literal]
+  designrationale [string-literal]
+  comment [string-literal]
+  owner [string-literal]
+  level [system|subsystem|component|module]
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM|SIL-1|SIL-2|SIL-3|SIL-4]
+  tags [string-literal], [string-literal], ...
+  blocktype [hardware|software|hybrid]
   
-  // Input interfaces (NEEDS - at hdef level)
-  needs ref operation <OperationName>, <OperationName>
-  needs ref signal <SignalName>, <SignalName>
+  # Input interfaces (NEEDS - at hdef level)
+  needs ref operation [operation-ref], [operation-ref], ...
+  needs ref signal [signal-ref], [signal-ref], ...
   
-  // Block relationships (at hdef level)
-  composedof ref block <BlockName>, <BlockName>
-  enables ref feature <FeatureName>
-  when ref config <ConfigName>
+  # Output interfaces (PROVIDES - at hdef level)
+  provides ref operation [operation-ref], [operation-ref], ...
+  provides ref signal [signal-ref], [signal-ref], ...
+  
+  # Block relationships (at hdef level)
+  decomposedfrom ref block [block-ref]
+  decomposesto ref block [block-ref], [block-ref], ...
+  implements ref function [function-ref], [function-ref], ...
+  enables ref feature [feature-ref], [feature-ref], ...
+  derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
+  implementedby ref requirement [requirement-ref], [requirement-ref], ...
+  when ref config [config-ref]
 
-  // Output operations (def statements)
-  def operation <OperationName>
-    name <string>
-    description """multiline"""
-    designrationale """multiline"""
-    owner <string>
-    requires ref datatype <DataTypeName>
-    tags <comma-separated>
-    when ref config <ConfigName>
-    
-  // Output signals (def statements)
-  def signal <SignalName>
-    name <string>
-    description """multiline"""
-    owner <string>
-    requires ref datatype <DataTypeName>
-    safetylevel <ASIL/SIL>
-    tags <comma-separated>
-    
-  // Parameters (def statements)
-  def parameter <ParameterName>
-    name <string>
-    description <string>
-    owner <string>
-    tags <comma-separated>
-    value <string>
+  # Product Characteristics (AIAG VDA) - ONLY def statements allowed
+  def characteristic [identifier]
+    name [string-literal]
+    description [string-literal]
+    chartype [special|critical|significant]
+    unit [string-literal]
+    nominalvalue [numeric-value]
+    upperlimit [numeric-value]
+    lowerlimit [numeric-value]
+    tolerance [numeric-value]
+    controlmethod [string-literal]
+    measuringequipment [string-literal]
+    samplingplan [string-literal]
+    inspectionfrequency [string-literal]
+    documentreference [string-literal]
+    derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
+    implementedby ref requirement [requirement-ref], [requirement-ref], ...
+    meets ref requirement [requirement-ref]
+    verifiedby ref testcase [testcase-ref]
 ```
 
 ## Complete Example
@@ -100,96 +106,97 @@ hdef block AdvancedPerceptionControlModule
   owner "Advanced Perception Engineering Team"
   level module
   safetylevel ASIL-D
+  blocktype hybrid
   tags "perception", "sensor-fusion", "AI-processing", "safety-critical"
   
-  // Input interfaces (NEEDS - what this block requires)
+  # Input interfaces (NEEDS - what this block requires)
   needs ref operation CameraRawData, LidarPointCloud, RadarTargets
   needs ref operation CalibrationParameters, SystemConfiguration
   needs ref signal SystemClockSignal, PowerSupplyStatus
   needs ref signal CalibrationStatus, SystemHeartbeat
   
-  // Block relationships
-  composedof ref block CameraProcessingSubmodule, LidarProcessingSubmodule
-  composedof ref block FusionProcessingSubmodule, AIInferenceSubmodule
+  # Output interfaces (PROVIDES - what this block offers)
+  provides ref operation EnvironmentalModel, ObjectTrackingData, HazardDetection
+  provides ref signal ProcessingHeartbeat, SensorHealthStatus
+  
+  # Block relationships (ASPICE bilateral traceability)
+  decomposesto ref block CameraProcessingSubmodule, LidarProcessingSubmodule
+  decomposesto ref block FusionProcessingSubmodule, AIInferenceSubmodule
+  implements ref function PerceptionProcessing, ObjectDetection
   enables ref feature PerceptionSystem, ObjectDetection
+  derivedfrom ref requirement SYS_REQ_001, SYS_REQ_002
+  implementedby ref requirement SW_REQ_100, SW_REQ_101
   when ref config c_CoreAutonomousFeatures_PerceptionSystem_L4
 
-  // Output operations (PROVIDES - what this block offers)
-  def operation EnvironmentalModel
-    name "Comprehensive Environmental Model"
-    description """
-      Complete 360-degree environmental model containing all detected objects,
-      free space, lane markings, traffic signs, and dynamic hazards with 
-      confidence levels and timestamps.
-      """
-    designrationale """
-      Unified environmental representation enables consistent decision-making
-      across all autonomous driving functions and provides standardized 
-      interface for planning systems.
-      """
-    owner "Perception Data Architecture Team"
-    requires ref datatype EnvironmentalModelStruct
-    tags "environmental-model", "object-detection", "real-time"
-    when ref config c_CoreAutonomousFeatures_PerceptionSystem_L4
+  # Product Characteristics (AIAG VDA)
+  def characteristic ProcessingLatency
+    name "Perception Processing Cycle Latency"
+    description "Maximum time between sensor data input and environmental model output"
+    chartype critical
+    unit "milliseconds"
+    nominalvalue 50.0
+    upperlimit 75.0
+    lowerlimit 30.0
+    tolerance 5.0
+    controlmethod "Real-time performance monitoring with cycle time measurement"
+    measuringequipment "Oscilloscope with timing analysis software"
+    samplingplan "100% continuous monitoring during operation"
+    inspectionfrequency "Every processing cycle"
+    documentreference "PERC-SPEC-001-v2.3"
+    derivedfrom ref requirement PERF_REQ_010
+    implementedby ref requirement SW_REQ_150
+    meets ref requirement PERF_REQ_010
+    verifiedby ref testcase TEST_PERF_001
     
-  def operation ObjectTrackingData
-    name "Multi-Object Tracking Results"
-    description """
-      Tracked objects with unique IDs, position history, velocity vectors,
-      acceleration, classification confidence, and predicted trajectories.
-      """
-    owner "Object Tracking Team"
-    requires ref datatype ObjectTrackingStruct
-    tags "object-tracking", "trajectory-prediction"
+  def characteristic DetectionAccuracy
+    name "Object Detection Accuracy Rate"
+    description "Percentage of correctly detected and classified objects"
+    chartype critical
+    unit "percent"
+    nominalvalue 99.5
+    upperlimit 100.0
+    lowerlimit 98.0
+    tolerance 0.5
+    controlmethod "Statistical validation with test datasets"
+    measuringequipment "ML model validation framework"
+    samplingplan "10,000 test scenarios per validation cycle"
+    inspectionfrequency "Monthly validation runs"
+    documentreference "PERC-VALIDATION-001-v1.5"
+    derivedfrom ref requirement SAFETY_REQ_020
+    meets ref requirement SAFETY_REQ_020
+    verifiedby ref testcase TEST_DETECTION_001
     
-  def operation HazardDetection
-    name "Safety-Critical Hazard Alerts"
-    description """
-      Immediate hazard detection results including collision risks, 
-      emergency vehicles, construction zones, and other safety-critical 
-      environmental conditions.
-      """
-    owner "Safety Systems Team"
-    requires ref datatype HazardDetectionStruct
-    safetylevel ASIL-D
-    tags "hazard-detection", "safety-critical"
-
-  // Output signals (PROVIDES)
-  def signal ProcessingHeartbeat
-    name "Processing Cycle Heartbeat"
-    description """
-      High-frequency heartbeat signal indicating successful completion of
-      each perception processing cycle with timing information.
-      """
-    owner "Real-time Systems Team"
-    requires ref datatype uint32
-    tags "heartbeat", "real-time", "monitoring"
+  def characteristic PowerConsumption
+    name "Module Power Consumption"
+    description "Electrical power consumption under typical operating conditions"
+    chartype significant
+    unit "watts"
+    nominalvalue 45.0
+    upperlimit 60.0
+    lowerlimit 30.0
+    tolerance 5.0
+    controlmethod "Power monitoring during HIL testing"
+    measuringequipment "Precision power analyzer"
+    samplingplan "Sample 5 units per production batch"
+    inspectionfrequency "Per batch during production"
+    documentreference "HW-POWER-SPEC-001"
+    derivedfrom ref requirement HW_REQ_030
     
-  def signal SensorHealthStatus
-    name "Multi-Sensor Health Monitoring"
-    description """
-      Aggregated health status of all perception sensors including 
-      calibration drift, signal quality, and fault detection results.
-      """
-    owner "Sensor Integration Team"
-    requires ref datatype SensorHealthEnum
-    safetylevel ASIL-D
-    tags "sensor-health", "fault-detection"
-    
-  // Parameters (configurable values)
-  def parameter MaxDetectionRange
-    name "Maximum Object Detection Range"
-    description "Maximum distance in meters for object detection"
-    owner "Perception Algorithm Team"
-    tags "detection", "range", "configuration"
-    value "150.0"
-    
-  def parameter ConfidenceThreshold
-    name "Minimum Confidence Threshold"
-    description "Minimum confidence level required for object detection (0.0-1.0)"
-    owner "Perception Algorithm Team"
-    tags "confidence", "threshold"
-    value "0.85"
+  def characteristic OperatingTemperature
+    name "Module Operating Temperature Range"
+    description "Ambient temperature range for normal operation"
+    chartype special
+    unit "celsius"
+    nominalvalue 25.0
+    upperlimit 85.0
+    lowerlimit -40.0
+    tolerance 5.0
+    controlmethod "Environmental chamber testing"
+    measuringequipment "Calibrated thermocouples"
+    samplingplan "Temperature cycling test for qualification"
+    inspectionfrequency "Design validation and qualification testing"
+    documentreference "ENV-TEST-SPEC-001"
+    derivedfrom ref requirement ENV_REQ_001
 ```
 
 ## Interface Patterns
@@ -197,42 +204,57 @@ hdef block AdvancedPerceptionControlModule
 ### NEEDS (Inputs) - At hdef Level
 ```sylang
 hdef block MyBlock
-  // What this block needs from others
+  # What this block needs from others (defined in .ifc files)
   needs ref operation InputOperation1, InputOperation2
   needs ref signal InputSignal1, InputSignal2, InputSignal3
 ```
 
-### PROVIDES (Outputs) - Via def Statements
+### PROVIDES (Outputs) - At hdef Level
 ```sylang
-  // What this block provides to others
-  def operation OutputOperation
-    description "Operation provided by this block"
-    
-  def signal OutputSignal
-    description "Signal provided by this block"
+hdef block MyBlock
+  # What this block provides to others (defined in .ifc files)
+  provides ref operation OutputOperation1, OutputOperation2
+  provides ref signal OutputSignal1, OutputSignal2
 ```
 
-## Block Relationships
+**Note**: Operations and signals are defined in `.ifc` files and only *referenced* in `.blk` files via `needs` and `provides`.
 
-### Composition (composedof)
+## Block Relationships (ASPICE Bilateral Traceability)
+
+### Bottom-Up Composition (decomposedfrom)
 ```sylang
-hdef block ParentModule
-  composedof ref block ChildModule1, ChildModule2, ChildModule3
-  # This block is composed of child blocks
+hdef block ChildBlock
+  decomposedfrom ref block ParentBlock
+  # Single block only - this block is part of ParentBlock
 ```
 
-### Decomposition (decomposesto/decomposesfrom)
+### Top-Down Decomposition (decomposesto)
 ```sylang
 hdef block SystemBlock
-  decomposesto ref block SubsystemBlock1, SubsystemBlock2
-  # This block decomposes into subsystem blocks
+  decomposesto ref block SubsystemBlock1, SubsystemBlock2, SubsystemBlock3
+  # Multiple blocks allowed - this block decomposes into subsystems
 ```
 
-### Feature Enablement
+### Function Implementation (implements)
+```sylang
+hdef block ControlModule
+  implements ref function SpeedControl, BrakeControl, SteeringControl
+  # This block implements these functions
+```
+
+### Feature Enablement (enables)
 ```sylang
 hdef block VisionProcessingBlock
   enables ref feature CameraSystem, ObjectDetection
   # This block enables these features
+```
+
+### Requirement Traceability (derivedfrom, implementedby)
+```sylang
+hdef block SafetyController
+  derivedfrom ref requirement SYS_REQ_001, SYS_REQ_002
+  implementedby ref requirement SW_REQ_100, SW_REQ_101
+  # ASPICE bilateral traceability to requirements
 ```
 
 ## Level Hierarchy
@@ -250,58 +272,83 @@ level subpart          # Subpart level
 
 ## Common Patterns
 
-### ECU/Controller Block
+### ECU/Controller Block with Characteristics
 ```sylang
 hdef block VehicleControllerECU
   level component
   safetylevel ASIL-D
+  blocktype hardware
   
   needs ref operation VehicleStateData
   needs ref signal SensorInputs
+  provides ref operation ControlCommands
   
-  composedof ref block ProcessorModule, MemoryModule, CommunicationModule
+  decomposesto ref block ProcessorModule, MemoryModule, CommunicationModule
   
-  def operation ControlCommands
-    safetylevel ASIL-D
+  def characteristic ProcessingPower
+    name "ECU Processing Power"
+    chartype critical
+    unit "MIPS"
+    nominalvalue 2000.0
+    upperlimit 2500.0
+    lowerlimit 1500.0
 ```
 
-### Sensor Block
+### Sensor Block with Quality Characteristics
 ```sylang
 hdef block RadarSensor
   level part
   safetylevel ASIL-C
+  blocktype hardware
   
   needs ref operation CalibrationData
   needs ref signal PowerSupply
+  provides ref signal RadarTargets
   
-  def signal RadarTargets
-    safetylevel ASIL-C
-    requires ref datatype RadarTargetList
+  def characteristic DetectionRange
+    name "Maximum Detection Range"
+    chartype critical
+    unit "meters"
+    nominalvalue 200.0
+    upperlimit 250.0
+    lowerlimit 150.0
 ```
 
-### Processing Module
+### Processing Module with Performance Characteristics
 ```sylang
 hdef block SignalProcessingModule
   level module
+  safetylevel ASIL-B
+  blocktype software
   
   needs ref signal RawSensorData
+  provides ref operation ProcessedData
   
-  def operation ProcessedData
-    requires ref datatype ProcessedDataStruct
+  def characteristic CycleTime
+    name "Processing Cycle Time"
+    chartype critical
+    unit "milliseconds"
+    nominalvalue 10.0
+    upperlimit 15.0
+    lowerlimit 5.0
 ```
 
 ## Validation Rules
 ✅ Exactly one `hdef block` per file  
-✅ Multiple `def operation/signal/parameter` allowed  
-✅ `needs` at hdef level for inputs  
-✅ `def operation/signal` for outputs  
+✅ Multiple `def characteristic` allowed (AIAG VDA)  
+✅ `needs` at hdef level for input interfaces  
+✅ `provides` at hdef level for output interfaces  
 ✅ Can use `when ref config` for conditional visibility  
 ✅ Multiline strings use `"""` triple quotes  
-✅ Can reference datatypes via `requires ref datatype`  
-❌ No `def port` (use `def operation` or `def signal`)  
-❌ Input interfaces via `needs`, not `def`
+✅ Operations/signals defined in `.ifc` files, referenced here  
+❌ NO `def operation/signal/parameter/datatype` in `.blk` files  
+❌ Input interfaces via `needs`, not `def`  
+❌ Output interfaces via `provides`, not `def`
 
 ---
 
-**Next Steps**: Define functions in `.fun` files and requirements in `.req` files.
+**Next Steps**: 
+- Define operations, signals, parameters, and datatypes in `.ifc` files
+- Define functions in `.fun` files
+- Define requirements in `.req` files
 

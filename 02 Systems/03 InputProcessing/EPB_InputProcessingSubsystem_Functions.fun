@@ -1,6 +1,8 @@
 use featureset ElectricParkingBrakeFeatures
 use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
 use functionset VehicleStateProcessingModule_Functions
+use interfaceset VehicleNetworkInterface
+use interfaceset VehicleSystemsInterface
 
 hdef functionset EPB_InputProcessingSubsystem_Functions
   name "EPB Input Processing Subsystem Functions"

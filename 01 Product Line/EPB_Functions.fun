@@ -6,7 +6,6 @@ use block ElectricParkingBrakeECU
 use interfaceset EPB_Interfaces
 use interfaceset VehicleNetworkInterface
 
-
 hdef functionset ElectricParkingBrakeFunctions
   name "Electric Parking Brake Function Set"
   description "Application-layer function definitions for Electric Parking Brake system with ASIL-D safety functions"
@@ -17,7 +16,7 @@ hdef functionset ElectricParkingBrakeFunctions
   needs ref signal ActuatorCurrent
   needs ref signal SafetyStatus
   needs ref signal SystemHealth
-  provides ref operation SetSystemState, ProcessStateTransition, HandleFaultState
+  provides ref operation SetSystemState, ProcessStateTransition, HandleFaultState, StateTransitionComplete
 
   def function EPB_SystemStateManager
     name "EPB System State Manager"
@@ -34,6 +33,7 @@ hdef functionset ElectricParkingBrakeFunctions
     needs ref signal StateChangeRequest
     needs ref signal SafetyStatus
     needs ref signal SystemHealth
+  
     provides ref operation SetSystemState
     provides ref operation ProcessStateTransition
     provides ref operation HandleFaultState
@@ -58,7 +58,7 @@ hdef functionset ElectricParkingBrakeFunctions
     enables ref feature BrakeEngagement
     decomposesto ref function MotorControlImplementation
     safetylevel ASIL-D
-
+  
   def function EPB_ForceCalculator
     name "EPB Force Calculator"
     description "Calculates required brake force based on vehicle mass, slope angle, road surface, and environmental conditions"

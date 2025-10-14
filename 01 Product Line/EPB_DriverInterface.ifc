@@ -1,6 +1,6 @@
 use featureset ElectricParkingBrakeFeatures
 
-hdef block DriverInterfaceSystem
+hdef interfaceset DriverInterfaceSystem
   name "Driver Interface System"
   description "Driver controls and feedback systems for Electric Parking Brake operation"
   designrationale "Dedicated driver interface block ensures proper human-machine interface design and safety-critical driver feedback"

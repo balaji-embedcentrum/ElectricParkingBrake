@@ -13,7 +13,23 @@ use, hdef, agentset, def, agent, name, description, owner, role,
 specialization, expertise, context
 ```
 
-## Example
+## Syntax Structure
+```
+hdef agentset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+
+  def agent [identifier]
+    name [string-literal]
+    description [string-literal]
+    role [string-literal]
+    specialization [string-literal]
+    expertise [string-literal]
+    context [string-literal]
+```
+
+## Complete Example
 ```sylang
 hdef agentset AutonomousVehicleAgents
   name "Autonomous Vehicle Engineering Agents"
@@ -72,5 +88,5 @@ hdef agentset AutonomousVehicleAgents
 - `context` - Application context (multiline supported)
 
 ---
-Referenced in `.spr` files with `assignedto ref agent <AgentName>`
+Referenced in `.spr` files with `assignedto ref agent [agent-ref]`
 

@@ -19,22 +19,58 @@ performs, needs, offers, ref, operation, signal, function
 
 ## Syntax Structure
 ```
-use productline <ProductLineName>
+use productline [productline-ref]
 
-hdef featureset <FeatureSetName>
-  <property> <value>
-  listedfor ref productline <ProductLineName>
+hdef featureset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  listedfor ref productline [productline-ref]
 
-  def feature <FeatureName> [mandatory|optional|or|alternative]
-    <property> <value>
-    performs ref function <FunctionName>, <FunctionName>
-    needs ref operation <OperationName>
-    needs ref signal <SignalName>
-    offers ref operation <OperationName>
-    offers ref signal <SignalName>
-    
-    def feature <ChildFeature> [mandatory|optional|or|alternative]
-      # Nested features...
+  def feature [identifier] [mandatory|optional|or|alternative]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    tags [string-literal], [string-literal], ...
+    safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+    performs ref function [function-ref], [function-ref], ...
+    needs ref operation [operation-ref], [operation-ref], ...
+    needs ref signal [signal-ref], [signal-ref], ...
+    offers ref operation [operation-ref], [operation-ref], ...
+    offers ref signal [signal-ref], [signal-ref], ...
+    requires ref feature [feature-ref], [feature-ref], ...
+    excludes ref feature [feature-ref], [feature-ref], ...
+
+    def feature [sub-feature] [mandatory|optional|or|alternative]
+      ... [nested features with same structure]
+
+# Siblings Rule: All siblings must use same constraint type (mandatory/optional, or, or alternative)
+
+# OR Constraint Examples - At least one sibling required
+def feature FrontCamera or
+def feature FrontLidar or
+def feature FrontRadar or
+def feature FrontUltrasonic or
+
+def feature Cellular5G or
+def feature WiFi6 or
+def feature Bluetooth5 or
+
+# ALTERNATIVE Constraint Examples - Exactly one sibling required
+def feature L2Advanced alternative
+def feature L3Conditional alternative
+def feature L4High alternative
+def feature L5Full alternative
+
+def feature LithiumIon alternative
+def feature SolidState alternative
+def feature HydrogenFuelCell alternative
+
+# MANDATORY/OPTIONAL Examples - Independent siblings
+def feature CameraSystem mandatory
+def feature LidarSystem optional
+def feature RadarSystem mandatory
 ```
 
 ## Feature Flags
@@ -63,14 +99,15 @@ hdef featureset <FeatureSetName>
 - `needs` - Input operations/signals required
 - `offers` - Output operations/signals provided
 
-### Relationship Keywords
-- `requires ref feature` - Requires other features (cross-dependencies)
-- `excludes ref feature` - Mutually exclusive with other features
-- `performs ref function` - Maps to functional implementation
-- `needs ref operation` - Input operation interfaces
-- `needs ref signal` - Input signal interfaces
-- `offers ref operation` - Output operation interfaces
-- `offers ref signal` - Output signal interfaces
+### Relationship Keywords (ASPICE Bilateral Traceability)
+- `performs ref function` - Maps to functional implementation (multiple allowed)
+- `inherits ref feature` - Inherits from parent feature (multiple allowed)
+- `requires ref feature` - Requires other features (cross-dependencies, multiple allowed)
+- `excludes ref feature` - Mutually exclusive with other features (multiple allowed)
+- `needs ref operation` - Input operation interfaces (multiple allowed)
+- `needs ref signal` - Input signal interfaces (multiple allowed)
+- `offers ref operation` - Output operation interfaces (multiple allowed)
+- `offers ref signal` - Output signal interfaces (multiple allowed)
 
 ## Complete Example
 

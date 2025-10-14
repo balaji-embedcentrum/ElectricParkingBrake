@@ -10,9 +10,47 @@ Defines **message flow sequences** between blocks with operation/signal flows. S
 
 ## Valid Keywords
 ```
-use, hdef, sequenceset, def, sequence, fragment, name, description, 
+use, hdef, sequenceset, functionset, def, sequence, fragment, name, description, 
 owner, tags, level, safetylevel, from, to, flow, fragmenttype, 
-condition, when, ref, block, operation, signal
+condition, when, ref, block, function, operation, signal
+```
+
+## Syntax Structure
+```
+use block [block-ref], [block-ref], ...
+use functionset [functionset-ref], [functionset-ref], ...
+use function [function-ref], [function-ref], ...
+use operation [operation-ref], [operation-ref], ...
+use signal [signal-ref], [signal-ref], ...
+
+hdef sequenceset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+  level [system|subsystem|component]
+
+  def sequence [identifier]
+    from ref block [block-ref]
+    to ref block [block-ref]
+    flow ref operation [operation-ref]
+    
+  def sequence [identifier]
+    from ref block [block-ref]
+    to ref block [block-ref]
+    flow ref signal [signal-ref]
+    
+  def sequence [identifier]
+    from ref function [function-ref]
+    to ref function [function-ref]
+    flow ref operation [operation-ref]
+    
+  def fragment [identifier]
+    name [string-literal]
+    description [string-literal]
+    fragmenttype [alt|else|parallel|loop]
+    condition [string-literal]
 ```
 
 ## Fragment Types
@@ -23,7 +61,7 @@ fragmenttype parallel # Parallel execution
 fragmenttype loop     # Loop iteration
 ```
 
-## Example
+## Example with Blocks
 ```sylang
 use block PerceptionControlModule
 use block PlanningControlModule
@@ -86,6 +124,41 @@ hdef sequenceset AutonomousEmergencyBraking
       flow ref signal PlanningSystemStatus
 ```
 
+## Example with Functions
+```sylang
+use functionset AutonomousDrivingFunctions
+use function PerceptionProcessing
+use function PathPlanning
+use function MotionControl
+use operation ComputeObstacleMap
+use operation PlanTrajectory
+use operation ExecuteManeuver
+
+hdef sequenceset AutonomousDrivingSequence
+  name "Autonomous Driving Function Sequence"
+  description "Message flow sequence between autonomous driving functions"
+  owner "AD Systems Team"
+  safetylevel ASIL-D
+  tags "autonomous-driving", "function-sequence", "safety-critical"
+  
+  // Function-to-function sequence
+  def sequence SEQ_001
+    from ref function PerceptionProcessing
+    to ref function PathPlanning
+    flow ref operation ComputeObstacleMap
+    
+  def sequence SEQ_002
+    from ref function PathPlanning
+    to ref function MotionControl
+    flow ref operation PlanTrajectory
+    
+  def sequence SEQ_003
+    from ref function MotionControl
+    to ref function VehicleController
+    flow ref operation ExecuteManeuver
+```
+
 ---
 See `.blk` for block and operation/signal definitions.
+See `.fun` for functionset and function definitions.
 

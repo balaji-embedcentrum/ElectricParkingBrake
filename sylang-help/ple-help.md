@@ -17,11 +17,16 @@ firstrelease, tags, safetylevel, region
 
 ## Syntax Structure
 ```
-hdef productline <ProductLineName>
-  <property> <value>
-  <property> """
-    multiline value
-    """
+hdef productline [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  domain [string-literal], [string-literal], ...
+  compliance [string-literal], [string-literal], ...
+  firstrelease [YYYY-MM-DD]
+  tags [string-literal], [string-literal], ...
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM|SIL-1|SIL-2|SIL-3|SIL-4]
+  region [string-literal], [string-literal], ...
 ```
 
 ## Properties

@@ -16,6 +16,42 @@ controllability, asil, speed, environment, trafficdensity, maxacceptabledelay,
 nominalresponsetime, malfunctionof, affects, leadsto, when, ref
 ```
 
+## Syntax Structure
+```
+use itemdefinition [item-ref]
+
+hdef hazardanalysis [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  iso26262part [string-literal]
+  assessmentdate [YYYY-MM-DD]
+  safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+
+  def hazard [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    hazardclass [string-literal]
+    malfunctionof ref function [function-ref]
+    affects [string-literal]
+    
+    def situation [identifier]
+      name [string-literal]
+      description [string-literal]
+      severity [S0|S1|S2|S3]
+      exposure [E0|E1|E2|E3|E4|E5]
+      controllability [C0|C1|C2|C3]
+      asil [QM|ASIL-A|ASIL-B|ASIL-C|ASIL-D]
+      speed [numeric-value]
+      environment [string-literal]
+      trafficdensity [low|medium|high]
+      maxacceptabledelay [numeric-value]
+      nominalresponsetime [numeric-value]
+      leadsto ref hazard [hazard-ref]
+```
+
 ## ASIL Determination
 ```
 severity: S0, S1, S2, S3

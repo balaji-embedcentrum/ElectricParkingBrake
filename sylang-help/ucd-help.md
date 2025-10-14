@@ -4,14 +4,45 @@
 Defines **actors and use cases** with clean flat syntax using from/to/connection relationships (NEW SYNTAX v2.21.44).
 
 ## File Structure
-- **ONE** `hdef usecase` per file
+- **ONE** `hdef usecaseset` per file
 - **MULTIPLE** `def actor` and `def usecase` statements
 - Clean flat syntax with explicit relationships
 
 ## Valid Keywords
 ```
-use, hdef, usecase, def, actor, usecase, name, description, owner, 
+use, hdef, usecaseset, def, actor, usecase, name, description, owner, 
 tags, level, actortype, from, to, connection, associated, includes, when, ref
+```
+
+## Syntax Structure
+```
+use functionset [functionset-ref]
+
+hdef usecaseset [identifier]
+  name [string-literal]
+  description [string-literal]
+  owner [string-literal]
+  tags [string-literal], [string-literal], ...
+  level [system|subsystem|component]
+
+  def actor [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    actortype [primary|secondary]
+    
+  def usecase [identifier]
+    name [string-literal]
+    description [string-literal]
+    owner [string-literal]
+    
+  from ref actor [actor-ref]
+  to ref function [function-ref]
+  connection [associated|includes]
+  
+  from ref function [function-ref]
+  to ref function [function-ref]
+  connection includes
 ```
 
 ## Actor Types
@@ -37,7 +68,7 @@ connection includes    # Inclusion (function → function)
 ```sylang
 use functionset ChairSystemFunctions
 
-hdef usecase ChairSystemUseCases
+hdef usecaseset ChairSystemUseCases
   name "Height Adjustable Chair Use Cases"
   description "Use case model describing user interactions with chair system"
   owner "Systems Engineering Team"
