@@ -3,8 +3,8 @@ hdef agentset ElectricParkingBrakeAgents
   description "ISO 26262 compliant development organization for Electric Parking Brake ASIL-D system development"
   owner "Safety Manager"
 
-  def agent SafetyManager
-    name "Safety Manager"
+  def agent SafetyManagerNew
+    name "Safety Manager New"
     description "Overall responsibility for functional safety activities and ISO 26262 compliance across EPB project"
     role "Safety Manager (ISO 26262-2:2018 Clause 5.4.1)"
     specialization "EPB Functional Safety Management and ISO 26262 Process Compliance"

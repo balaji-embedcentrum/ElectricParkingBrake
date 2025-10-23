@@ -29,6 +29,7 @@ hdef requirementset EPB_FunctionalRequirements
       reqtype functional
       safetylevel ASIL-D
       implements ref function EPB_SystemStateManager
+      when ref config c_AdvancedVectorControl
       
     def requirement REQ_FUNC_001_2
       name "EPB Engaging State Control"

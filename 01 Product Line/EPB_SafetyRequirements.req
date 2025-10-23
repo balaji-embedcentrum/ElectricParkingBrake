@@ -15,7 +15,7 @@ hdef requirementset EPB_SafetyRequirements
     description "The EPB system SHALL NOT activate unintentionally during vehicle operation at speeds above 7 km/h with probability < 1E-8 per hour (H001 - Unintended EPB Activation During Driving, SG001 - Prevent unintended EPB activation during vehicle operation)"
     rationale "Unintended brake activation during driving could cause loss of vehicle control, rear-end collisions, or vehicle instability leading to severe injury or fatality (S3)"
     status draft
-    reqtype safety
+    reqtype stakeholder
     safetylevel ASIL-D
     implements ref function EPB_RequestProcessor
     

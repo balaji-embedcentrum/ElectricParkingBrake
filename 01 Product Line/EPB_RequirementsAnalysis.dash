@@ -1,0 +1,281 @@
+hdef dashboard EPB_REQUIREMENTS_ANALYSIS
+  name "EPB Requirements Analysis Dashboard"
+  owner "Systems Engineering Team"
+  version "1.0"
+  grid 4x4
+
+// ============================================================================
+// ROW 1: KEY METRICS - High-Level Overview
+// ============================================================================
+
+def metric TOTAL_REQUIREMENTS
+  name "Total Requirements"
+  type count
+  source type requirement
+
+def metric APPROVED_REQUIREMENTS
+  name "Approved Requirements"
+  type count
+  source type requirement where status = approved
+
+def metric DRAFT_REQUIREMENTS
+  name "Draft Requirements"
+  type count
+  source type requirement where status = draft
+
+def metric APPROVAL_RATE
+  name "Approval Rate %"
+  type percentage
+  source type requirement where status = approved
+  correlate type requirement via all
+
+// ============================================================================
+// ROW 2: REQUIREMENT TYPE DISTRIBUTION
+// ============================================================================
+
+def chart REQ_BY_TYPE
+  name "Requirements by Type"
+  type pie
+  source type requirement
+  groupby reqtype
+  span 1x2
+
+def chart REQ_TYPE_STATUS
+  name "Requirement Type vs Status"
+  type bar
+  source type requirement
+  groupby reqtype
+  orderby reqtype asc
+  span 1x2
+
+// ============================================================================
+// ROW 3: SAFETY LEVEL ANALYSIS
+// ============================================================================
+
+def chart SAFETY_LEVEL_DISTRIBUTION
+  name "Safety Level Distribution"
+  type pie
+  source type requirement
+  groupby safetylevel
+  span 1x2
+
+def metric ASIL_D_COUNT
+  name "ASIL-D Requirements"
+  type count
+  source type requirement where safetylevel = ASIL-D
+
+def metric ASIL_C_COUNT
+  name "ASIL-C Requirements"
+  type count
+  source type requirement where safetylevel = ASIL-C
+
+def metric ASIL_B_COUNT
+  name "ASIL-B Requirements"
+  type count
+  source type requirement where safetylevel = ASIL-B
+
+// ============================================================================
+// ROW 4: STATUS BREAKDOWN & TRACEABILITY
+// ============================================================================
+
+def chart REQ_STATUS_BREAKDOWN
+  name "Requirements Status Breakdown"
+  type bar
+  source type requirement
+  groupby status
+  orderby status asc
+
+def metric FUNCTIONAL_REQS
+  name "Functional Requirements"
+  type count
+  source type requirement where reqtype = functional
+
+def metric SAFETY_REQS
+  name "Safety Requirements"
+  type count
+  source type requirement where reqtype = safety
+
+def metric INTERFACE_REQS
+  name "Interface Requirements"
+  type count
+  source type requirement where reqtype = interface
+
+// ============================================================================
+// ROW 5: TRACEABILITY METRICS
+// ============================================================================
+
+def metric REQ_WITH_FUNCTIONS
+  name "Requirements → Functions"
+  type percentage
+  source type requirement
+  correlate type function via implements
+
+def metric REQ_WITH_TESTS
+  name "Test Coverage %"
+  type percentage
+  source type requirement where status = approved
+  correlate type testcase via satisfies
+
+def chart TRACEABILITY_FLOW
+  name "Requirements Traceability Flow"
+  type sankey
+  source type requirement
+  correlate type function via implements
+  correlate type testcase via satisfies
+  span 1x2
+
+// ============================================================================
+// ROW 6: SAFETY-CRITICAL ANALYSIS
+// ============================================================================
+
+def chart SAFETY_REQS_BY_LEVEL
+  name "Safety Requirements by ASIL Level"
+  type bar
+  source type requirement where reqtype = safety
+  groupby safetylevel
+  orderby safetylevel desc
+  span 1x2
+
+def metric CRITICAL_APPROVED
+  name "ASIL-D Approved"
+  type count
+  source type requirement where safetylevel = ASIL-D and status = approved
+
+def metric CRITICAL_DRAFT
+  name "ASIL-D Draft"
+  type count
+  source type requirement where safetylevel = ASIL-D and status = draft
+
+// ============================================================================
+// ROW 7: REQUIREMENT QUALITY METRICS
+// ============================================================================
+
+def metric ORPHANED_REQS
+  name "Orphaned Requirements"
+  type count
+  source type requirement
+  analyze orphan
+
+def metric BROKEN_LINKS
+  name "Broken Links"
+  type count
+  source type requirement
+  analyze broken
+
+def metric ISOLATED_REQS
+  name "Isolated Requirements"
+  type count
+  source type requirement
+  analyze isolated
+
+def metric CONNECTED_REQS
+  name "Connected Requirements"
+  type count
+  source type requirement
+  analyze connected
+
+// ============================================================================
+// ROW 8: SUBSYSTEM REQUIREMENTS ANALYSIS
+// ============================================================================
+
+def metric PRODUCT_LEVEL_REQS
+  name "Product-Level Requirements"
+  type count
+  source type requirement where tags contains product-level
+
+def metric SUBSYSTEM_REQS
+  name "Subsystem Requirements"
+  type count
+  source type requirement where tags contains subsystem-requirements
+
+def chart REQ_HIERARCHY
+  name "Requirement Hierarchy Distribution"
+  type bar
+  source type requirement
+  groupby owner
+  orderby owner asc
+  span 1x2
+
+// ============================================================================
+// ROW 9: FUNCTIONAL VS NON-FUNCTIONAL
+// ============================================================================
+
+def chart FUNCTIONAL_BREAKDOWN
+  name "Functional vs Non-Functional Requirements"
+  type pie
+  source type requirement where reqtype in (functional, non-functional)
+  groupby reqtype
+  span 1x2
+
+def metric NON_FUNCTIONAL_REQS
+  name "Non-Functional Requirements"
+  type count
+  source type requirement where reqtype = non-functional
+
+def metric STAKEHOLDER_REQS
+  name "Stakeholder Requirements"
+  type count
+  source type requirement where reqtype = stakeholder
+
+// ============================================================================
+// ROW 10: ISO 26262 COMPLIANCE METRICS
+// ============================================================================
+
+def metric ISO_TAGGED_REQS
+  name "ISO 26262 Tagged"
+  type count
+  source type requirement where tags contains ISO-26262
+
+def chart ISO_COMPLIANCE_STATUS
+  name "ISO 26262 Requirements Status"
+  type bar
+  source type requirement where tags contains ISO-26262
+  groupby status
+  orderby status asc
+  span 1x2
+
+def metric ENHANCED_COVERAGE_REQS
+  name "Enhanced Coverage (150%)"
+  type count
+  source type requirement where tags contains ISO-26262 and description contains 150%
+
+// ============================================================================
+// ROW 11: DETAILED TABLES - CRITICAL ITEMS
+// ============================================================================
+
+def table ASIL_D_DRAFT_TABLE
+  name "ASIL-D Draft Requirements (Needs Approval)"
+  description "Critical safety requirements pending approval"
+  source type requirement where safetylevel = ASIL-D and status = draft
+  orderby name asc
+  columns name, reqtype, owner, description
+  span 2x2
+
+def table ORPHANED_REQS_TABLE
+  name "Orphaned Requirements (No Traceability)"
+  description "Requirements without incoming or outgoing relationships"
+  source type requirement
+  analyze orphan
+  columns symbolName, reqtype, safetylevel, status
+  span 2x2
+
+// ============================================================================
+// ROW 12: BROKEN LINKS & QUALITY ISSUES
+// ============================================================================
+
+def table BROKEN_LINKS_TABLE
+  name "Requirements with Broken Links"
+  description "Requirements with invalid references"
+  source type requirement
+  analyze broken
+  columns symbolName, reqtype, safetylevel, outgoingCount
+  span 2x2
+
+def chart QUALITY_METRICS
+  name "Requirements Quality Metrics"
+  type bar
+  source type requirement
+  analyze all
+  groupby nodetype
+  span 2x2
+

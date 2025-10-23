@@ -40,6 +40,10 @@ This comprehensive reference combines all Sylang Domain-Specific Language (DSL) 
 18. [Agent Definition (.agt)](#agent-definition-agt)
 19. [Sprint Planning (.spr)](#sprint-planning-spr)
 
+### Documentation & Dashboards
+20. [Specification Document (.spec)](#specification-document-spec)
+21. [Dashboard (.dash)](#dashboard-dash)
+
 ---
 
 ## Overview
@@ -1553,14 +1557,14 @@ hdef functionset [identifier]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
   safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM|SIL-1|SIL-2|SIL-3|SIL-4]
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def function [identifier]
     name [string-literal]
     description [string-literal]
     owner [string-literal]
     tags [string-literal], [string-literal], ...
-    level [system|subsystem|component]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
     functiontype [solution|function|solutionelement]
     
@@ -1758,7 +1762,7 @@ hdef interfaceset [identifier]
     name [string-literal]
     description [string-literal]
     owner [string-literal]
-    level [system|subsystem|component]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
     requires ref datatype [datatype-ref]
     derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
@@ -1769,7 +1773,7 @@ hdef interfaceset [identifier]
     name [string-literal]
     description [string-literal]
     owner [string-literal]
-    level [system|subsystem|component]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
     requires ref datatype [datatype-ref]
     derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
@@ -1780,7 +1784,7 @@ hdef interfaceset [identifier]
     name [string-literal]
     description [string-literal]
     owner [string-literal]
-    level [system|subsystem|component]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
     derivedfrom ref requirement [requirement-ref], [requirement-ref], ...
     implementedby ref requirement [requirement-ref], [requirement-ref], ...
     
@@ -1788,7 +1792,7 @@ hdef interfaceset [identifier]
     name [string-literal]
     description [string-literal]
     owner [string-literal]
-    level [system|subsystem|component]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
     requires ref datatype [datatype-ref]
     value [numeric-value]
     unit [string-literal]
@@ -2145,7 +2149,7 @@ hdef requirementset [identifier]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
   safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM|SIL-1|SIL-2|SIL-3|SIL-4]
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def requirement [identifier]
     name [string-literal]
@@ -2154,10 +2158,12 @@ hdef requirementset [identifier]
     verificationcriteria [string-literal]
     owner [string-literal]
     tags [string-literal], [string-literal], ...
-    level [system|subsystem|component]
-    status [draft|proposed|approved|implemented|verified|rejected]
-    reqtype [functional|non-functional|interface|constraint|safety]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
+    status [draft|review|approved|deprecated|implemented|accepted|rejected|accepted+proposal|notapplicable|unknown]
+    reqtype [functional|nonfunctional|system|software|hardware|interface|safety|stakeholder|process|compliance|quality|IT|manufacturing|supplier|program|others]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+    proposal [string-literal]
+    attach [string-literal]
     
     # Requirement relationships
     refinedfrom ref requirement [requirement-ref]
@@ -2480,7 +2486,7 @@ hdef usecase [identifier]
   description [string-literal]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def actor [identifier]
     name [string-literal]
@@ -2600,7 +2606,7 @@ hdef sequenceset [identifier]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
   safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def sequence [identifier]
     from ref block [block-ref]
@@ -3865,3 +3871,96 @@ priority critical  # Critical priority
 ---
 Use `comment` for multiline descriptions on epics, stories, and tasks.
 
+
+---
+
+# Specification Document (.spec)
+
+## Overview
+Specification documents generate beautiful, professional documentation with hierarchical sections and dynamic content from Sylang artifacts.
+
+## File Structure
+- ONE `hdef specification` per file
+- MULTIPLE `def section` (hierarchical)
+- MULTIPLE `def spec`, `def diagram`, `def table` within sections
+
+## Valid Keywords
+```
+use, hdef, specification, def, section, spec, diagram, table, name, description,
+owner, version, source, where, groupby, orderby, columns, requirementset,
+usecaseset, sequenceset, functionset, blockset, featureset, testcaseset,
+failuremodeset, faulttreeset, hazardset, agentset, sprintset, statemachineset,
+variantset, configset, interfaceset
+```
+
+## Syntax
+```
+hdef specification [identifier]
+  name [string-literal]
+  owner [string-literal]
+  version [string-literal]
+
+  def section [identifier]
+    name [string-literal]
+    
+    def table [identifier]
+      name [string-literal]
+      source ref [nodetype] [identifier]
+      where [filter-clause]
+      columns [property], [property], ...
+```
+
+## Features
+- Hierarchical sections
+- Dynamic content from artifacts
+- Advanced filtering (where clauses)
+- Data aggregation (groupby, orderby)
+- Professional HTML export
+
+---
+
+# Dashboard (.dash)
+
+## Overview
+Interactive dashboards with metrics, charts, and tables for real-time project insights.
+
+## File Structure
+- ONE `hdef dashboard` per file
+- ONE `grid` definition (required)
+- MULTIPLE `def metric`, `def chart`, `def table`
+
+## Valid Keywords
+```
+use, hdef, dashboard, grid, def, metric, chart, table, name, description, owner,
+version, type, property, xaxis, yaxis, span, source, where, groupby, orderby,
+columns, requirementset, usecaseset, sequenceset, functionset, blockset,
+featureset, testcaseset, failuremodeset, faulttreeset, hazardset, agentset,
+sprintset, statemachineset, variantset, configset, interfaceset
+```
+
+## Syntax
+```
+hdef dashboard [identifier]
+  name [string-literal]
+  grid [rows]x[cols]
+
+  def metric [identifier]
+    name [string-literal]
+    type [count|percentage|sum|avg|min|max|gauge|trend]
+    source [nodetype] [identifier]
+  
+  def chart [identifier]
+    name [string-literal]
+    type [bar|line|pie|scatter|gauge]
+    source [nodetype] [identifier]
+    groupby [property]
+```
+
+## Features
+- Grid-based layouts
+- Real-time metrics
+- Interactive Chart.js visualizations
+- Widget spanning
+- HTML export
+
+---

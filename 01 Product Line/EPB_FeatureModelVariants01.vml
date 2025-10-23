@@ -7,7 +7,7 @@ hdef variantset ElectricParkingBrakeFeaturesVariants
   tags "variants", "configuration", "product-family"
 
   extends ref feature CoreEPBFeatures mandatory selected
-    extends ref feature BrakeEngagement mandatory
+    extends ref feature BrakeEngagement mandatory 
       extends ref feature EngagementControl mandatory
         extends ref feature ForceControlAlgorithm mandatory
           extends ref feature PIDController mandatory

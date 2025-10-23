@@ -1,0 +1,108 @@
+// Electric Parking Brake System Metrics Dashboard
+// Comprehensive 3x4 dashboard showcasing all query capabilities
+// Tests: Simple, Complex, and Very Complex queries
+
+hdef dashboard EPB_SYSTEM_METRICS
+  name "EPB System Metrics Dashboard"
+  owner "Systems Engineering Team"
+  version "1.0"
+  grid 3x4
+
+// ============================================================
+// ROW 1: KEY METRICS (Simple & Complex Queries)
+// ============================================================
+
+// Simple Query: Count all requirements
+def metric TOTAL_REQUIREMENTS
+  name "Total Requirements"
+  type count
+  source type requirement
+
+// Simple Query: Count approved requirements
+def metric APPROVED_REQUIREMENTS
+  name "Approved Requirements"
+  type count
+  source type requirement where status = approved
+
+// Complex Query: Test coverage percentage
+def metric TEST_COVERAGE
+  name "Test Coverage %"
+  type percentage
+  source type requirement where status = approved
+  correlate type testcase via satisfies
+
+// Complex Query: Broken links count
+def metric BROKEN_LINKS
+  name "Broken Links"
+  type count
+  source type all
+  analyze broken
+
+// ============================================================
+// ROW 2: CHARTS (Simple & Complex Queries)
+// ============================================================
+
+// Simple Query: Requirements by status (Pie chart)
+def chart REQ_BY_STATUS
+  name "Requirements by Status"
+  type pie
+  source type requirement
+  groupby status
+  span 1x2
+
+// Complex Query: Traceability flow (Sankey diagram)
+def chart TRACEABILITY_FLOW
+  name "Traceability Flow"
+  type sankey
+  source type requirement
+  correlate type function via implements
+  correlate type testcase via satisfies
+  span 1x2
+
+// ============================================================
+// ROW 3: ADVANCED ANALYSIS (Very Complex Queries)
+// ============================================================
+
+// Very Complex Query: Multi-source comparison
+def chart SAFETY_VS_FUNCTIONAL
+  name "Safety vs Functional Requirements"
+  type bar
+  source type requirement where reqtype = safety
+  source type requirement where reqtype = functional
+  groupby status
+  span 1x2
+
+// Very Complex Query: Custom calculate - Traceability score
+def metric TRACEABILITY_SCORE
+  name "Traceability Score"
+  type gauge
+  source type requirement where status = approved
+  correlate type function via implements
+  calculate (count(req) * 100) / count(all)
+  span 1x2
+
+// ============================================================
+// ROW 4: DETAILED TABLES (Complex Queries)
+// ============================================================
+
+// Complex Query: Orphaned requirements (no incoming links)
+def table ORPHANED_REQUIREMENTS
+  name "Orphaned Requirements"
+  description "Requirements with no incoming relationships"
+  source type requirement
+  analyze orphan
+  orderby name asc
+  columns symbolName, symbolType, outgoingCount, incomingCount
+  span 1x2
+
+// Complex Query: Broken links by type
+def chart BROKEN_BY_TYPE
+  name "Broken Links by Type"
+  type bar
+  source type all
+  analyze broken
+  groupby nodetype
+  orderby nodetype asc
+  span 1x2
+
+

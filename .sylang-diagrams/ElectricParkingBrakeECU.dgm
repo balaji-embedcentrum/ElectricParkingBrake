@@ -3,38 +3,38 @@
   "diagramType": "internal-block-diagram",
   "positions": {
     "ElectricParkingBrakeECU": {
-      "x": -296.17733947494526,
-      "y": -255.76018398364994,
-      "width": 1734.494151830866,
-      "height": 1267.6567063735663
+      "x": -603.3039573986831,
+      "y": -279.0755783521246,
+      "width": 2275.7317527950518,
+      "height": 992.183713304961
     },
     "EPB_InputProcessingSubsystem": {
-      "x": 35.822660525054744,
-      "y": 133.97140188037176,
+      "x": 209.15463948259838,
+      "y": -181.07557835212458,
       "width": 264,
       "height": 280
     },
     "EPB_ControlLogicSubsystem": {
-      "x": 347.8438997444516,
-      "y": 80.76944092286334,
+      "x": 501.4896943414358,
+      "y": 181.97255179625273,
       "width": 279,
       "height": 305
     },
     "EPB_ActuatorOutputSubsystem": {
-      "x": 842.3168123559208,
-      "y": -157.76018398364994,
+      "x": 1109.241552337344,
+      "y": -101.9833172778616,
       "width": 256,
       "height": 205
     },
     "EPB_DiagnosticSubsystem": {
-      "x": 417.0242566727069,
-      "y": 531.8965223899165,
+      "x": -146.9264881443862,
+      "y": 233.10813495283642,
       "width": 224,
       "height": 430
     }
   },
   "connections": {},
-  "lastModified": 1759795646277,
-  "version": "DIAGRAM POSITION MANAGER v2.27.7",
+  "lastModified": 1761072936715,
+  "version": "DIAGRAM POSITION MANAGER v2.28.43",
   "decompositionType": "functional"
 }

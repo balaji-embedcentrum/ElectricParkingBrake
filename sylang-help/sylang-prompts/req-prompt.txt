@@ -24,7 +24,7 @@ hdef requirementset [identifier]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
   safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM|SIL-1|SIL-2|SIL-3|SIL-4]
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def requirement [identifier]
     name [string-literal]
@@ -33,9 +33,11 @@ hdef requirementset [identifier]
     verificationcriteria [string-literal]
     owner [string-literal]
     tags [string-literal], [string-literal], ...
-    level [system|subsystem|component]
-    status [draft|review|approved|deprecated|implemented|verified]
-    reqtype [functional|non-functional|interface|constraint|safety|system|software|hardware]
+    level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
+    status [draft|review|approved|deprecated|implemented|accepted|rejected|accepted+proposal|notapplicable|unknown]
+    reqtype [functional|nonfunctional|system|software|hardware|interface|safety|stakeholder|process|compliance|quality|IT|manufacturing|supplier|program|others]
+    proposal [string-literal]
+    attach [string-literal]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
     
     # Bilateral traceability relationships
@@ -58,29 +60,41 @@ hdef requirementset [identifier]
 use, hdef, requirementset, def, requirement, name, description, owner, 
 tags, level, rationale, verificationcriteria, status, reqtype, safetylevel, 
 refinedfrom, derivedfrom, implements, allocatedto, testedby, when, ref, 
-config, testcase, testset, safetygoal, function, block, parameter
+config, testcase, testset, safetygoal, function, block, parameter, attach, proposal
 ```
 
 ## Requirement Types
 ```
 reqtype functional      # Functional requirement (what system does)
-reqtype non-functional  # Non-functional requirement (performance, reliability)
+reqtype nonfunctional   # Non-functional requirement (performance, reliability)
 reqtype interface       # Interface requirement (between components)
-reqtype constraint      # Design constraint (resource limits, standards)
 reqtype safety          # Safety requirement (ISO 26262, IEC 61508)
 reqtype system          # System-level requirement
 reqtype software        # Software-specific requirement
 reqtype hardware        # Hardware-specific requirement
+reqtype stakeholder     # Stakeholder requirement
+reqtype process         # Process requirement
+reqtype compliance      # Compliance requirement
+reqtype quality         # Quality requirement
+reqtype IT              # IT requirement
+reqtype manufacturing   # Manufacturing requirement
+reqtype supplier        # Supplier requirement
+reqtype program         # Program requirement
+reqtype others          # Other types of requirements
 ```
 
 ## Status Values
 ```
-status draft        # Draft status (initial)
-status review       # Under review
-status approved     # Approved for implementation
-status deprecated   # Deprecated (no longer valid)
-status implemented  # Implemented in design
-status verified     # Verified by testing
+status draft             # Draft status (initial)
+status review            # Under review
+status approved          # Approved for implementation
+status deprecated        # Deprecated (no longer valid)
+status implemented       # Implemented in design
+status accepted          # Accepted
+status rejected          # Rejected
+status accepted+proposal # Accepted with proposal
+status notapplicable     # Not applicable
+status unknown           # Unknown status
 ```
 
 ## Bilateral Traceability (INCOSE/ASPICE Definition)

@@ -1,5 +1,6 @@
 use featureset ElectricParkingBrakeFeatures
 use interfaceset VehicleSystemsInterface
+use interfaceset DriverInterfaceSystem
 use interfaceset VehicleNetworkInterface
 use interfaceset InputProcessingInterface
 use interfaceset ControlLogicInterface

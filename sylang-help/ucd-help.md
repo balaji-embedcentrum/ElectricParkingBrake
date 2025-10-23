@@ -23,7 +23,7 @@ hdef usecaseset [identifier]
   description [string-literal]
   owner [string-literal]
   tags [string-literal], [string-literal], ...
-  level [system|subsystem|component]
+  level [product|system|subsystem|component|module|part|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
 
   def actor [identifier]
     name [string-literal]

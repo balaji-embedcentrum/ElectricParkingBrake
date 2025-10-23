@@ -3,13 +3,12 @@ use functionset EPB_InputProcessingSubsystem_Functions
 use requirementset EPB_InputProcessingSubsystem_Requirements
 use testset EPB_InputProcessingSubsystem_Tests
 use block EPB_InputProcessingSubsystem
-use failureset EPB_SystemFailureAnalysis
 
 hdef failureset EPB_InputProcessingFailures
   name "EPB Input Processing Subsystem FMEA"
-  description "Comprehensive failure mode and effects analysis for the Electric Parking Brake Input Processing Subsystem. \
-    Covers signal processing, validation, fault detection, and communication failures. \
-    Addresses ISO 26262 ASIL-D safety requirements for automotive brake systems."
+  description """Comprehensive failure mode and effects analysis for the Electric Parking Brake Input Processing Subsystem. 
+    Covers signal processing, validation, fault detection, and communication failures. 
+    Addresses ISO 26262 ASIL-D safety requirements for automotive brake systems."""
   owner "EPB Safety Engineering Team"
   tags "fmea", "epb", "input-processing", "safety-critical", "automotive", "brake-system"
   level subsystem
@@ -19,11 +18,11 @@ hdef failureset EPB_InputProcessingFailures
 
   def failuremode VehicleSpeedSensorFailure
     name "Vehicle Speed Sensor Signal Failure"
-    description "
+    description """
       Loss or corruption of vehicle speed sensor signal input.
       Results in inability to determine vehicle motion state for EPB safety decisions.
       Critical for preventing EPB engagement while vehicle is moving.
-      "
+      """
     owner "Sensor Safety Team"
     tags "speed-sensor", "signal-failure", "safety-critical"
     
@@ -42,9 +41,9 @@ hdef failureset EPB_InputProcessingFailures
     recoverytime 1000      // 1000ms required for recovery
     
     // Failure Causality Chain with Timing
-    causedby ref failuremode SensorWiringDamage within 100
-    causedby ref failuremode SensorInternalFailure within 200
-    causedby ref failuremode SignalInterference within 50
+    causes ref failuremode SensorWiringDamage within 100
+    causes ref failuremode SensorInternalFailure within 200
+    causes ref failuremode SignalInterference within 50
     
     // Failure Effects with Timing
     effects ref failuremode EPB_UnsafeEngagement within 100
@@ -91,8 +90,8 @@ hdef failureset EPB_InputProcessingFailures
     recoverytime 800ms
     
     // Failure Causality Chain
-    causedby ref failuremode PositionSensorWearOut within 500ms
-    causedby ref failuremode PositionSensorCalibrationDrift within 1000ms
+    causes ref failuremode PositionSensorWearOut within 500ms
+    causes ref failuremode PositionSensorCalibrationDrift within 1000ms
     
     // Failure Effects
     effects ref failuremode UnknownActuatorPosition within 100ms
@@ -133,20 +132,20 @@ hdef failureset EPB_InputProcessingFailures
     recoverytime 2000ms
     
     // Failure Causality Chain
-    causedby ref failuremode CANTransceiverFailure within 50ms
-    causedby ref failuremode BusWiringDamage within 100ms
-    causedby ref failuremode BusOverloadCondition within 20ms
+    causes ref failuremode CANTransceiverFailure within 50ms
+    causes ref failuremode BusWiringDamage within 100ms
+    causes ref failuremode BusOverloadCondition within 20ms
     
     // Failure Effects
     effects ref failuremode VehicleStateDataLoss within 200ms
     effects ref failuremode SystemIsolation within 500ms
     
     // Detection and Mitigation
-    detectedby ref function CANoperationProcessor within 100ms
+    detectedby ref function CANMessageProcessor within 100ms
     detectedby ref function NetworkHealthMonitor within 150ms
     
     mitigatedby ref function CANBusRedundancy within 50ms
-    mitigatedby ref function operationTimeoutHandling within 100ms
+    mitigatedby ref function MessageTimeoutHandling within 100ms
     mitigatedby ref function NetworkDegradedMode within 200ms
     
     // Testing and Requirements
@@ -176,15 +175,15 @@ hdef failureset EPB_InputProcessingFailures
     recoverytime 5000ms       // Long recovery time
     
     // Failure Effects
-    effects ref failuremode CompleteInputLoss within 10ms
-    effects ref failuremode CompleteModuleShutdown within 20ms
+    effects ref failuremode CompleteInputLoss within 10
+    effects ref failuremode CompleteModuleShutdown within 20
     
     // Detection and Mitigation
     detectedby ref function PowerMonitoring within 10ms
-    detectedby ref function VoltageSupervision within 5ms
+    detectedby ref function VoltageSupervision within 5
     
-    mitigatedby ref function BackupPowerSource within 5ms
-    mitigatedby ref function EmergencySafeMode within 50ms
+    mitigatedby ref function BackupPowerSource within 5
+    mitigatedby ref function EmergencySafeMode within 50
     
     // Testing and Requirements
     testedby ref testcase TEST_INPUT_001
@@ -205,10 +204,10 @@ hdef failureset EPB_InputProcessingFailures
     actionpriority medium
     safetylevel ASIL-C
     
-    effects ref failuremode VehicleSpeedSensorFailure within 100ms
+    effects ref failuremode VehicleSpeedSensorFailure within 100
     
-    detectedby ref function WiringDiagnostic within 200ms
-    mitigatedby ref function WiringProtection within 1ms
+    detectedby ref function WiringDiagnostic within 200
+    mitigatedby ref function WiringProtection within 1
     
     testedby ref testcase TEST_INPUT_002
     derivedfrom ref requirement REQ_INPUT_001
@@ -226,10 +225,10 @@ hdef failureset EPB_InputProcessingFailures
     actionpriority medium
     safetylevel ASIL-C
     
-    effects ref failuremode VehicleSpeedSensorFailure within 200ms
+    effects ref failuremode VehicleSpeedSensorFailure within 200
     
-    detectedby ref function SensorSelfTest within 100ms
-    mitigatedby ref function SensorRedundancy within 50ms
+    detectedby ref function SensorSelfTest within 100
+    mitigatedby ref function SensorRedundancy within 50
     
     testedby ref testcase TEST_INPUT_006
     derivedfrom ref requirement REQ_INPUT_008
@@ -248,10 +247,10 @@ hdef failureset EPB_InputProcessingFailures
     actionpriority high
     safetylevel ASIL-D
     
-    causedby ref failuremode VehicleSpeedSensorFailure within 100ms
+    causes ref failuremode VehicleSpeedSensorFailure within 100
     
-    detectedby ref function SafetyMonitor within 10ms
-    mitigatedby ref function EmergencyDisable within 5ms
+    detectedby ref function SafetyMonitor within 10
+    mitigatedby ref function EmergencyDisable within 5
     
     testedby ref testcase TEST_INPUT_011
     derivedfrom ref requirement REQ_INPUT_013
@@ -269,7 +268,7 @@ hdef failureset EPB_InputProcessingFailures
     actionpriority high
     safetylevel ASIL-D
     
-    causedby ref failuremode PowerSupplyFailure within 10ms
+    causes ref failuremode PowerSupplyFailure within 10ms
     
     detectedby ref function SystemMonitor within 15ms
     mitigatedby ref function BackupSystem within 100ms

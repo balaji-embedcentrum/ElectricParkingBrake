@@ -13,7 +13,7 @@ Defines **system requirements** with complete traceability to functions, blocks,
 use, hdef, requirementset, def, requirement, name, description, owner, 
 tags, level, rationale, verificationcriteria, status, reqtype, safetylevel, 
 refinedfrom, derivedfrom, implements, allocatedto, testedby, when, ref, 
-config, testcase, safetygoal
+config, testcase, safetygoal, attach, proposal
 ```
 
 ## Syntax Structure
@@ -38,10 +38,12 @@ hdef requirementset [identifier]
     verificationcriteria [string-literal]
     owner [string-literal]
     tags [string-literal], [string-literal], ...
-    level [system|subsystem|component]
-    status [draft|proposed|approved|implemented|verified|rejected]
-    reqtype [functional|non-functional|interface|constraint|safety]
+    level [product|system|subsystem|component|subcomponent|module|submodule|part|subpart|solution|solutionelement|external|customer|supplier|object|objectelement|buildingblock|function|externalstakeholder|internalstakeholder|vehicle|sys1|sys2|sys3|sys4|sys5|hwe1|hwe2|hwe3|hwe4|swe1|swe2|swe3|swe4|swe5|swe6]
+    status [draft|review|approved|deprecated|implemented|accepted|rejected|accepted+proposal|notapplicable|unknown]
+    reqtype [functional|nonfunctional|system|software|hardware|interface|safety|stakeholder|process|compliance|quality|IT|manufacturing|supplier|program|others]
     safetylevel [ASIL-A|ASIL-B|ASIL-C|ASIL-D|QM]
+    proposal [string-literal]
+    attach [string-literal]
     
     # Requirement relationships
     refinedfrom ref requirement [requirement-ref]

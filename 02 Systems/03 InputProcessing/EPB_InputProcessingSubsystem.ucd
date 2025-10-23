@@ -1,7 +1,7 @@
 use functionset EPB_InputProcessingSubsystem_Functions
 use configset ElectricParkingBrakeFeaturesVariants_BMWConfig
 
-hdef usecase EPB_InputProcessingSubsystem_UseCases
+hdef usecaseset EPB_InputProcessingSubsystem_UseCases
   name "EPB Input Processing Subsystem Use Cases"
   description "Key use cases for EPB Input Processing Subsystem covering critical signal processing, validation, and fault detection functions"
   owner "Input Processing Systems Team"

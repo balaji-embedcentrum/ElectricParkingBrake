@@ -28,6 +28,27 @@ hdef interfaceset VehicleNetworkInterface
     datatype VehicleCANStruct
     tags "vehicle-data", "system-coordination", "cross-system-integration"
 
+  def operation VehicleTimeSync
+    name "Vehicle Time Synchronization operation"
+    description "Operation to synchronize system time across ECUs in the vehicle network"
+    owner "Network Time Team"
+    datatype TimeSyncStruct
+    tags "time-sync", "clock-sync", "time-management"
+
+  def operation FirmwareUpdateRequest
+    name "Firmware Update Request operation"
+    description "Operation used to request and coordinate over-the-air or dealer firmware updates"
+    owner "Software Update Team"
+    datatype FirmwareUpdateStruct
+    tags "firmware-update", "OTA", "software-management"
+
+  def operation RemoteServiceMode
+    name "Remote Service Mode operation"
+    description "Operation to enable remote service or maintenance mode requested by service tools"
+    owner "Service Interface Team"
+    datatype RemoteServiceStruct
+    tags "remote-service", "maintenance", "service-mode"
+
   // Signal interfaces (bidirectional with vehicle network)
   def signal CANBusActivity
     name "CAN Bus Activity Signal"
@@ -50,3 +71,18 @@ hdef interfaceset VehicleNetworkInterface
     datatype NetworkFaultEnum
     safetylevel ASIL-D
     tags "fault-detection", "network-diagnostics", "communication-safety"
+
+  def signal SecureCommAlert
+    name "Secure Communication Alert Signal"
+    description "Indicates a detected secure communication anomaly or security breach on the vehicle network"
+    owner "Security Team"
+    datatype SecurityAlertEnum
+    safetylevel ASIL-D
+    tags "security", "secure-comm", "intrusion-detection"
+
+  def signal TimeSyncStatus
+    name "Time Synchronization Status Signal"
+    description "Status of ECU time synchronization across the vehicle network"
+    owner "Network Time Team"
+    datatype TimeSyncStatusEnum
+    tags "time-sync-status", "clock-sync", "synchronization"

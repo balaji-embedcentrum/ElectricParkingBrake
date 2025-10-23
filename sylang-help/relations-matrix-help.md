@@ -159,6 +159,7 @@ No outgoing relations - root of product line hierarchy.
 | block | `meets` | characteristic | `.blk` | Multiple | Block meets product characteristics |
 | block | `when` | config | `.vcf` | Single | Conditional visibility based on configuration |
 
+
 ### 📏 Product Characteristics (AIAG VDA)
 
 | Source Type | Relation | Target Type | Target File | Multiplicity | Description |
@@ -179,6 +180,7 @@ No outgoing relations - root of product line hierarchy.
 | interfaceset | `decomposedfrom` | interfaceset | `.ifc` | **Single** | Bottom-up interface composition |
 | interfaceset | `decomposesto` | interfaceset | `.ifc` | Multiple | Top-down interface decomposition |
 | interfaceset | `allocatedto` | block | `.blk` | **Single** | Interface allocated to single block |
+| interfaceset | `derivedfrom` | requirement | `.req` | Multiple | Function derived from requirements |
 
 ### 🔌 Operations
 
@@ -189,6 +191,7 @@ No outgoing relations - root of product line hierarchy.
 | operation | `requires` | datatype | `.ifc` | Multiple | Operation requires datatypes |
 | operation | `meets` | characteristic | `.blk` | Multiple | Operation meets product characteristics |
 | operation | `when` | config | `.vcf` | Single | Conditional visibility based on configuration |
+| operation | `derivedfrom` | requirement | `.req` | Multiple | Function derived from requirements |
 
 ### 📡 Signals
 
@@ -199,6 +202,7 @@ No outgoing relations - root of product line hierarchy.
 | signal | `requires` | datatype | `.ifc` | Multiple | Signal requires datatypes |
 | signal | `meets` | characteristic | `.blk` | Multiple | Signal meets product characteristics |
 | signal | `when` | config | `.vcf` | Single | Conditional visibility based on configuration |
+| signal | `derivedfrom` | requirement | `.req` | Multiple | Function derived from requirements |
 
 ### 📊 Datatypes & Parameters
 
@@ -417,3 +421,101 @@ Operation ─requires→ Datatype
 **Last Updated: 2025-10-03**
 
 For more information, visit [sylang.dev](https://sylang.dev)
+
+---
+
+## Documentation & Dashboards
+
+### Specification Document (.spec)
+
+| Source Type | Relation | Target Type | Target File | Multiplicity | Description |
+|:------------|:---------|:------------|:------------|:------------:|:------------|
+| specification | `use` | requirementset | `.req` | Multiple | References requirement sets |
+| specification | `use` | functionset | `.fun` | Multiple | References function sets |
+| specification | `use` | blockset | `.blk` | Multiple | References block sets |
+| specification | `use` | testcaseset | `.tst` | Multiple | References test sets |
+| specification | `use` | usecaseset | `.ucd` | Multiple | References use case sets |
+| specification | `use` | sequenceset | `.seq` | Multiple | References sequence sets |
+| specification | `use` | failuremodeset | `.flr` | Multiple | References failure mode sets |
+| specification | `use` | faulttreeset | `.fta` | Multiple | References fault tree sets |
+| specification | `use` | hazardset | `.haz` | Multiple | References hazard sets |
+| specification | `use` | agentset | `.agt` | Multiple | References agent sets |
+| specification | `use` | sprintset | `.spr` | Multiple | References sprint sets |
+| specification | `use` | statemachineset | `.smd` | Multiple | References state machine sets |
+| specification | `use` | variantset | `.vml` | Multiple | References variant sets |
+| specification | `use` | configset | `.vcf` | Multiple | References config sets |
+| specification | `use` | interfaceset | `.ifc` | Multiple | References interface sets |
+| spec/diagram/table | `source` | requirementset | `.req` | Single | Data source for content |
+| spec/diagram/table | `source` | functionset | `.fun` | Single | Data source for content |
+| spec/diagram/table | `source` | blockset | `.blk` | Single | Data source for content |
+| spec/diagram/table | `source` | testcaseset | `.tst` | Single | Data source for content |
+| spec/diagram/table | `source` | usecaseset | `.ucd` | Single | Data source for content |
+| spec/diagram/table | `source` | sequenceset | `.seq` | Single | Data source for content |
+| spec/diagram/table | `source` | failuremodeset | `.flr` | Single | Data source for content |
+| spec/diagram/table | `source` | faulttreeset | `.fta` | Single | Data source for content |
+| spec/diagram/table | `source` | hazardset | `.haz` | Single | Data source for content |
+| spec/diagram/table | `source` | agentset | `.agt` | Single | Data source for content |
+| spec/diagram/table | `source` | sprintset | `.spr` | Single | Data source for content |
+| spec/diagram/table | `source` | statemachineset | `.smd` | Single | Data source for content |
+| spec/diagram/table | `source` | variantset | `.vml` | Single | Data source for content |
+| spec/diagram/table | `source` | configset | `.vcf` | Single | Data source for content |
+| spec/diagram/table | `source` | interfaceset | `.ifc` | Single | Data source for content |
+
+**Key Features:**
+- Dynamic content generation from any Sylang artifact
+- Advanced filtering with `where` clauses
+- Data aggregation with `groupby` and `orderby`
+- Professional HTML export for documentation
+- Hierarchical section organization
+
+### Dashboard (.dash)
+
+| Source Type | Relation | Target Type | Target File | Multiplicity | Description |
+|:------------|:---------|:------------|:------------|:------------:|:------------|
+| dashboard | `use` | requirementset | `.req` | Multiple | References requirement sets |
+| dashboard | `use` | functionset | `.fun` | Multiple | References function sets |
+| dashboard | `use` | blockset | `.blk` | Multiple | References block sets |
+| dashboard | `use` | testcaseset | `.tst` | Multiple | References test sets |
+| dashboard | `use` | usecaseset | `.ucd` | Multiple | References use case sets |
+| dashboard | `use` | sequenceset | `.seq` | Multiple | References sequence sets |
+| dashboard | `use` | failuremodeset | `.flr` | Multiple | References failure mode sets |
+| dashboard | `use` | faulttreeset | `.fta` | Multiple | References fault tree sets |
+| dashboard | `use` | hazardset | `.haz` | Multiple | References hazard sets |
+| dashboard | `use` | agentset | `.agt` | Multiple | References agent sets |
+| dashboard | `use` | sprintset | `.spr` | Multiple | References sprint sets |
+| dashboard | `use` | statemachineset | `.smd` | Multiple | References state machine sets |
+| dashboard | `use` | variantset | `.vml` | Multiple | References variant sets |
+| dashboard | `use` | configset | `.vcf` | Multiple | References config sets |
+| dashboard | `use` | interfaceset | `.ifc` | Multiple | References interface sets |
+| metric/chart/table | `source` | requirementset | `.req` | Single | Data source for widget |
+| metric/chart/table | `source` | functionset | `.fun` | Single | Data source for widget |
+| metric/chart/table | `source` | blockset | `.blk` | Single | Data source for widget |
+| metric/chart/table | `source` | testcaseset | `.tst` | Single | Data source for widget |
+| metric/chart/table | `source` | usecaseset | `.ucd` | Single | Data source for widget |
+| metric/chart/table | `source` | sequenceset | `.seq` | Single | Data source for widget |
+| metric/chart/table | `source` | failuremodeset | `.flr` | Single | Data source for widget |
+| metric/chart/table | `source` | faulttreeset | `.fta` | Single | Data source for widget |
+| metric/chart/table | `source` | hazardset | `.haz` | Single | Data source for widget |
+| metric/chart/table | `source` | agentset | `.agt` | Single | Data source for widget |
+| metric/chart/table | `source` | sprintset | `.spr` | Single | Data source for widget |
+| metric/chart/table | `source` | statemachineset | `.smd` | Single | Data source for widget |
+| metric/chart/table | `source` | variantset | `.vml` | Single | Data source for widget |
+| metric/chart/table | `source` | configset | `.vcf` | Single | Data source for widget |
+| metric/chart/table | `source` | interfaceset | `.ifc` | Single | Data source for widget |
+
+**Key Features:**
+- Real-time metrics (count, percentage, sum, avg, min, max, gauge, trend)
+- Interactive Chart.js visualizations (bar, line, pie, scatter, gauge)
+- Grid-based layouts with widget spanning
+- Advanced filtering and aggregation
+- HTML export for sharing
+
+---
+
+## 📊 Updated Summary Statistics
+
+- **Total File Types**: 21 (including .spec and .dash)
+- **Total Relation Types**: 170+ (including documentation relations)
+- **Traceability Chains**: Complete bilateral traceability
+- **Documentation Support**: Dynamic content generation and dashboards
+
