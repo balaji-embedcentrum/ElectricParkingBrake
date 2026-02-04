@@ -76,3 +76,11 @@ hdef interfaceset ControlLogicInterface
     owner "Mode Control Team"
     datatype ControlModeEnum
     tags "control-mode", "context-awareness", "user-interface"
+
+  def signal ActuatorPositionFeedback
+    name "Actuator Position Feedback Signal"
+    description "Current position feedback from EPB actuator for closed-loop control and monitoring"
+    owner "Actuator Control Team"
+    datatype float32
+    safetylevel ASIL-D
+    tags "actuator-feedback", "position-control", "closed-loop", "monitoring"
