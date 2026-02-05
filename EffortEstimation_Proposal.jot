@@ -1,0 +1,691 @@
+hdef jotx EffortEstimationProposal
+
+  title "Effort Estimation for Product Variant Development"
+  icon "📊"
+  type report
+
+  def heading block_1
+    text "Effort Estimation Feature Proposal"
+    level 1
+
+  def paragraph block_intro
+    text "A comprehensive proposal for integrating **effort estimation** into Sylang by adding effort properties to existing file types, with automatic ASPICE process mapping and variant configuration awareness. All effort values are in **hours**."
+
+  def callout block_value
+    variant success
+    text "💰 **Core Principle**: Add effort directly where engineers work. Aggregate automatically by ASPICE level and feature tree. Respect variant configuration."
+
+  def divider div_1
+
+  def heading block_design_decisions
+    text "Design Decisions (Confirmed)"
+    level 1
+
+  def table block_decisions_table
+    columns "Question, Answer"
+    def row d1
+      def cell c1
+        def paragraph p1
+          text "Unit of measurement"
+      def cell c2
+        def paragraph p2
+          text "**Hours** (numeric value, no unit property needed)"
+    def row d2
+      def cell c1
+        def paragraph p1
+          text "Confidence levels"
+      def cell c2
+        def paragraph p2
+          text "**No** - not required"
+    def row d3
+      def cell c1
+        def paragraph p1
+          text "Actual vs. estimated tracking"
+      def cell c2
+        def paragraph p2
+          text "**No** - not required"
+    def row d4
+      def cell c1
+        def paragraph p1
+          text "Multi-level ASPICE mapping"
+      def cell c2
+        def paragraph p2
+          text "**No** - each symbol maps to exactly ONE ASPICE level"
+    def row d5
+      def cell c1
+        def paragraph p1
+          text "Project-level override"
+      def cell c2
+        def paragraph p2
+          text "**No** - not required"
+
+  def divider div_2
+
+  def heading block_props
+    text "Effort Properties (3 Only)"
+    level 1
+
+  def paragraph block_props_intro
+    text "Add these 3 properties to any symbol definition. All values are **numeric** representing **hours**. Context (file type) determines the meaning."
+
+  def table block_effort_table
+    columns "Property, Description"
+    def row r1
+      def cell c1
+        def paragraph p1
+          text "**analysiseffort**"
+      def cell c2
+        def paragraph p2
+          text "Analysis work (requirements, safety, feasibility, reviews, documentation)"
+    def row r2
+      def cell c1
+        def paragraph p1
+          text "**deveffort**"
+      def cell c2
+        def paragraph p2
+          text "Development work (design, implementation, integration)"
+    def row r3
+      def cell c1
+        def paragraph p1
+          text "**testeffort**"
+      def cell c2
+        def paragraph p2
+          text "Testing work (test development, execution, verification)"
+
+  def heading block_context
+    text "Context-Based Interpretation"
+    level 2
+
+  def table block_context_table
+    columns "File Type, analysiseffort means, deveffort means, testeffort means"
+    def row c1
+      def cell c1
+        def paragraph p1
+          text ".req"
+      def cell c2
+        def paragraph p2
+          text "Requirements analysis"
+      def cell c3
+        def paragraph p3
+          text "Requirements writing"
+      def cell c4
+        def paragraph p4
+          text "Verification criteria"
+    def row c2
+      def cell c1
+        def paragraph p1
+          text ".sgl / .haz / .itm"
+      def cell c2
+        def paragraph p2
+          text "**Safety analysis**"
+      def cell c3
+        def paragraph p3
+          text "Safety case development"
+      def cell c4
+        def paragraph p4
+          text "Safety verification"
+    def row c3
+      def cell c1
+        def paragraph p1
+          text ".flr / .fta"
+      def cell c2
+        def paragraph p2
+          text "**FMEA/FTA analysis**"
+      def cell c3
+        def paragraph p3
+          text "Mitigation design"
+      def cell c4
+        def paragraph p4
+          text "Safety test"
+    def row c4
+      def cell c1
+        def paragraph p1
+          text ".fun / .blk"
+      def cell c2
+        def paragraph p2
+          text "Architecture analysis"
+      def cell c3
+        def paragraph p3
+          text "Design/Implementation"
+      def cell c4
+        def paragraph p4
+          text "Unit/Integration test"
+    def row c5
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "Test planning"
+      def cell c3
+        def paragraph p3
+          text "Test development"
+      def cell c4
+        def paragraph p4
+          text "Test execution"
+
+  def heading block_syntax
+    text "Syntax Examples"
+    level 2
+
+  def code block_req_example
+    language "sylang"
+    text """def requirement REQ_BrakeForce_Maximum
+  text "The EPB shall apply maximum brake force within 500ms"
+  level system
+  analysiseffort 8
+  deveffort 4
+  testeffort 12"""
+
+  def code block_blk_example
+    language "sylang"
+    text """hdef block BLK_BrakeController
+  level swe3
+  safetylevel ASIL-D
+  analysiseffort 16
+  deveffort 80
+  testeffort 60"""
+
+  def divider div_3
+
+  def heading block_aspice
+    text "ASPICE Process Mapping"
+    level 1
+
+  def paragraph block_aspice_intro
+    text "Each symbol maps to **exactly one** ASPICE process based on file type + **level** property. The level enum already includes ASPICE values:"
+
+  def code block_level_enum
+    language "typescript"
+    text """// From keywords.ts - existing level enum values
+'sys1', 'sys2', 'sys3', 'sys4', 'sys5',  // System engineering
+'swe1', 'swe2', 'swe3', 'swe4', 'swe5', 'swe6',  // Software engineering
+'hwe1', 'hwe2', 'hwe3', 'hwe4'  // Hardware engineering"""
+
+  def heading block_mapping_table
+    text "Mapping Rules"
+    level 2
+
+  def table block_sys_table
+    columns "File Type, Level Property, ASPICE Process"
+    def row r1
+      def cell c1
+        def paragraph p1
+          text ".req"
+      def cell c2
+        def paragraph p2
+          text "customer"
+      def cell c3
+        def paragraph p3
+          text "**SYS.1** Requirements Elicitation"
+    def row r2
+      def cell c1
+        def paragraph p1
+          text ".req"
+      def cell c2
+        def paragraph p2
+          text "system / sys2"
+      def cell c3
+        def paragraph p3
+          text "**SYS.2** System Requirements"
+    def row r3
+      def cell c1
+        def paragraph p1
+          text ".req"
+      def cell c2
+        def paragraph p2
+          text "software / swe1"
+      def cell c3
+        def paragraph p3
+          text "**SWE.1** SW Requirements"
+    def row r4
+      def cell c1
+        def paragraph p1
+          text ".fun / .blk"
+      def cell c2
+        def paragraph p2
+          text "system / sys3"
+      def cell c3
+        def paragraph p3
+          text "**SYS.3** System Architecture"
+    def row r5
+      def cell c1
+        def paragraph p1
+          text ".fun / .blk"
+      def cell c2
+        def paragraph p2
+          text "swe2"
+      def cell c3
+        def paragraph p3
+          text "**SWE.2** SW Architecture"
+    def row r6
+      def cell c1
+        def paragraph p1
+          text ".blk"
+      def cell c2
+        def paragraph p2
+          text "swe3"
+      def cell c3
+        def paragraph p3
+          text "**SWE.3** SW Detailed Design"
+    def row r7
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "swe4 / unit"
+      def cell c3
+        def paragraph p3
+          text "**SWE.4** Unit Verification"
+    def row r8
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "swe5 / integration"
+      def cell c3
+        def paragraph p3
+          text "**SWE.5** SW Integration Test"
+    def row r9
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "swe6 / qualification"
+      def cell c3
+        def paragraph p3
+          text "**SWE.6** SW Qualification Test"
+    def row r10
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "sys4 / system"
+      def cell c3
+        def paragraph p3
+          text "**SYS.4** System Integration Test"
+    def row r11
+      def cell c1
+        def paragraph p1
+          text ".tst"
+      def cell c2
+        def paragraph p2
+          text "sys5 / validation"
+      def cell c3
+        def paragraph p3
+          text "**SYS.5** System Qualification Test"
+    def row r12
+      def cell c1
+        def paragraph p1
+          text ".flr / .fta / .haz / .sgl / .sam"
+      def cell c2
+        def paragraph p2
+          text "any"
+      def cell c3
+        def paragraph p3
+          text "**Safety** (ISO 26262)"
+
+  def divider div_4
+
+  def heading block_variant
+    text "Variant Configuration Awareness"
+    level 1
+
+  def paragraph block_variant_intro
+    text "The effort calculation respects `config` and `when` relations. When a symbol is **disabled** by configuration, its effort is **excluded** from the enabled total."
+
+  def heading block_variant_display
+    text "Display Format: Enabled / Total"
+    level 2
+
+  def callout block_variant_example
+    variant info
+    text "**SWE.3 Detailed Design**: 320 / 480 hrs — saves 160 hrs via platform reuse"
+
+  def divider div_5
+
+  def heading block_ui
+    text "UI Design: Sylang Nest Effort Tab"
+    level 1
+
+  def paragraph block_ui_intro
+    text "Add an **Effort** tab to Sylang Nest with two sub-views using a toggle or sub-tabs."
+
+  def heading block_ui_aspice
+    text "ASPICE View"
+    level 2
+
+  def code block_aspice_mockup
+    language "text"
+    text """┌─────────────────────────────────────────────────────────────────────┐
+│  EFFORT ESTIMATION                         [ASPICE] [Feature Tree]  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐              │
+│  │  📊 TOTAL    │  │  ✅ ENABLED  │  │  💰 SAVINGS  │              │
+│  │   1,680 hrs  │  │   1,240 hrs  │  │    440 hrs   │              │
+│  │              │  │    (74%)     │  │    (26%)     │              │
+│  └──────────────┘  └──────────────┘  └──────────────┘              │
+│                                                                     │
+│  ASPICE Process Breakdown                                           │
+│  ─────────────────────────────────────────────────────────────────  │
+│                                                                     │
+│  SYS.1 ████████████░░░░░░░░░ 120/180 hrs   │ Requirements Elicit.  │
+│  SYS.2 ██████████████░░░░░░░ 160/200 hrs   │ System Requirements   │
+│  SYS.3 ████████████████░░░░░ 200/240 hrs   │ System Architecture   │
+│  SWE.1 ████████░░░░░░░░░░░░░  80/160 hrs   │ SW Requirements       │
+│  SWE.2 ██████████████░░░░░░░ 140/180 hrs   │ SW Architecture       │
+│  SWE.3 ████████████████████░ 240/260 hrs   │ SW Detailed Design    │
+│  SWE.4 ██████████████████░░░ 180/220 hrs   │ Unit Verification     │
+│  SWE.5 ██████████░░░░░░░░░░░ 80/140 hrs    │ Integration Test      │
+│  SWE.6 ████████████░░░░░░░░░ 40/100 hrs    │ Qualification Test    │
+│                                                                     │
+│  ─────────────────────────────────────────────────────────────────  │
+│  🔍 Click any row to see contributing symbols                       │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘"""
+
+  def heading block_ui_feature
+    text "Feature Tree View"
+    level 2
+
+  def code block_feature_mockup
+    language "text"
+    text """┌─────────────────────────────────────────────────────────────────────┐
+│  EFFORT ESTIMATION                         [ASPICE] [Feature Tree]  │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                     │
+│  ▼ EPB System                                    1,240 / 1,680 hrs  │
+│    │                                                                │
+│    ├─ ▼ Brake Application                          560 / 720 hrs   │
+│    │    ├─ ● Static Parking      ████████████████  320 / 320 hrs   │
+│    │    ├─ ● Dynamic Braking     ████████████████  240 / 240 hrs   │
+│    │    └─ ○ Hill Hold           ░░░░░░░░░░░░░░░░    0 / 160 hrs   │
+│    │                                               (DISABLED)       │
+│    │                                                                │
+│    ├─ ▼ Release Control                            280 / 360 hrs   │
+│    │    ├─ ● Manual Release      ████████████████  160 / 160 hrs   │
+│    │    ├─ ● Auto Release        ████████████████  120 / 120 hrs   │
+│    │    └─ ○ Emergency Release   ░░░░░░░░░░░░░░░░    0 / 80 hrs    │
+│    │                                               (DISABLED)       │
+│    │                                                                │
+│    └─ ▼ Diagnostics                                400 / 600 hrs   │
+│         ├─ ● Self-Test           ████████████████  240 / 240 hrs   │
+│         ├─ ● Fault Detection     ████████████████  160 / 160 hrs   │
+│         └─ ○ Advanced Analytics  ░░░░░░░░░░░░░░░░    0 / 200 hrs   │
+│                                                    (DISABLED)       │
+│                                                                     │
+│  ─────────────────────────────────────────────────────────────────  │
+│  ● Enabled  ○ Disabled                    [Export CSV] [Export XLS] │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘"""
+
+  def divider div_6
+
+  def heading block_architecture
+    text "Technical Architecture"
+    level 1
+
+  def mermaid block_arch_diagram
+    title "Effort System Components"
+    src """flowchart TB
+    subgraph Core["src/core/"]
+        KW[keywords.ts<br/>Add effort properties]
+        SM[symbolManager.ts<br/>Parse effort values]
+        CM[configManager.ts<br/>Config resolution]
+    end
+
+    subgraph Service["src/effort/ (NEW)"]
+        ES[effortService.ts<br/>Aggregation engine]
+        AM[aspiceMapper.ts<br/>Level → Process mapping]
+        FT[featureTreeAggregator.ts<br/>Feature rollup]
+    end
+
+    subgraph Nest["src/nest/"]
+        NP[nestPanel.ts<br/>Add Effort tab]
+        EV[effortView.ts<br/>HTML generation]
+    end
+
+    KW --> SM
+    SM --> ES
+    CM --> ES
+    ES --> AM
+    ES --> FT
+    ES --> NP
+    AM --> EV
+    FT --> EV
+    EV --> NP"""
+    showsource false
+
+  def divider div_7
+
+  def heading block_files
+    text "Files to Modify/Create"
+    level 1
+
+  def heading block_files_modify
+    text "Modify Existing Files"
+    level 2
+
+  def table block_modify_table
+    columns "File, Changes"
+    def row m1
+      def cell c1
+        def paragraph p1
+          text "**src/core/keywords.ts**"
+      def cell c2
+        def paragraph p2
+          text "Add 3 effort properties (analysiseffort, deveffort, testeffort) to all applicable keyword arrays"
+    def row m2
+      def cell c1
+        def paragraph p1
+          text "**src/core/symbolManager.ts**"
+      def cell c2
+        def paragraph p2
+          text "Ensure effort properties are parsed into symbol.properties Map"
+    def row m3
+      def cell c1
+        def paragraph p1
+          text "**src/nest/nestPanel.ts**"
+      def cell c2
+        def paragraph p2
+          text "Add Effort tab to existing tabs, call effort view generator"
+    def row m4
+      def cell c1
+        def paragraph p1
+          text "**src/nest/index.ts**"
+      def cell c2
+        def paragraph p2
+          text "Register effort service, add message handlers"
+
+  def heading block_files_create
+    text "Create New Files"
+    level 2
+
+  def table block_create_table
+    columns "File, Purpose"
+    def row c1
+      def cell c1
+        def paragraph p1
+          text "**src/effort/effortService.ts**"
+      def cell c2
+        def paragraph p2
+          text "Main aggregation service: collect symbols, sum effort, apply config"
+    def row c2
+      def cell c1
+        def paragraph p1
+          text "**src/effort/aspiceMapper.ts**"
+      def cell c2
+        def paragraph p2
+          text "Map file type + level → ASPICE process ID"
+    def row c3
+      def cell c1
+        def paragraph p1
+          text "**src/effort/featureTreeAggregator.ts**"
+      def cell c2
+        def paragraph p2
+          text "Walk feature model, aggregate linked symbols"
+    def row c4
+      def cell c1
+        def paragraph p1
+          text "**src/effort/types.ts**"
+      def cell c2
+        def paragraph p2
+          text "TypeScript interfaces for effort data"
+
+  def heading block_files_excluded
+    text "Excluded File Types"
+    level 2
+
+  def paragraph block_excluded_p
+    text "These file types do **NOT** get effort properties:"
+
+  def list block_excluded_list
+    listtype bulleted
+    def listitem e1
+      text "**.spec** — Specification views (aggregates other files)"
+    def listitem e2
+      text "**.dash** — Dashboards (presentation only)"
+    def listitem e3
+      text "**.agt** — Agent definitions (AI configuration)"
+
+  def divider div_8
+
+  def heading block_code
+    text "Key Implementation Details"
+    level 1
+
+  def heading block_code_keywords
+    text "1. Keywords Addition"
+    level 2
+
+  def code block_keywords_code
+    language "typescript"
+    text """// Add to REQ_KEYWORDS, FUN_KEYWORDS, BLK_KEYWORDS, TST_KEYWORDS, etc.
+// Effort estimation properties
+{ name: 'analysiseffort', type: KeywordType.PROPERTY, description: 'Analysis effort in hours' },
+{ name: 'deveffort', type: KeywordType.PROPERTY, description: 'Development effort in hours' },
+{ name: 'testeffort', type: KeywordType.PROPERTY, description: 'Test effort in hours' },"""
+
+  def heading block_code_service
+    text "2. Effort Service Interface"
+    level 2
+
+  def code block_service_code
+    language "typescript"
+    text """// src/effort/types.ts
+export interface EffortData {
+  symbolId: string;
+  symbolName: string;
+  fileUri: string;
+  fileType: string;
+  level: string;
+  aspiceProcess: string;
+  
+  // Individual effort values (3 properties)
+  analysiseffort: number;
+  deveffort: number;
+  testeffort: number;
+  
+  // Computed
+  totalEffort: number;
+  configEnabled: boolean;
+  effectiveEffort: number;  // 0 if disabled
+}
+
+export interface AspiceRollup {
+  processId: string;       // e.g., "SYS.1", "SWE.3"
+  processName: string;     // e.g., "SW Detailed Design"
+  enabledHours: number;
+  totalHours: number;
+  symbols: EffortData[];
+}
+
+export interface FeatureRollup {
+  featureId: string;
+  featureName: string;
+  enabledHours: number;
+  totalHours: number;
+  isEnabled: boolean;
+  children: FeatureRollup[];
+}"""
+
+  def heading block_code_mapper
+    text "3. ASPICE Mapper"
+    level 2
+
+  def code block_mapper_code
+    language "typescript"
+    text """// src/effort/aspiceMapper.ts
+export function mapToAspiceProcess(fileType: string, level: string): string {
+  // Requirements
+  if (fileType === '.req') {
+    if (level === 'customer') return 'SYS.1';
+    if (['system', 'sys2'].includes(level)) return 'SYS.2';
+    if (['software', 'swe1'].includes(level)) return 'SWE.1';
+  }
+  
+  // Architecture
+  if (['.fun', '.blk'].includes(fileType)) {
+    if (['system', 'sys3'].includes(level)) return 'SYS.3';
+    if (level === 'swe2') return 'SWE.2';
+    if (level === 'swe3') return 'SWE.3';
+  }
+  
+  // Test
+  if (fileType === '.tst') {
+    if (['unit', 'swe4'].includes(level)) return 'SWE.4';
+    if (['integration', 'swe5'].includes(level)) return 'SWE.5';
+    if (['qualification', 'swe6'].includes(level)) return 'SWE.6';
+    if (['system', 'sys4'].includes(level)) return 'SYS.4';
+    if (['validation', 'sys5'].includes(level)) return 'SYS.5';
+  }
+  
+  // Safety files
+  if (['.flr', '.fta', '.haz', '.sgl', '.sam', '.itm'].includes(fileType)) {
+    return 'Safety';
+  }
+  
+  return 'Other';
+}"""
+
+  def divider div_9
+
+  def heading block_impl
+    text "Implementation Plan"
+    level 1
+
+  def checklist block_impl_phases
+    def taskitem phase1
+      checked false
+      text "**Phase 1**: Add 3 effort properties to keywords.ts for applicable file types"
+    def taskitem phase2
+      checked false
+      text "**Phase 2**: Create src/effort/ folder with types.ts, effortService.ts"
+    def taskitem phase3
+      checked false
+      text "**Phase 3**: Implement aspiceMapper.ts with level → process mapping"
+    def taskitem phase4
+      checked false
+      text "**Phase 4**: Implement featureTreeAggregator.ts using existing traceability"
+    def taskitem phase5
+      checked false
+      text "**Phase 5**: Add Effort tab to nestPanel.ts with ASPICE sub-view"
+    def taskitem phase6
+      checked false
+      text "**Phase 6**: Add Feature Tree sub-view with collapsible hierarchy"
+    def taskitem phase7
+      checked false
+      text "**Phase 7**: Add export functionality (CSV)"
+    def taskitem phase8
+      checked false
+      text "**Phase 8**: Test with EPB Project sample data"
+
+  def callout block_ready
+    variant success
+    text "✅ Ready to implement! This approach uses existing Sylang infrastructure (keywords, symbolManager, configManager, Nest) with minimal new code."
+

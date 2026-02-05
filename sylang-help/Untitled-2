@@ -1,0 +1,74 @@
+
+hdef dashboard SYLANG_NEST_DEFAULT
+  name "Project Intelligence Dashboard"
+  owner "Sylang Systems"
+  version "2.33.16"
+  grid 3x4
+
+// ═══════════════════════════════════════════════════════════════
+// ROW 1: KEY METRICS
+// ═══════════════════════════════════════════════════════════════
+
+def metric TOTAL_REQUIREMENTS
+  name "Requirements"
+  type count
+  sourcetype requirement
+
+def metric TOTAL_FUNCTIONS
+  name "Functions"
+  type count
+  sourcetype function
+
+def metric TOTAL_TEST_CASES
+  name "Test Cases"
+  type count
+  sourcetype testcase
+
+def metric TRACEABILITY_SCORE
+  name "Traceability"
+  type gauge
+  sourcetype requirement
+  correlate type testcase via satisfies
+
+// ═══════════════════════════════════════════════════════════════
+// ROW 2: DISTRIBUTION CHARTS
+// ═══════════════════════════════════════════════════════════════
+
+def chart REQUIREMENTS_BY_STATUS
+  name "Requirements by Status"
+  type pie
+  sourcetype requirement
+  groupby status
+  span 1x2
+
+def chart SYMBOLS_OVERVIEW
+  name "Symbol Distribution"
+  type bar
+  sourcetype all
+  groupby nodetype
+  orderby nodetype
+  span 1x2
+
+// ═══════════════════════════════════════════════════════════════
+// ROW 3: QUALITY & TRACEABILITY ANALYSIS
+// ═══════════════════════════════════════════════════════════════
+
+def metric BROKEN_LINKS
+  name "Broken Links"
+  type count
+  sourcetype all
+  analyze broken
+
+def metric ORPHAN_ITEMS
+  name "Orphan Items"
+  type count
+  sourcetype all
+  analyze orphan
+
+def chart TRACEABILITY_FLOW
+  name "Traceability Flow"
+  type sankey
+  sourcetype requirement
+  correlate type function via implements
+  correlate type testcase via satisfies
+  span 1x2

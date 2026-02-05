@@ -1,0 +1,43 @@
+{
+  "identifier": "ElectricParkingBrakeECU",
+  "diagramType": "internal-block-diagram",
+  "positions": {
+    "ElectricParkingBrakeECU": {
+      "x": -180,
+      "y": -45.271122949870204,
+      "width": 2362.4771239106103,
+      "height": 1023.2314474701795
+    },
+    "EPB_InputProcessingSubsystem": {
+      "x": 302.463597148311,
+      "y": 117.39020760614733,
+      "width": 264,
+      "height": 480
+    },
+    "EPB_ControlLogicSubsystem": {
+      "x": 644.2860156028989,
+      "y": 52.728877050129796,
+      "width": 240,
+      "height": 305
+    },
+    "EPB_ActuatorOutputSubsystem": {
+      "x": 1179.7278591733939,
+      "y": 429.1207738018717,
+      "width": 256,
+      "height": 330
+    },
+    "EPB_DiagnosticSubsystem": {
+      "x": 656.3421673635646,
+      "y": 497.9603245203093,
+      "width": 224,
+      "height": 430
+    }
+  },
+  "connections": {
+    "internal_EPB_ControlLogicSubsystem_provides_EPBControlCommand_to_container_ElectricParkingBrakeECU_provides_EPBControlCommand": -155.17818245394972,
+    "_lastX": 970.6797290290359
+  },
+  "lastModified": 1764600210104,
+  "version": "DIAGRAM POSITION MANAGER v2.33.33",
+  "decompositionType": "functional"
+}

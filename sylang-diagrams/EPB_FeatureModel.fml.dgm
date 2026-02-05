@@ -1,0 +1,266 @@
+{
+  "identifier": "EPB_FeatureModel.fml",
+  "diagramType": "FeatureModel",
+  "positions": {
+    "ElectricParkingBrakeFeatures": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "CoreEPBFeatures": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BrakeEngagement": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "EngagementControl": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "ForceControlAlgorithm": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "PIDController": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "AdaptiveControl": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "LoadEstimation": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "StaticLoadEstimation": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "DynamicLoadEstimation": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "MotorControlStrategy": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BasicPWMControl": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "AdvancedVectorControl": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "PositionFeedback": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "PrimarySensorTechnology": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "PotentiometerSensor": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "HallEffectSensor": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "EncoderSensor": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "SecondarySensorTechnology": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BackupPotentiometer": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BackupHallSensor": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BrakeDisengagement": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "SafetyInterlocks": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "ControlledRelease": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "BrakeHolding": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "HoldingForceMonitoring": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "SlopeCompensation": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "SafetyFeatures": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "FailureDiagnostics": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "ActuatorDiagnostics": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "ECUDiagnostics": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "EmergencyOperation": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "EmergencyEngagement": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "FailSafeModes": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "ComfortFeatures": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "AutomaticEngagement": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "AutomaticDisengagement": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "HillHoldAssist": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "InterfaceFeatures": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "CANInterface": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "DriverInterface": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "SwitchInterface": {
+      "x": 0,
+      "y": 0,
+      "width": 120,
+      "height": 60
+    },
+    "StatusIndicators": {
+      "x": 233,
+      "y": 213,
+      "width": 120,
+      "height": 60
+    }
+  },
+  "lastModified": 1759694572562,
+  "version": "DIAGRAM POSITION MANAGER v2.27.5"
+}
