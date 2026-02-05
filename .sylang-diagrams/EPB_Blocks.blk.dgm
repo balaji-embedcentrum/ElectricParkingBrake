@@ -1,0 +1,11 @@
+{
+  "identifier": "ElectricParkingBrakeECU",
+  "diagramType": "InternalBlockDiagram",
+  "positions": {},
+  "lastModified": 1769643701460,
+  "version": "DIAGRAM MANAGER v2.34.27",
+  "sourcePath": "/Users/balajiboominathan/Documents/EPB Project/ElectricParkingBrake/01 Product Line/EPB_Blocks.blk",
+  "fileExtension": "blk",
+  "diagramIdentifier": "ElectricParkingBrakeECU",
+  "decompositionType": "functional"
+}
