@@ -1,0 +1,82 @@
+{
+  "identifier": "EPB_Diag.req.sy",
+  "requirementType": "DiagnosticRequirements",
+  "subsystem": "EPB_DiagnosticSubsystem",
+  "requirements": [
+    {
+      "id": "DIAG-001",
+      "title": "UDS on CAN Compliance",
+      "description": "Shall comply with ISO 14229-1 for UDS services on CAN",
+      "safety": false,
+      "standard": "ISO 14229-1:2013"
+    },
+    {
+      "id": "DIAG-002",
+      "title": "OBD-II Compliance",
+      "description": "Shall support SAE J1979 OBD-II modes $01-$09",
+      "safety": false,
+      "standard": "SAE J1979"
+    },
+    {
+      "id": "DIAG-003",
+      "title": "DTC Storage",
+      "description": "Shall store minimum 20 DTCs with freeze frame data",
+      "safety": false,
+      "capacity": {"dtcCount": 20, "freezeFrames": 3}
+    },
+    {
+      "id": "DIAG-004",
+      "title": "Permanent DTC Retention",
+      "description": "Shall retain permanent DTCs through ignition cycles",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "retention": "Permanent in NVM"
+    },
+    {
+      "id": "DIAG-005",
+      "title": "Diagnostic Session Management",
+      "description": "Shall support default, extended, and programming sessions per UDS",
+      "safety": false,
+      "sessions": ["default", "extended", "programming"]
+    },
+    {
+      "id": "DIAG-006",
+      "title": "Plausibility Monitoring",
+      "description": "Shall continuously monitor input signal plausibility",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "monitoringRate": {"value": 10, "unit": "ms"}
+    },
+    {
+      "id": "DIAG-007",
+      "title": "Self-Test on Startup",
+      "description": "Shall perform self-test within 500ms of ignition on",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"startup": {"max": 500, "unit": "ms"}}
+    },
+    {
+      "id": "DIAG-008",
+      "title": "Communication Loss Detection",
+      "description": "Shall detect loss of CAN communication within 100ms",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"detection": {"max": 100, "unit": "ms"}}
+    },
+    {
+      "id": "DIAG-009",
+      "title": "Memory Fault Detection",
+      "description": "Shall detect NVM corruption and log diagnostic trouble code",
+      "safety": true,
+      "safetyLevel": "ASIL-B"
+    },
+    {
+      "id": "DIAG-010",
+      "title": "Mode $06 Support",
+      "description": "Shall support OBD-II Mode $06 for in-use performance monitoring",
+      "safety": false,
+      "standard": "SAE J1979"
+    }
+  ],
+  "lastModified": 1759694572562
+}

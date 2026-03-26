@@ -1,0 +1,44 @@
+{
+  "identifier": "EPB_Comms.blk",
+  "blockType": "SubsystemBlock",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "parentSystem": "ElectricParkingBrakeECU",
+  "responsibilities": [
+    "CAN/J1850/ISO9141 message formatting and parsing",
+    "Signal encoding/decoding for brake commands and status",
+    "Message ID arbitration and priority management",
+    "Checksum/CRC calculation and validation",
+    "In-frame response handling for OBD-II queries"
+  ],
+  "internalBlocks": [
+    {
+      "name": "CANMessageFormatter",
+      "type": "FunctionalBlock",
+      "inputs": ["BrakeCommand", "SystemStatus"],
+      "outputs": ["CANFrame"],
+      "description": "Formats brake command and status data into CAN frames"
+    },
+    {
+      "name": "SignalEncoder",
+      "type": "FunctionalBlock",
+      "inputs": ["RawData"],
+      "outputs": ["EncodedSignal"],
+      "description": "Encodes raw data into CAN signal format with scaling"
+    },
+    {
+      "name": "CRCGenerator",
+      "type": "SafetyBlock",
+      "inputs": ["CANFrame"],
+      "outputs": ["CRCValue"],
+      "safetyLevel": "ASIL-B",
+      "description": "Generates CRC for CAN frame integrity"
+    }
+  ],
+  "interfaces": {
+    "toInputProcessing": {"type": "Internal", "protocol": "Direct"},
+    "toDiagnostic": {"type": "Internal", "protocol": "CAN"},
+    "toActuatorControl": {"type": "Internal", "protocol": "PWM"}
+  },
+  "safetyLevel": "ASIL-B",
+  "lastModified": 1759694572562
+}

@@ -1,0 +1,33 @@
+{
+  "identifier": "EPB_Diag.fml.dgm",
+  "diagramType": "FeatureModel",
+  "positions": {
+    "EPBDiagnosticFeatures": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "DTCDiagnostics": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ActiveDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "PendingDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "PermanentDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "StoredDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "UDServices": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ReadDTC": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ClearDTC": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ReadData": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "WriteData": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "RoutineControl": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "IOControl": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "OBD2Services": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode01_MonitorStatus": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode02_FreezeFrame": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode03_StoredDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode04_ClearDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode06_TestResults": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode07_PendingDTCs": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "Mode09_VINInfo": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "OnBoardMonitors": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ComprehensiveComponent": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "FuelSystemMonitor": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "MisfireMonitor": {"x": 0, "y": 0, "width": 120, "height": 60}
+  },
+  "lastModified": 1759694572562,
+  "version": "DIAGRAM POSITION MANAGER v2.27.5"
+}

@@ -1,0 +1,51 @@
+{
+  "identifier": "EPB_Diag.blk.sy",
+  "blockType": "SubsystemBlock",
+  "subsystem": "EPB_DiagnosticSubsystem",
+  "parentSystem": "ElectricParkingBrakeECU",
+  "responsibilities": [
+    "Diagnostic Trouble Code (DTC) generation and storage",
+    "ISO 14229-1 UDS service handling",
+    "OBD-II mode $01-$09 service support",
+    "System freeze frame and snapshot data",
+    "On-board monitoring and self-test results"
+  ],
+  "internalBlocks": [
+    {
+      "name": "DTCManager",
+      "type": "FunctionalBlock",
+      "inputs": ["FaultSignals", "SelfTestResults"],
+      "outputs": ["ActiveDTCs", "PendingDTCs"],
+      "description": "Manages DTC states (passive, active, pending)"
+    },
+    {
+      "name": "UDSServiceHandler",
+      "type": "ServiceBlock",
+      "inputs": ["UDSRequest"],
+      "outputs": ["UDSResponse"],
+      "description": "Handles UDS diagnostic sessions and services"
+    },
+    {
+      "name": "OBD2ServiceHandler",
+      "type": "ServiceBlock",
+      "inputs": ["OBD2Request"],
+      "outputs": ["OBD2Response"],
+      "description": "Handles OBD-II mode $01-$09 requests"
+    },
+    {
+      "name": "MemoryManager",
+      "type": "SafetyBlock",
+      "inputs": ["WriteData", "ReadRequest"],
+      "outputs": ["ReadData", "MemoryStatus"],
+      "safetyLevel": "ASIL-B",
+      "description": "Manages DTC storage in non-volatile memory"
+    }
+  ],
+  "interfaces": {
+    "toInputProcessing": {"type": "Internal", "protocol": "Direct"},
+    "toCommunication": {"type": "Internal", "protocol": "CAN"},
+    "toActuatorControl": {"type": "Internal", "protocol": "PWM"}
+  },
+  "safetyLevel": "ASIL-B",
+  "lastModified": 1759694572562
+}

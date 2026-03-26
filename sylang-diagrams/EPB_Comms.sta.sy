@@ -1,0 +1,65 @@
+{
+  "identifier": "EPB_Comms.sta.sy",
+  "stateMachineType": "CANControllerStateMachine",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "states": [
+    {
+      "name": "CAN_STATE_OFF",
+      "description": "CAN controller is powered down or disabled",
+      "entryActions": ["DisableCANInterrupts"],
+      "exitActions": ["EnableCANInterrupts"]
+    },
+    {
+      "name": "CAN_STATE_INIT",
+      "description": "CAN controller initialization",
+      "entryActions": ["ConfigureBitTiming", "SetFilters", "ClearErrorCounters"],
+      "exitActions": []
+    },
+    {
+      "name": "CAN_STATE_LISTEN",
+      "description": "CAN controller listening for frames, no transmission",
+      "entryActions": ["EnableRx", "DisableTx"],
+      "exitActions": []
+    },
+    {
+      "name": "CAN_STATE_NORMAL",
+      "description": "Normal CAN operation, tx and rx active",
+      "entryActions": ["EnableTx", "EnableRx"],
+      "exitActions": []
+    },
+    {
+      "name": "CAN_STATE_TX_ONLY",
+      "description": "Transmit only mode (for testing)",
+      "entryActions": ["EnableTx", "DisableRx"],
+      "exitActions": []
+    },
+    {
+      "name": "CAN_STATE_BUS_OFF",
+      "description": "Bus-off state, transmitter disabled",
+      "entryActions": ["DisableTx", "LogBusOff", "StartRecoveryTimer"],
+      "exitActions": ["ClearRecoveryTimer"]
+    },
+    {
+      "name": "CAN_STATE_TX_WAIT",
+      "description": "Waiting for bus idle before transmission",
+      "entryActions": ["StartBusIdleTimer"],
+      "exitActions": ["ClearBusIdleTimer"]
+    }
+  ],
+  "transitions": [
+    {"from": "CAN_STATE_OFF", "to": "CAN_STATE_INIT", "trigger": "PowerOn"},
+    {"from": "CAN_STATE_INIT", "to": "CAN_STATE_LISTEN", "trigger": "InitComplete"},
+    {"from": "CAN_STATE_INIT", "to": "CAN_STATE_OFF", "trigger": "InitFailed"},
+    {"from": "CAN_STATE_LISTEN", "to": "CAN_STATE_NORMAL", "trigger": "EnableNormal"},
+    {"from": "CAN_STATE_NORMAL", "to": "CAN_STATE_BUS_OFF", "trigger": "TxErrorCountExceeded", "condition": "errorCount >= 255"},
+    {"from": "CAN_STATE_NORMAL", "to": "CAN_STATE_LISTEN", "trigger": "DisableNormal"},
+    {"from": "CAN_STATE_BUS_OFF", "to": "CAN_STATE_INIT", "trigger": "RecoveryTimerExpired", "condition": "autoRestartEnabled"}
+  ],
+  "errorHandling": {
+    "busOffRecovery": "Automatic after 128 * 11 bit times",
+    "txErrorThreshold": 255,
+    "rxErrorThreshold": 255,
+    "errorWarningThreshold": 96
+  },
+  "lastModified": 1759694572562
+}

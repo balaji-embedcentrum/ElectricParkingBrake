@@ -1,0 +1,83 @@
+{
+  "identifier": "EPB_Diag.int.sy",
+  "interfaceType": "SubsystemInterface",
+  "subsystem": "EPB_DiagnosticSubsystem",
+  "externalInterfaces": [
+    {
+      "name": "UDS_Tx",
+      "type": "Output",
+      "protocol": "CAN",
+      "dataType": "UDSFrame",
+      "serviceIDs": ["0x19", "0x14", "0x22", "0x2E", "0x31", "0x2F"],
+      "description": "UDS diagnostic responses"
+    },
+    {
+      "name": "UDS_Rx",
+      "type": "Input",
+      "protocol": "CAN",
+      "dataType": "UDSFrame",
+      "serviceIDs": ["0x10", "0x11", "0x19", "0x14", "0x22", "0x2E", "0x31", "0x2F", "0x3E"],
+      "description": "UDS diagnostic requests"
+    },
+    {
+      "name": "OBD2_Tx",
+      "type": "Output",
+      "protocol": "J1850/CAN",
+      "dataType": "OBD2Frame",
+      "modes": ["$01", "$02", "$03", "$04", "$06", "$07", "$09"],
+      "description": "OBD-II responses"
+    },
+    {
+      "name": "OBD2_Rx",
+      "type": "Input",
+      "protocol": "J1850/CAN",
+      "dataType": "OBD2Frame",
+      "modes": ["$01", "$02", "$03", "$04", "$05", "$06", "$07", "$08", "$09"],
+      "description": "OBD-II requests"
+    }
+  ],
+  "internalInterfaces": [
+    {
+      "name": "toCommunication",
+      "peer": "EPB_CommunicationSubsystem",
+      "type": "DiagnosticData",
+      "description": "CAN diagnostic messages"
+    },
+    {
+      "name": "toInputProcessing",
+      "peer": "EPB_InputProcessingSubsystem",
+      "type": "FaultSignals",
+      "description": "Fault conditions detected in inputs"
+    },
+    {
+      "name": "toActuatorControl",
+      "peer": "EPB_ActuatorControlSubsystem",
+      "type": "FaultSignals",
+      "description": "Fault conditions detected in actuators"
+    }
+  ],
+  "dtcDefinitions": [
+    {
+      "dtc": "P0500",
+      "description": "Vehicle Speed Sensor Malfunction",
+      "failureType": "Circuit malfunction",
+      "severity": "Medium",
+      "symptom": "Inoperative hill hold"
+    },
+    {
+      "dtc": "P1579",
+      "description": "Brake Pedal Position vs. Throttle Position Excessive",
+      "failureType": "Mechanical failure",
+      "severity": "High",
+      "symptom": "Auto release disabled"
+    },
+    {
+      "dtc": "P0504",
+      "description": "Brake Switch A/B Correlation",
+      "failureType": "Signal plausibility",
+      "severity": "Medium",
+      "symptom": "Auto engage inhibited"
+    }
+  ],
+  "lastModified": 1759694572562
+}

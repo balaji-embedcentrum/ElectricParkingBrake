@@ -1,0 +1,60 @@
+{
+  "identifier": "EPB_Diag.seq.sy",
+  "sequenceType": "StateMachine",
+  "subsystem": "EPB_DiagnosticSubsystem",
+  "stateMachines": [
+    {
+      "name": "UDS_Session_StateMachine",
+      "states": [
+        {"name": "DEFAULT_SESSION", "description": "Normal diagnostic session, limited services"},
+        {"name": "EXTENDED_SESSION", "description": "Extended session, full service access"},
+        {"name": "PROGRAMMING_SESSION", "description": "ECU programming session, flash access"},
+        {"name": "SAFETY_SESSION", "description": "Safety system diagnostic access"},
+        {"name": "SESSION_TIMEOUT", "description": "Session inactivity timeout"}
+      ],
+      "transitions": [
+        {"from": "DEFAULT_SESSION", "to": "EXTENDED_SESSION", "trigger": "0x10.SID=0x03", "condition": "validSubFunction"},
+        {"from": "DEFAULT_SESSION", "to": "PROGRAMMING_SESSION", "trigger": "0x10.SID=0x02", "condition": "securityLevelUnlocked"},
+        {"from": "EXTENDED_SESSION", "to": "DEFAULT_SESSION", "trigger": "0x10.SID=0x01", "action": "resetToDefault"},
+        {"from": "EXTENDED_SESSION", "to": "SESSION_TIMEOUT", "trigger": "sessionTimerExpired", "condition": "noActivity"},
+        {"from": "PROGRAMMING_SESSION", "to": "DEFAULT_SESSION", "trigger": "0x10.SID=0x01", "action": "resetToDefault"}
+      ]
+    },
+    {
+      "name": "DTC_StateMachine",
+      "states": [
+        {"name": "DTC_INACTIVE", "description": "Fault not present"},
+        {"name": "DTC_PENDING", "description": "Fault detected once, not confirmed"},
+        {"name": "DTC_ACTIVE", "description": "Fault confirmed (two-trip)"},
+        {"name": "DTC_PERMANENT", "description": "Active DTC stored in permanent memory"},
+        {"name": "DTC_CLEARED", "description": "DTC being cleared"}
+      ],
+      "transitions": [
+        {"from": "DTC_INACTIVE", "to": "DTC_PENDING", "trigger": "faultDetected"},
+        {"from": "DTC_PENDING", "to": "DTC_ACTIVE", "trigger": "faultDetectedAgain", "condition": "nextDrivingCycle"},
+        {"from": "DTC_PENDING", "to": "DTC_INACTIVE", "trigger": "faultCleared", "condition": "noFaultInCycle"},
+        {"from": "DTC_ACTIVE", "to": "DTC_PERMANENT", "trigger": "ignitionOff", "action": "storePermanent"},
+        {"from": "DTC_PERMANENT", "to": "DTC_CLEARED", "trigger": "clearDTCCommand"},
+        {"from": "DTC_CLEARED", "to": "DTC_INACTIVE", "action": "completeClear"}
+      ]
+    },
+    {
+      "name": "SelfTest_StateMachine",
+      "states": [
+        {"name": "SELF_TEST_IDLE", "description": "No test running"},
+        {"name": "SELF_TEST_RUNNING", "description": "Self-test in progress"},
+        {"name": "SELF_TEST_PASS", "description": "All tests passed"},
+        {"name": "SELF_TEST_FAIL", "description": "One or more tests failed"}
+      ],
+      "transitions": [
+        {"from": "SELF_TEST_IDLE", "to": "SELF_TEST_RUNNING", "trigger": "powerUp"},
+        {"from": "SELF_TEST_IDLE", "to": "SELF_TEST_RUNNING", "trigger": "periodicRequest"},
+        {"from": "SELF_TEST_RUNNING", "to": "SELF_TEST_PASS", "condition": "allTestsPassed"},
+        {"from": "SELF_TEST_RUNNING", "to": "SELF_TEST_FAIL", "condition": "anyTestFailed"},
+        {"from": "SELF_TEST_PASS", "to": "SELF_TEST_IDLE", "action": "logPass"},
+        {"from": "SELF_TEST_FAIL", "to": "SELF_TEST_IDLE", "action": "logFailAndSetDTC"}
+      ]
+    }
+  ],
+  "lastModified": 1759694572562
+}

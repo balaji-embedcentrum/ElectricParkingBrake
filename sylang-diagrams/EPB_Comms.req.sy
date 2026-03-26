@@ -1,0 +1,84 @@
+{
+  "identifier": "EPB_Comms.req.sy",
+  "requirementType": "CommunicationRequirements",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "requirements": [
+    {
+      "id": "COM-001",
+      "title": "CAN 2.0B Compliance",
+      "description": "Shall comply with ISO 11898-2 (CAN HS) and support 500kbps nominal rate",
+      "safety": false,
+      "AUTOSARRelease": "4.2.2"
+    },
+    {
+      "id": "COM-002",
+      "title": "Message Latency",
+      "description": "Brake command message latency shall not exceed 20ms from reception to transmission",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"latency": {"max": 20, "unit": "ms"}}
+    },
+    {
+      "id": "COM-003",
+      "title": "OBD-II Compliance",
+      "description": "Shall support J1850 PWM (41.6kbps) and J1850 VPW (10.4kbps) for OBD-II diagnostics",
+      "safety": false,
+      "standard": "SAE J1979"
+    },
+    {
+      "id": "COM-004",
+      "title": "ISO9141 Support",
+      "description": "Shall support ISO 9141-2 for legacy diagnostic systems",
+      "safety": false,
+      "standard": "ISO 9141-2"
+    },
+    {
+      "id": "COM-005",
+      "title": "Message Timeout",
+      "description": "Shall detect loss of CAN communication within 100ms and enter fail-safe",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"timeout": {"max": 100, "unit": "ms"}}
+    },
+    {
+      "id": "COM-006",
+      "title": "CRC Error Detection",
+      "description": "Shall detect and reject frames with CRC errors",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "errorDetection": {"type": "CRC8", "coverage": "99.9%"}
+    },
+    {
+      "id": "COM-007",
+      "title": "Bus-Off Recovery",
+      "description": "Shall automatically recover from bus-off state within 1 second",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"recovery": {"max": 1000, "unit": "ms"}}
+    },
+    {
+      "id": "COM-008",
+      "title": "UDS on CAN Support",
+      "description": "Shall support ISO 14229-1 UDS services on CAN transport layer",
+      "safety": false,
+      "standard": "ISO 14229-1"
+    },
+    {
+      "id": "COM-009",
+      "title": "OSEK Network Management",
+      "description": "Shall implement OSEK NM for network participation and monitoring",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "standard": "OSEK NM 2.5.3"
+    },
+    {
+      "id": "COM-010",
+      "title": "Periodic Transmit",
+      "description": "Shall transmit EPB status message at 100ms periodic rate",
+      "safety": true,
+      "safetyLevel": "ASIL-B",
+      "timing": {"period": {"value": 100, "unit": "ms"}}
+    }
+  ],
+  "lastModified": 1759694572562
+}

@@ -1,0 +1,25 @@
+{
+  "identifier": "EPB_Comms.fml.dgm",
+  "diagramType": "FeatureModel",
+  "positions": {
+    "EPBCommunicationFeatures": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "PhysicalLayer": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "CANHighSpeed": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "CANLowSpeed": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "J1850PW": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ISO9141": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "DataLinkLayer": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "MessageFormatting": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ArbitrationHandling": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ErrorDetection": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "CRCChecksum": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "ApplicationLayer": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "SignalEncoding": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "MessagePriority": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "DiagnosticMessages": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "OBD2Interface": {"x": 0, "y": 0, "width": 120, "height": 60},
+    "UDSMessages": {"x": 0, "y": 0, "width": 120, "height": 60}
+  },
+  "lastModified": 1759694572562,
+  "version": "DIAGRAM POSITION MANAGER v2.27.5"
+}

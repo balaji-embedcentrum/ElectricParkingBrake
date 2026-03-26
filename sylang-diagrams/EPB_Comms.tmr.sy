@@ -1,0 +1,69 @@
+{
+  "identifier": "EPB_Comms.tmr.sy",
+  "timerType": "CommunicationTimers",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "timers": [
+    {
+      "name": "MessageTimeoutTimer",
+      "description": "Monitors reception of expected messages",
+      "period": {"value": 100, "unit": "ms"},
+      "timeoutAction": "SetStaleDataFlag",
+      "safetyRelevant": true,
+      "safetyLevel": "ASIL-B"
+    },
+    {
+      "name": "PeriodicTxTimer",
+      "description": "Triggers periodic EPB status transmission",
+      "period": {"value": 100, "unit": "ms"},
+      "timeoutAction": "TriggerStatusTransmission",
+      "safetyRelevant": true,
+      "safetyLevel": "ASIL-B"
+    },
+    {
+      "name": "BusOffRecoveryTimer",
+      "description": "Counts down before attempting bus-off recovery",
+      "period": {"value": 1000, "unit": "ms"},
+      "timeoutAction": "AttemptBusOffRecovery",
+      "safetyRelevant": true,
+      "safetyLevel": "ASIL-B"
+    },
+    {
+      "name": "TxAttemptTimer",
+      "description": "Limits TX retry attempts per message",
+      "period": {"value": 50, "unit": "ms"},
+      "timeoutAction": "AbortTransmission",
+      "safetyRelevant": false
+    },
+    {
+      "name": "CANErrorRecoveryTimer",
+      "description": "Monitors time since last error",
+      "period": {"value": 5000, "unit": "ms"},
+      "timeoutAction": "DecrementErrorCounter",
+      "safetyRelevant": false
+    },
+    {
+      "name": "DiagnosticSessionTimer",
+      "description": "Keeps diagnostic session alive",
+      "period": {"value": 30000, "unit": "ms"},
+      "timeoutAction": "EndDiagnosticSession",
+      "safetyRelevant": false
+    },
+    {
+      "name": "NMHelloTimer",
+      "description": "OSEK Network Management hello timer",
+      "period": {"value": 500, "unit": "ms"},
+      "timeoutAction": "TransmitNMMessage",
+      "safetyRelevant": true,
+      "safetyLevel": "ASIL-B"
+    },
+    {
+      "name": "CRCWatchdogTimer",
+      "description": "Monitors CRC calculation time",
+      "period": {"value": 5, "unit": "ms"},
+      "timeoutAction": "CRCWatchdogTimeout",
+      "safetyRelevant": true,
+      "safetyLevel": "ASIL-B"
+    }
+  ],
+  "lastModified": 1759694572562
+}

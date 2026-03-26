@@ -1,0 +1,71 @@
+{
+  "identifier": "EPB_Comms.risk.sy",
+  "analysisType": "FMEA",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "failureModes": [
+    {
+      "failureMode": "Bus-Off Condition",
+      "effects": ["Complete loss of CAN communication", "EPB enters safe state"],
+      "severity": 8,
+      "probability": "Low",
+      "detectionMethod": "CAN controller status register",
+      "mitigation": "Auto-restart after 1s, fallback to direct actuator control"
+    },
+    {
+      "failureMode": "DLC Mismatch",
+      "effects": ["Message rejected", "Stale data used"],
+      "severity": 6,
+      "probability": "Medium",
+      "detectionMethod": "DLC check on receive",
+      "mitigation": "Signal default values, log DTC"
+    },
+    {
+      "failureMode": "CRC Error",
+      "effects": ["Frame rejected", "Data corruption undetected without CRC"],
+      "severity": 7,
+      "probability": "Medium",
+      "detectionMethod": "CRC mismatch flag",
+      "mitigation": "Request retransmit, increment error counter"
+    },
+    {
+      "failureMode": "Message Collision",
+      "effects": ["Arbitration lost", "Delayed transmission"],
+      "severity": 5,
+      "probability": "Medium",
+      "detectionMethod": "CAN error frame detection",
+      "mitigation": "Priority-based arbitration, retry mechanism"
+    },
+    {
+      "failureMode": "Timing Violation",
+      "effects": ["Timeout detected", "Stale command used"],
+      "severity": 7,
+      "probability": "Low",
+      "detectionMethod": "Watchdog timer",
+      "mitigation": "Use last valid command with aging factor"
+    },
+    {
+      "failureMode": "Dominant Stuck Bit",
+      "effects": ["CAN bus permanently busy", "No communication possible"],
+      "severity": 9,
+      "probability": "Very Low",
+      "detectionMethod": "Bus idle timeout",
+      "mitigation": "Physical layer monitoring, ECU reset"
+    },
+    {
+      "failureMode": "Signal Encoding Error",
+      "effects": ["Incorrect brake force calculated", "Wrong commanded position"],
+      "severity": 8,
+      "probability": "Low",
+      "detectionMethod": "Range check and plausibility",
+      "mitigation": "Plausibility limits, fail-safe default"
+    }
+  ],
+  "riskPriorities": [
+    {"mode": "Dominant Stuck Bit", "RPN": 45, "action": "Physical layer monitoring"},
+    {"mode": "Bus-Off Condition", "RPN": 40, "action": "Auto-restart with fallback"},
+    {"mode": "Signal Encoding Error", "RPN": 40, "action": "Plausibility limits"},
+    {"mode": "CRC Error", "RPN": 35, "action": "Retransmit with error counter"},
+    {"mode": "Timing Violation", "RPN": 28, "action": "Aged command with watchdog"}
+  ],
+  "lastModified": 1759694572562
+}

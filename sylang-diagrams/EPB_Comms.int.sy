@@ -1,0 +1,104 @@
+{
+  "identifier": "EPB_Comms.int.sy",
+  "interfaceType": "SubsystemInterface",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "externalInterfaces": [
+    {
+      "name": "CANBus_Tx",
+      "type": "Output",
+      "protocol": "CAN_HS",
+      "dataType": "CANFrame",
+      "messageID": "0x100-0x10F",
+      "description": "Transmitted CAN frames for EPB commands and status"
+    },
+    {
+      "name": "CANBus_Rx",
+      "type": "Input",
+      "protocol": "CAN_HS",
+      "dataType": "CANFrame",
+      "messageID": "0x100-0x10F",
+      "description": "Received CAN frames from other ECUs"
+    },
+    {
+      "name": "OBD2_Request",
+      "type": "Input",
+      "protocol": "J1850/CAN",
+      "dataType": "OBD2Frame",
+      "description": "OBD-II diagnostic requests"
+    },
+    {
+      "name": "OBD2_Response",
+      "type": "Output",
+      "protocol": "J1850/CAN",
+      "dataType": "OBD2Frame",
+      "description": "OBD-II diagnostic responses"
+    },
+    {
+      "name": "UDS_Request",
+      "type": "Input",
+      "protocol": "CAN",
+      "dataType": "UDSFrame",
+      "description": "Unified Diagnostic Services requests"
+    },
+    {
+      "name": "UDS_Response",
+      "type": "Output",
+      "protocol": "CAN",
+      "dataType": "UDSFrame",
+      "description": "Unified Diagnostic Services responses"
+    }
+  ],
+  "internalInterfaces": [
+    {
+      "name": "toInputProcessing",
+      "peer": "EPB_InputProcessingSubsystem",
+      "type": "Service",
+      "description": "Processed input data for communication"
+    },
+    {
+      "name": "toActuatorControl",
+      "peer": "EPB_ActuatorControlSubsystem",
+      "type": "Command",
+      "description": "Actuator commands from CAN"
+    },
+    {
+      "name": "toDiagnostic",
+      "peer": "EPB_DiagnosticSubsystem",
+      "type": "DiagnosticData",
+      "description": "Diagnostic information for storage"
+    }
+  ],
+  "signalDefinitions": [
+    {
+      "name": "EPB_Command",
+      "startBit": 0,
+      "length": 8,
+      "scaling": {"factor": 1, "offset": 0},
+      "units": "enum",
+      "values": {"0x00": "Release", "0x01": "Engage", "0x02": "Hold", "0x03": "Emergency"}
+    },
+    {
+      "name": "EPB_Status",
+      "startBit": 8,
+      "length": 8,
+      "scaling": {"factor": 1, "offset": 0},
+      "units": "enum",
+      "values": {"0x00": "Released", "0x01": "Engaged", "0x02": "Moving", "0x03": "Fault"}
+    },
+    {
+      "name": "BrakeForce",
+      "startBit": 16,
+      "length": 16,
+      "scaling": {"factor": 0.1, "offset": 0},
+      "units": "Nm"
+    },
+    {
+      "name": "CRC",
+      "startBit": 56,
+      "length": 8,
+      "scaling": {"factor": 1, "offset": 0},
+      "units": "hex"
+    }
+  ],
+  "lastModified": 1759694572562
+}

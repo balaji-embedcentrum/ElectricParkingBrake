@@ -1,0 +1,62 @@
+{
+  "identifier": "EPB_Diag.risk.sy",
+  "analysisType": "FMEA",
+  "subsystem": "EPB_DiagnosticSubsystem",
+  "failureModes": [
+    {
+      "failureMode": "NVM Corruption",
+      "effects": ["DTCs lost on power cycle", "Incorrect repair history"],
+      "severity": 6,
+      "probability": "Low",
+      "detectionMethod": "Checksum validation on startup",
+      "mitigation": "ECC or redundant storage"
+    },
+    {
+      "failureMode": "DTC Memory Full",
+      "effects": ["New DTCs cannot be stored", "Related faults undetected"],
+      "severity": 5,
+      "probability": "Medium",
+      "detectionMethod": "Memory usage counter",
+      "mitigation": "FIFO replacement with priority"
+    },
+    {
+      "failureMode": "False DTC Generation",
+      "effects": ["Incorrect fault reported", "Unnecessary repair visits"],
+      "severity": 6,
+      "probability": "Medium",
+      "detectionMethod": "Plausibility check before DTC set",
+      "mitigation": "Two-trip fault logic"
+    },
+    {
+      "failureMode": "UDS Response Timeout",
+      "effects": "Tester thinks request failed, may retry excessively",
+      "severity": 4,
+      "probability": "Low",
+      "detectionMethod": "Response timeout timer",
+      "mitigation": "Appropriate response timing"
+    },
+    {
+      "failureMode": "Diagnostic Session Hang",
+      "effects": ["ECU stuck in programming mode", "Vehicle inoperable"],
+      "severity": 8,
+      "probability": "Very Low",
+      "detectionMethod": "Session watchdog timer",
+      "mitigation": "Force return to default session"
+    },
+    {
+      "failureMode": "Freeze Frame Data Corruption",
+      "effects": ["Incorrect snapshot stored", "Misleading diagnosis"],
+      "severity": 5,
+      "probability": "Low",
+      "detectionMethod": "CRC check on freeze frame read",
+      "mitigation": "Validate before storage"
+    }
+  ],
+  "riskPriorities": [
+    {"mode": "NVM Corruption", "RPN": 30, "action": "ECC validation"},
+    {"mode": "False DTC Generation", "RPN": 30, "action": "Two-trip logic"},
+    {"mode": "Diagnostic Session Hang", "RPN": 24, "action": "Watchdog recovery"},
+    {"mode": "DTC Memory Full", "RPN": 20, "action": "FIFO with priority"}
+  ],
+  "lastModified": 1759694572562
+}

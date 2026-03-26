@@ -1,0 +1,61 @@
+{
+  "identifier": "EPB_Comms.seq.sy",
+  "sequenceType": "StateMachine",
+  "subsystem": "EPB_CommunicationSubsystem",
+  "stateMachines": [
+    {
+      "name": "CAN_Tx_StateMachine",
+      "states": [
+        {"name": "IDLE", "description": "No transmission pending"},
+        {"name": "WAIT_ARB", "description": "Waiting for arbitration"},
+        {"name": "TRANSMIT", "description": "Actively transmitting frame"},
+        {"name": "CHECK_ACK", "description": "Waiting for ACK bit"},
+        {"name": "DONE", "description": "Transmission successful"},
+        {"name": "ERROR", "description": "Transmission error detected"}
+      ],
+      "transitions": [
+        {"from": "IDLE", "to": "WAIT_ARB", "trigger": "newFrame"},
+        {"from": "WAIT_ARB", "to": "TRANSMIT", "condition": "arbitrationWon"},
+        {"from": "WAIT_ARB", "to": "IDLE", "condition": "arbitrationLost"},
+        {"from": "TRANSMIT", "to": "CHECK_ACK", "condition": "EOF"},
+        {"from": "CHECK_ACK", "to": "DONE", "condition": "ACKReceived"},
+        {"from": "CHECK_ACK", "to": "ERROR", "condition": "ACKMissing"},
+        {"from": "ERROR", "to": "IDLE", "action": "incrementErrorCounter"}
+      ]
+    },
+    {
+      "name": "CAN_Rx_StateMachine",
+      "states": [
+        {"name": "LISTEN", "description": "Monitoring CAN bus"},
+        {"name": "RECEIVE", "description": "Receiving frame bits"},
+        {"name": "VALIDATE", "description": "Checking CRC and DLC"},
+        {"name": "PROCESS", "description": "Decoding and forwarding"},
+        {"name": "DISCARD", "description": "Invalid frame discarded"}
+      ],
+      "transitions": [
+        {"from": "LISTEN", "to": "RECEIVE", "trigger": "SOFDetected"},
+        {"from": "RECEIVE", "to": "VALIDATE", "condition": "EOFComplete"},
+        {"from": "VALIDATE", "to": "PROCESS", "condition": "CRCOk and DLCok"},
+        {"from": "VALIDATE", "to": "DISCARD", "condition": "CRCError or DLCError"},
+        {"from": "DISCARD", "to": "LISTEN", "action": "logError"},
+        {"from": "PROCESS", "to": "LISTEN", "action": "forwardToApplication"}
+      ]
+    },
+    {
+      "name": "DiagnosticSession_StateMachine",
+      "states": [
+        {"name": "DEFAULT", "description": "Normal operation session"},
+        {"name": "PROGRAMMING", "description": "ECU programming session"},
+        {"name": "EXTENDED", "description": "Extended diagnostic session"},
+        {"name": "SAFETY", "description": "Safety system diagnostic session"}
+      ],
+      "transitions": [
+        {"from": "DEFAULT", "to": "EXTENDED", "trigger": "0x10 with SID 0x03"},
+        {"from": "DEFAULT", "to": "PROGRAMMING", "trigger": "0x10 with SID 0x02"},
+        {"from": "EXTENDED", "to": "DEFAULT", "trigger": "0x10 with SID 0x01"},
+        {"from": "PROGRAMMING", "to": "DEFAULT", "trigger": "0x10 with SID 0x01"}
+      ]
+    }
+  ],
+  "lastModified": 1759694572562
+}
